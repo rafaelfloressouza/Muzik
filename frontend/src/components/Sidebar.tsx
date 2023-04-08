@@ -184,7 +184,6 @@ const BottomContainer = styled.div<{ color: string; hoverColor: string }>`
   & p {
     color: ${(props) => props.color};
     margin: 18px 0;
-    transition: ease-in-out 0.4s;
 
     &:hover {
       color: ${(props) => props.hoverColor};
