@@ -7,11 +7,15 @@ import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { ThemeContext } from "../contexts/ThemeContext";
 
-export default function Sidebar(): ReactElement {
+type Props = {
+  width: string;
+};
+
+export default function Sidebar({ width }: Props): ReactElement {
   const theme = useContext(ThemeContext);
 
   return (
-    <SidebarContainer>
+    <SidebarContainer width={width}>
       <TopContainer
         color={theme?.quinary() ?? ""}
         hoverColor={theme?.senary() ?? ""}
@@ -115,11 +119,11 @@ export default function Sidebar(): ReactElement {
   );
 }
 
-const SidebarContainer = styled.div`
+const SidebarContainer = styled.div<{ width: string }>`
   display: flex;
   flex-direction: column;
-  width: 270px;
-  min-width: 270;
+  width: ${(props) => props.width};
+  min-width: ${(props) => props.width};
   background-color: rgb(0, 0, 0);
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
