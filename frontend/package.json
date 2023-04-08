@@ -16,6 +16,15 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/plugin-syntax-flow": "^7.21.4",
+    "@babel/plugin-transform-react-jsx": "^7.21.0",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@material-ui/core": "^4.12.4",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.11.16",
+    "@mui/styled-engine-sc": "^5.11.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
@@ -25,12 +34,13 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "electron": "^23.1.1",
-    "@types/styled-components": "^5.1.26",
+    "@material-ui/types": "^5.1.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.12",
     "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11"
+    "@types/react-dom": "^18.0.11",
+    "@types/styled-components": "^5.1.26",
+    "electron": "^23.1.1"
   },
   "browserslist": {
     "production": [
