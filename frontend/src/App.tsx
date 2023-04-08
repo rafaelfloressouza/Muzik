@@ -1,13 +1,17 @@
 import Sidebar from "./components/Sidebar";
 import styled from "styled-components";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import Bottombar from "./components/Bottombar";
 
 export default function App() {
   return (
     <AppContainer>
       <ThemeProvider>
-        <Sidebar></Sidebar>
-        <Tmp></Tmp>
+        <TopContainer>
+          <Sidebar />
+          <Main />
+        </TopContainer>
+        <Bottombar />
       </ThemeProvider>
     </AppContainer>
   );
@@ -15,13 +19,20 @@ export default function App() {
 
 const AppContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   height: 100vh;
   width: 100vw;
+`;
+
+const TopContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: calc(100% - 90px);
+  width: 100%;
   background-color: red;
 `;
 
-const Tmp = styled.div`
+const Main = styled.div`
   width: calc(100% - 200px);
   height: 100%;
   background-color: rgb(18, 18, 18);
