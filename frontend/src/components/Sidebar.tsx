@@ -6,12 +6,22 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { ThemeContext } from "../contexts/ThemeContext";
+import { PageType } from "../App";
+import Svg from "./shared/Svg";
 
 type Props = {
   width: string;
+  page: PageType;
+  pageSelected?: (page: PageType) => void;
+  playlistSelected?: () => void;
 };
 
-export default function Sidebar({ width }: Props): ReactElement {
+export default function Sidebar({
+  width,
+  page,
+  pageSelected = () => {},
+  playlistSelected = () => {},
+}: Props): ReactElement {
   const theme = useContext(ThemeContext);
 
   return (
@@ -22,28 +32,61 @@ export default function Sidebar({ width }: Props): ReactElement {
       >
         <MoreHorizIcon sx={{ color: theme?.senary() }} onClick={() => {}} />
         <div className="top-buttons">
-          <div className="btn-pair">
-            <HomeRoundedIcon />
-            <span>Home</span>
-          </div>
-          <div className="btn-pair">
-            <SearchOutlinedIcon />
-            <span>Search</span>
-          </div>
-          <div className="btn-pair">
-            <LibraryBooksOutlinedIcon />
-            <span>Your Library</span>
-          </div>
+          <Svg
+            svgMui={HomeRoundedIcon}
+            label={"Home"}
+            color={theme?.quinary()}
+            hoverColor={theme?.senary()}
+            svgHeight="28px"
+            svgWidth="28px"
+            noChangeColorSvg={true}
+            onClick={() => pageSelected(PageType.Home)}
+            selected={page === PageType.Home}
+          />
+          <Svg
+            svgMui={SearchOutlinedIcon}
+            label={"Search"}
+            color={theme?.quinary()}
+            hoverColor={theme?.senary()}
+            svgHeight="28px"
+            svgWidth="28px"
+            noChangeColorSvg={true}
+            onClick={() => pageSelected(PageType.Search)}
+            selected={page === PageType.Search}
+          />
+          <Svg
+            svgMui={LibraryBooksOutlinedIcon}
+            label={"Your Library"}
+            color={theme?.quinary()}
+            hoverColor={theme?.senary()}
+            svgHeight="28px"
+            svgWidth="28px"
+            noChangeColorSvg={true}
+            onClick={() => pageSelected(PageType.YourLibrary)}
+            selected={page === PageType.YourLibrary}
+          />
         </div>
         <div className="bottom-buttons">
-          <div className="btn-pair">
-            <AddBoxIcon />
-            <span>Create Playlist</span>
-          </div>
-          <div className="btn-pair">
-            <LibraryBooksOutlinedIcon />
-            <span>Liked Songs</span>
-          </div>
+          <Svg
+            svgMui={AddBoxIcon}
+            label={"Create Playlist"}
+            color={theme?.quinary()}
+            hoverColor={theme?.senary()}
+            svgHeight="28px"
+            svgWidth="28px"
+            onClick={() => pageSelected(PageType.CreatePlaylist)}
+            selected={page === PageType.CreatePlaylist}
+          />
+          <Svg
+            svgMui={LibraryBooksOutlinedIcon}
+            label={"Liked Songs"}
+            color={theme?.quinary()}
+            hoverColor={theme?.senary()}
+            svgHeight="28px"
+            svgWidth="28px"
+            onClick={() => pageSelected(PageType.LikedSongs)}
+            selected={page === PageType.LikedSongs}
+          />
         </div>
       </TopContainer>
       <Divider color={theme?.secondary() ?? ""} />
@@ -137,7 +180,12 @@ const TopContainer = styled.div<{ color: string; hoverColor: string }>`
   justify-content: space-between;
   height: 260px;
   padding: 2% 10%;
-  & .btn-pair {
+
+  & .svg {
+    margin-bottom: 10px;
+  }
+
+  /* & .btn-pair {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -150,18 +198,18 @@ const TopContainer = styled.div<{ color: string; hoverColor: string }>`
       color: ${(props) => props.hoverColor};
       cursor: pointer;
     }
-  }
+  } */
 
-  & svg {
-    color: ${(props) => props.color};
-    width: 28px;
-    height: 28px;
-    transition: ease-in-out 0.4s;
+  /* & svg { */
+  /* color: ${(props) => props.color}; */
+  /* width: 28px; */
+  /* height: 28px; */
+  /* transition: ease-in-out 0.4s; */
 
-    &:hover {
+  /* &:hover {
       color: ${(props) => props.hoverColor};
-    }
-  }
+    } */
+  /* } */
 `;
 
 const Divider = styled.div<{ color: string }>`

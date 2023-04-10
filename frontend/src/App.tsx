@@ -25,13 +25,13 @@ export default function App() {
   const [page, setPage] = useState(PageType.Home);
 
   // Handlers
-  const changePage = (newPage: PageType) => {
+  const pageChange = (newPage: PageType) => {
     if (newPage === page) return;
     setPage(newPage);
   };
 
   // Helpers
-  const getPage = (): ReactElement => {
+  const getPageContent = (): ReactElement => {
     switch (page) {
       case PageType.Home:
         return <Home />;
@@ -52,8 +52,12 @@ export default function App() {
     <AppContainer>
       <ThemeProvider>
         <TopContainer height={topContainerHeight}>
-          <Sidebar width={sideBarWidth} />
-          <Page width={pageWidth} children={getPage()} page={page}></Page>
+          <Sidebar width={sideBarWidth} page={page} pageSelected={pageChange} />
+          <Page
+            width={pageWidth}
+            children={getPageContent()}
+            page={page}
+          ></Page>
         </TopContainer>
         <Bottombar height={bottomBarHeight} />
       </ThemeProvider>

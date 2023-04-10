@@ -41,7 +41,7 @@ export default function Navbar({ height, page }: Props): ReactElement {
     <NavbarContainer height={height}>
       <div className="arrows-and-searchbar">
         {getArrows()}
-        {page === PageType.Home && <Searchbar />}
+        {page === PageType.Search && <Searchbar />}
       </div>
       <Avatar />
     </NavbarContainer>
