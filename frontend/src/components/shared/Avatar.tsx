@@ -15,7 +15,9 @@ export default function Avatar(): ReactElement {
       hoverColor={theme?.secondary() ?? ""}
       onClick={() => setMenuOpened(!menuOpened)}
     >
-      <Svg svgFileUrl={"svgs/unknown-avatar.svg"} svgBorderRadius="50%" />
+      <Svg
+        svgStyle={{ fileUrl: "svgs/unknown-avatar.svg", borderRadius: "50%" }}
+      />
       <span>Rafael Flores Souza</span>
       {menuOpened ? (
         <ArrowDropUpSharpIcon sx={{ transform: "scale(1.2)", mr: "2px" }} />

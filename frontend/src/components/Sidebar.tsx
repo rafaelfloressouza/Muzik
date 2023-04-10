@@ -33,34 +33,46 @@ export default function Sidebar({
         <MoreHorizIcon sx={{ color: theme?.senary() }} onClick={() => {}} />
         <div className="top-buttons">
           <Svg
-            svgMui={HomeRoundedIcon}
-            label={"Home"}
-            color={theme?.quinary()}
-            hoverColor={theme?.senary()}
-            svgHeight="28px"
-            svgWidth="28px"
+            svgStyle={{
+              muiComponent: HomeRoundedIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
+            labelStyle={{
+              label: "Home",
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
             noChangeColorSvg={true}
             onClick={() => pageSelected(PageType.Home)}
             selected={page === PageType.Home}
           />
           <Svg
-            svgMui={SearchOutlinedIcon}
-            label={"Search"}
-            color={theme?.quinary()}
-            hoverColor={theme?.senary()}
-            svgHeight="28px"
-            svgWidth="28px"
+            svgStyle={{
+              muiComponent: SearchOutlinedIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
+            labelStyle={{
+              label: "Search",
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
             noChangeColorSvg={true}
             onClick={() => pageSelected(PageType.Search)}
             selected={page === PageType.Search}
           />
           <Svg
-            svgMui={LibraryBooksOutlinedIcon}
-            label={"Your Library"}
-            color={theme?.quinary()}
-            hoverColor={theme?.senary()}
-            svgHeight="28px"
-            svgWidth="28px"
+            svgStyle={{
+              muiComponent: LibraryBooksOutlinedIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
+            labelStyle={{
+              label: "Your Library",
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
             noChangeColorSvg={true}
             onClick={() => pageSelected(PageType.YourLibrary)}
             selected={page === PageType.YourLibrary}
@@ -68,22 +80,30 @@ export default function Sidebar({
         </div>
         <div className="bottom-buttons">
           <Svg
-            svgMui={AddBoxIcon}
-            label={"Create Playlist"}
-            color={theme?.quinary()}
-            hoverColor={theme?.senary()}
-            svgHeight="28px"
-            svgWidth="28px"
+            svgStyle={{
+              muiComponent: AddBoxIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
+            labelStyle={{
+              label: "Create Playlist",
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
             onClick={() => pageSelected(PageType.CreatePlaylist)}
             selected={page === PageType.CreatePlaylist}
           />
           <Svg
-            svgMui={LibraryBooksOutlinedIcon}
-            label={"Liked Songs"}
-            color={theme?.quinary()}
-            hoverColor={theme?.senary()}
-            svgHeight="28px"
-            svgWidth="28px"
+            svgStyle={{
+              muiComponent: LibraryBooksOutlinedIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
+            labelStyle={{
+              label: "Liked Songs",
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
             onClick={() => pageSelected(PageType.LikedSongs)}
             selected={page === PageType.LikedSongs}
           />
@@ -184,32 +204,6 @@ const TopContainer = styled.div<{ color: string; hoverColor: string }>`
   & .svg {
     margin-bottom: 10px;
   }
-
-  /* & .btn-pair {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    color: ${(props) => props.color};
-    transition: ease-in-out 0.4s;
-    margin-bottom: 10px;
-    column-gap: 0.8rem;
-
-    &:hover {
-      color: ${(props) => props.hoverColor};
-      cursor: pointer;
-    }
-  } */
-
-  /* & svg { */
-  /* color: ${(props) => props.color}; */
-  /* width: 28px; */
-  /* height: 28px; */
-  /* transition: ease-in-out 0.4s; */
-
-  /* &:hover {
-      color: ${(props) => props.hoverColor};
-    } */
-  /* } */
 `;
 
 const Divider = styled.div<{ color: string }>`

@@ -3,78 +3,110 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { ReactElement, useState } from "react";
 import styled from "styled-components";
 
-type Props = {
-  svgFileUrl?: string;
-  svgMui?: OverridableComponent<SvgIconTypeMap<{}, "svg">> | undefined;
-  svgWidth?: string;
-  svgHeight?: string;
-  svgBorderRadius?: string;
-  label?: string;
-  colSpace?: string;
+export interface ISvgStyle {
+  fileUrl?: string;
+  muiComponent?: OverridableComponent<SvgIconTypeMap<{}, "svg">> | undefined;
+  width?: string;
+  height?: string;
+  borderRadius?: string;
   color?: string;
   hoverColor?: string;
+  bgColor?: string;
+  padding?: string;
+}
+
+export interface ILabelStyle {
+  label?: string;
+  fontSize?: string;
+  isBold?: boolean;
+  color?: string;
+  hoverColor?: string;
+}
+
+type Props = {
+  svgStyle?: ISvgStyle;
+  labelStyle?: ILabelStyle;
+  colSpace?: string;
   noChangeColorSvg?: boolean;
   selected?: boolean;
   onClick?: () => void;
 };
 
 export default function Svg({
-  svgFileUrl,
-  svgMui,
-  svgWidth = "28px",
-  svgHeight = "28px",
-  svgBorderRadius = "0",
-  label = "",
+  svgStyle,
+  labelStyle,
   colSpace = "0.8rem",
-  color = "white",
-  hoverColor = "white",
   noChangeColorSvg = false,
   selected = false,
   onClick,
 }: Props): ReactElement {
-  const SvgMuiComponent = svgMui;
+  const SvgMuiComponent = svgStyle?.muiComponent;
 
-  const [curColor, setCurColor] = useState(color);
+  const [curLabelColor, setCurLabelColor] = useState(
+    labelStyle?.color ?? "white"
+  );
+  const [curSvgColor, setCurSvgColor] = useState(svgStyle?.color ?? "white");
 
   // Helpers
   const getSvgColor = (): string => {
     if (selected) {
-      return hoverColor;
+      return svgStyle?.hoverColor ?? "white";
     } else {
-      return noChangeColorSvg ? color : curColor;
+      return noChangeColorSvg ? svgStyle?.color ?? "white" : curSvgColor;
     }
   };
 
   return (
     <>
-      {(svgFileUrl || svgMui) && !(svgFileUrl && svgMui) && (
-        <SvgContainer
-          className="svg"
-          width={svgWidth}
-          height={svgHeight}
-          borderRadius={svgBorderRadius}
-          textColor={selected ? hoverColor : curColor}
-          svgColor={getSvgColor()}
-          colSpace={colSpace}
-          onMouseEnter={() => setCurColor(hoverColor)}
-          onMouseLeave={() => setCurColor(color)}
-          onClick={onClick}
-        >
-          {svgFileUrl && <object className="file-svg" data={svgFileUrl} />}
-          {SvgMuiComponent && <SvgMuiComponent className="mui-svg" />}
-          {label && <span>{label}</span>}
-        </SvgContainer>
-      )}
+      {(svgStyle?.fileUrl || svgStyle?.muiComponent) &&
+        !(svgStyle?.fileUrl && svgStyle?.muiComponent) && (
+          <SvgContainer
+            className="svg"
+            svgWidth={svgStyle.width ?? "28px"}
+            svgHeight={svgStyle.height ?? "28px"}
+            svgBorderRadius={svgStyle.borderRadius ?? "0"}
+            svgPadding={svgStyle.padding ?? "0"}
+            labelColor={
+              selected ? svgStyle?.hoverColor ?? "white" : curLabelColor
+            }
+            svgColor={getSvgColor()}
+            svgBgColor={svgStyle?.bgColor ?? "transparent"}
+            labelFontSize={labelStyle?.fontSize ?? "0.8rem"}
+            isLabelBold={labelStyle?.isBold ?? false}
+            colSpace={colSpace}
+            onMouseEnter={() => {
+              setCurSvgColor(svgStyle?.hoverColor ?? "white");
+              setCurLabelColor(labelStyle?.hoverColor ?? "white");
+            }}
+            onMouseLeave={() => {
+              setCurSvgColor(svgStyle?.color ?? "white");
+              setCurLabelColor(labelStyle?.color ?? "white");
+            }}
+            onClick={onClick}
+          >
+            {svgStyle?.fileUrl && (
+              <object className="file-svg" data={svgStyle.fileUrl} />
+            )}
+            {SvgMuiComponent && <SvgMuiComponent className="mui-svg" />}
+            {labelStyle?.label && <span>{labelStyle?.label}</span>}
+          </SvgContainer>
+        )}
     </>
   );
 }
 
 const SvgContainer = styled.div<{
-  width: string;
-  height: string;
-  borderRadius: string;
-  textColor: string;
+  svgWidth: string;
+  svgHeight: string;
+  svgBorderRadius: string;
   svgColor: string;
+  svgBgColor: string;
+  svgPadding: string;
+
+  labelColor: string;
+  labelFontSize: string;
+  isLabelBold: boolean;
+
   colSpace: string;
 }>`
   display: flex;
@@ -87,10 +119,13 @@ const SvgContainer = styled.div<{
   }
 
   & .file-svg {
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
-    border-radius: ${(props) => props.borderRadius};
+    width: ${(props) => props.svgWidth};
+    height: ${(props) => props.svgHeight};
+    border-radius: ${(props) => props.svgBorderRadius};
     fill: ${(props) => props.svgColor};
+    transition: ease-in-out 0.1s;
+    background-color: ${(props) => props.svgBgColor};
+    padding: ${(props) => props.svgPadding};
 
     &:hover {
       cursor: pointer;
@@ -98,11 +133,13 @@ const SvgContainer = styled.div<{
   }
 
   & .mui-svg {
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
-    border-radius: ${(props) => props.borderRadius};
+    width: ${(props) => props.svgWidth};
+    height: ${(props) => props.svgHeight};
+    border-radius: ${(props) => props.svgBorderRadius};
     fill: ${(props) => props.svgColor};
     transition: ease-in-out 0.1s;
+    background-color: ${(props) => props.svgBgColor};
+    padding: ${(props) => props.svgPadding};
 
     &:hover {
       cursor: pointer;
@@ -110,7 +147,9 @@ const SvgContainer = styled.div<{
   }
 
   & span {
-    color: ${(props) => props.textColor};
+    color: ${(props) => props.labelColor};
     transition: ease-in-out 0.1s;
+    font-size: ${(props) => props.labelFontSize};
+    font-weight: ${(props) => (props.isLabelBold ? "bold" : "normal")};
   }
 `;
