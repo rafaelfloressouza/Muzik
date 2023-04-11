@@ -4,28 +4,31 @@ import styled from "styled-components";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
 import ArrowDropUpSharpIcon from "@mui/icons-material/ArrowDropUpSharp";
+import Tooltip from "./Tooltip";
 
 export default function Avatar(): ReactElement {
   const theme = useContext(ThemeContext);
   const [menuOpened, setMenuOpened] = useState(false);
 
   return (
-    <AvatarContainer
-      className="avatar"
-      bgColor={theme?.septenary(0.45) ?? ""}
-      hoverColor={theme?.secondary() ?? ""}
-      onClick={() => setMenuOpened(!menuOpened)}
-    >
-      <Svg
-        svgStyle={{ fileUrl: "svgs/unknown-avatar.svg", borderRadius: "50%" }}
-      />
-      <span>Rafael Flores Souza</span>
-      {menuOpened ? (
-        <ArrowDropUpSharpIcon sx={{ transform: "scale(1.2)", mr: "2px" }} />
-      ) : (
-        <ArrowDropDownSharpIcon sx={{ transform: "scale(1.2)", mr: "2px" }} />
-      )}
-    </AvatarContainer>
+    <Tooltip title="Rafael Flores Souza" bgColor={theme?.secondary()}>
+      <AvatarContainer
+        className="avatar"
+        bgColor={theme?.septenary() ?? ""}
+        hoverColor={theme?.secondary() ?? ""}
+        onClick={() => setMenuOpened(!menuOpened)}
+      >
+        <Svg
+          svgStyle={{ fileUrl: "svgs/unknown-avatar.svg", borderRadius: "50%" }}
+        />
+        <span>Rafael Flores Souza</span>
+        {menuOpened ? (
+          <ArrowDropUpSharpIcon sx={{ transform: "scale(1.2)", mr: "2px" }} />
+        ) : (
+          <ArrowDropDownSharpIcon sx={{ transform: "scale(1.2)", mr: "2px" }} />
+        )}
+      </AvatarContainer>
+    </Tooltip>
   );
 }
 

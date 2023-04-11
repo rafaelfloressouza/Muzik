@@ -29,10 +29,14 @@ export default function Page({
   const getNavbarColor = () => {
     if (!scrollTop || scrollTop < 100) {
       return "transparent";
+    } else if (scrollTop < 150) {
+      return theme?.nonary(0.3) ?? "";
     } else if (scrollTop < 200) {
-      return theme?.secondary(0.5) ?? "";
+      return theme?.nonary(0.5) ?? "";
+    } else if (scrollTop < 250) {
+      return theme?.nonary(0.7) ?? "";
     } else {
-      return theme?.secondary() ?? "";
+      return theme?.nonary() ?? "";
     }
   };
 

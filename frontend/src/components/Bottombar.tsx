@@ -13,6 +13,7 @@ import DevicesOutlinedIcon from "@mui/icons-material/DevicesOutlined";
 import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
 import OpenInFullOutlinedIcon from "@mui/icons-material/OpenInFullOutlined";
 import Slider from "./shared/Slider";
+import Svg from "./shared/Svg";
 
 type Props = {
   height: string;
@@ -38,7 +39,19 @@ export default function Bottombar({ height }: Props) {
           <span className="song-name">Sone - En Vivo</span>
           <span className="song-artists">Zoe</span>
         </div>
-        <FavoriteBorderIcon />
+        <Svg
+          svgStyle={{
+            muiComponent: FavoriteBorderIcon,
+            color: theme?.quinary(),
+            hoverColor: theme?.senary(),
+            height: "20px",
+            width: "20px",
+          }}
+          tooltipStyle={{
+            tooltip: "Save to Your Library",
+            bgColor: theme?.secondary(),
+          }}
+        />
       </LeftContainer>
       <CenterContainer
         textColor={theme?.quinary() ?? ""}
@@ -47,11 +60,71 @@ export default function Bottombar({ height }: Props) {
         hoverFill={theme?.senary() ?? ""}
       >
         <div className="music-controls">
-          <ShuffleTwoToneIcon className="shuffle-btn" />
-          <SkipPreviousIcon className="prev-btn" />
-          <PlayCircleIcon className="play-btn" />
-          <SkipNextIcon className="next-btn" />
-          <RepeatRoundedIcon className="repeat-btn" />
+          <Svg
+            svgStyle={{
+              muiComponent: ShuffleTwoToneIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+              height: "22px",
+              width: "22px",
+            }}
+            tooltipStyle={{
+              tooltip: "Disable Shuffle",
+              bgColor: theme?.secondary(),
+            }}
+          />
+          <Svg
+            svgStyle={{
+              muiComponent: SkipPreviousIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+              height: "32px",
+              width: "32px",
+            }}
+            tooltipStyle={{
+              tooltip: "Previous",
+              bgColor: theme?.secondary(),
+            }}
+          />
+          <Svg
+            svgStyle={{
+              muiComponent: PlayCircleIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+              height: "42px",
+              width: "42px",
+            }}
+            tooltipStyle={{
+              tooltip: "Play",
+              bgColor: theme?.secondary(),
+            }}
+          />
+          <Svg
+            svgStyle={{
+              muiComponent: SkipNextIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+              height: "32px",
+              width: "32px",
+            }}
+            tooltipStyle={{
+              tooltip: "Next",
+              bgColor: theme?.secondary(),
+            }}
+          />
+          <Svg
+            svgStyle={{
+              muiComponent: RepeatRoundedIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+              height: "22px",
+              width: "22px",
+            }}
+            tooltipStyle={{
+              tooltip: "Enable Repeat One",
+              bgColor: theme?.secondary(),
+            }}
+          />
         </div>
         <div className="music-progress">
           <span>2:10</span>
@@ -63,14 +136,74 @@ export default function Bottombar({ height }: Props) {
         iconColor={theme?.quinary() ?? ""}
         iconHoverColor={theme?.senary() ?? ""}
       >
-        <MicNoneOutlinedIcon />
-        <QueueMusicOutlinedIcon />
-        <DevicesOutlinedIcon />
-        <VolumeUpOutlinedIcon />
+        <Svg
+          svgStyle={{
+            muiComponent: MicNoneOutlinedIcon,
+            color: theme?.quinary(),
+            hoverColor: theme?.senary(),
+            height: "22px",
+            width: "22px",
+          }}
+          tooltipStyle={{
+            tooltip: "Lyrics",
+            bgColor: theme?.secondary(),
+          }}
+        />
+        <Svg
+          svgStyle={{
+            muiComponent: QueueMusicOutlinedIcon,
+            color: theme?.quinary(),
+            hoverColor: theme?.senary(),
+            height: "22px",
+            width: "22px",
+          }}
+          tooltipStyle={{
+            tooltip: "Queue",
+            bgColor: theme?.secondary(),
+          }}
+        />
+        <Svg
+          svgStyle={{
+            muiComponent: DevicesOutlinedIcon,
+            color: theme?.quinary(),
+            hoverColor: theme?.senary(),
+            height: "22px",
+            width: "22px",
+          }}
+          tooltipStyle={{
+            tooltip: "Connect to a device",
+            bgColor: theme?.secondary(),
+          }}
+        />
+        <Svg
+          svgStyle={{
+            muiComponent: VolumeUpOutlinedIcon,
+            color: theme?.quinary(),
+            hoverColor: theme?.senary(),
+            height: "22px",
+            width: "22px",
+          }}
+          tooltipStyle={{
+            tooltip: "Mute",
+            bgColor: theme?.secondary(),
+          }}
+        />
         <div className="slider-container">
           <Slider width={"100px"} />
         </div>
-        <OpenInFullOutlinedIcon className="expand-btn" />
+        <Svg
+          svgStyle={{
+            muiComponent: OpenInFullOutlinedIcon,
+            color: theme?.quinary(),
+            hoverColor: theme?.senary(),
+            height: "22px",
+            width: "22px",
+          }}
+          tooltipStyle={{
+            tooltip: "Full screen",
+            bgColor: theme?.secondary(),
+          }}
+        />
       </RightContainer>
     </BottombarContainer>
   );
@@ -225,10 +358,6 @@ const RightContainer = styled.div<{
     height: 18px;
     width: 18px;
   }
-
-  /* & .slider-container {
-    width: 50px;
-  } */
 
   & svg {
     fill: ${(props) => props.iconColor};
