@@ -14,7 +14,11 @@ import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
 import OpenInFullOutlinedIcon from "@mui/icons-material/OpenInFullOutlined";
 import Slider from "./shared/Slider";
 
-export default function Bottombar() {
+type Props = {
+  height: string;
+};
+
+export default function Bottombar({ height }: Props) {
   const theme = useContext(ThemeContext);
 
   return (
@@ -22,6 +26,7 @@ export default function Bottombar() {
       color={theme?.senary() ?? ""}
       bgColor={theme?.tertiary() ?? ""}
       borderColor={theme?.quinary(0.1) ?? ""}
+      height={height}
     >
       <LeftContainer
         artistNameTextColor={theme?.quinary() ?? ""}
@@ -75,6 +80,7 @@ const BottombarContainer = styled.div<{
   color: string;
   bgColor: string;
   borderColor: string;
+  height: string;
 }>`
   display: flex;
   flex-direction: row;
@@ -82,10 +88,11 @@ const BottombarContainer = styled.div<{
   color: ${(props) => props.color};
   background-color: ${(props) => props.bgColor};
   width: 100%;
-  height: 90px;
+  height: ${(props) => props.height};
   min-height: 90px;
   border-top: ${(props) => `1px solid ${props.borderColor}`};
   font-weight: none;
+  z-index: 10;
 `;
 
 const LeftContainer = styled.div<{

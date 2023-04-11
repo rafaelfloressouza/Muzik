@@ -6,40 +6,112 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { ThemeContext } from "../contexts/ThemeContext";
+import { PageType } from "../App";
+import Svg from "./shared/Svg";
 
-export default function Sidebar(): ReactElement {
+type Props = {
+  width: string;
+  page: PageType;
+  pageSelected?: (page: PageType) => void;
+  playlistSelected?: () => void;
+};
+
+export default function Sidebar({
+  width,
+  page,
+  pageSelected = () => {},
+  playlistSelected = () => {},
+}: Props): ReactElement {
   const theme = useContext(ThemeContext);
 
   return (
-    <SidebarContainer>
+    <SidebarContainer width={width}>
       <TopContainer
         color={theme?.quinary() ?? ""}
         hoverColor={theme?.senary() ?? ""}
       >
         <MoreHorizIcon sx={{ color: theme?.senary() }} onClick={() => {}} />
         <div className="top-buttons">
-          <div className="btn-pair">
-            <HomeRoundedIcon />
-            <span>Home</span>
-          </div>
-          <div className="btn-pair">
-            <SearchOutlinedIcon />
-            <span>Search</span>
-          </div>
-          <div className="btn-pair">
-            <LibraryBooksOutlinedIcon />
-            <span>Your Library</span>
-          </div>
+          <Svg
+            svgStyle={{
+              muiComponent: HomeRoundedIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
+            labelStyle={{
+              label: "Home",
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+              isBold: true,
+            }}
+            noChangeColorSvg={true}
+            onClick={() => pageSelected(PageType.Home)}
+            selected={page === PageType.Home}
+          />
+          <Svg
+            svgStyle={{
+              muiComponent: SearchOutlinedIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
+            labelStyle={{
+              label: "Search",
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+              isBold: true,
+            }}
+            noChangeColorSvg={true}
+            onClick={() => pageSelected(PageType.Search)}
+            selected={page === PageType.Search}
+          />
+          <Svg
+            svgStyle={{
+              muiComponent: LibraryBooksOutlinedIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
+            labelStyle={{
+              label: "Your Library",
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+              isBold: true,
+            }}
+            noChangeColorSvg={true}
+            onClick={() => pageSelected(PageType.YourLibrary)}
+            selected={page === PageType.YourLibrary}
+          />
         </div>
         <div className="bottom-buttons">
-          <div className="btn-pair">
-            <AddBoxIcon />
-            <span>Create Playlist</span>
-          </div>
-          <div className="btn-pair">
-            <LibraryBooksOutlinedIcon />
-            <span>Liked Songs</span>
-          </div>
+          <Svg
+            svgStyle={{
+              muiComponent: AddBoxIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
+            labelStyle={{
+              label: "Create Playlist",
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+              isBold: true,
+            }}
+            onClick={() => pageSelected(PageType.CreatePlaylist)}
+            selected={page === PageType.CreatePlaylist}
+          />
+          <Svg
+            svgStyle={{
+              muiComponent: LibraryBooksOutlinedIcon,
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+            }}
+            labelStyle={{
+              label: "Liked Songs",
+              color: theme?.quinary(),
+              hoverColor: theme?.senary(),
+              isBold: true,
+            }}
+            onClick={() => pageSelected(PageType.LikedSongs)}
+            selected={page === PageType.LikedSongs}
+          />
         </div>
       </TopContainer>
       <Divider color={theme?.secondary() ?? ""} />
@@ -115,11 +187,11 @@ export default function Sidebar(): ReactElement {
   );
 }
 
-const SidebarContainer = styled.div`
+const SidebarContainer = styled.div<{ width: string }>`
   display: flex;
   flex-direction: column;
-  width: 270px;
-  min-width: 270;
+  width: ${(props) => props.width};
+  min-width: ${(props) => props.width};
   background-color: rgb(0, 0, 0);
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
@@ -133,30 +205,9 @@ const TopContainer = styled.div<{ color: string; hoverColor: string }>`
   justify-content: space-between;
   height: 260px;
   padding: 2% 10%;
-  & .btn-pair {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    color: ${(props) => props.color};
-    transition: ease-in-out 0.4s;
+
+  & .svg {
     margin-bottom: 10px;
-    column-gap: 0.8rem;
-
-    &:hover {
-      color: ${(props) => props.hoverColor};
-      cursor: pointer;
-    }
-  }
-
-  & svg {
-    color: ${(props) => props.color};
-    width: 28px;
-    height: 28px;
-    transition: ease-in-out 0.4s;
-
-    &:hover {
-      color: ${(props) => props.hoverColor};
-    }
   }
 `;
 
