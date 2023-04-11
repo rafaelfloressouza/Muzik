@@ -42,6 +42,7 @@ export default function Sidebar({
               label: "Home",
               color: theme?.quinary(),
               hoverColor: theme?.senary(),
+              isBold: true,
             }}
             noChangeColorSvg={true}
             onClick={() => pageSelected(PageType.Home)}
@@ -57,6 +58,7 @@ export default function Sidebar({
               label: "Search",
               color: theme?.quinary(),
               hoverColor: theme?.senary(),
+              isBold: true,
             }}
             noChangeColorSvg={true}
             onClick={() => pageSelected(PageType.Search)}
@@ -72,6 +74,7 @@ export default function Sidebar({
               label: "Your Library",
               color: theme?.quinary(),
               hoverColor: theme?.senary(),
+              isBold: true,
             }}
             noChangeColorSvg={true}
             onClick={() => pageSelected(PageType.YourLibrary)}
@@ -89,6 +92,7 @@ export default function Sidebar({
               label: "Create Playlist",
               color: theme?.quinary(),
               hoverColor: theme?.senary(),
+              isBold: true,
             }}
             onClick={() => pageSelected(PageType.CreatePlaylist)}
             selected={page === PageType.CreatePlaylist}
@@ -103,6 +107,7 @@ export default function Sidebar({
               label: "Liked Songs",
               color: theme?.quinary(),
               hoverColor: theme?.senary(),
+              isBold: true,
             }}
             onClick={() => pageSelected(PageType.LikedSongs)}
             selected={page === PageType.LikedSongs}

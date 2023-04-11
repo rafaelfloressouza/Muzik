@@ -8,6 +8,7 @@ export type ThemeContextType = {
   quinary: (opacity?: number) => string;
   senary: (opacity?: number) => string;
   septenary: (opacity?: number) => string;
+  octonary: (opacity?: number) => string;
 };
 
 type Props = {
@@ -42,6 +43,10 @@ export function ThemeProvider({ children }: Props) {
     return opacity === 1 ? "rgb(0,0,0)" : `rgb(0,0,0, ${opacity})`;
   };
 
+  const octonary = (opacity: number = 1): string => {
+    return opacity === 1 ? "rgb(25,25,25)" : `rgb(25,25,25, ${opacity})`;
+  };
+
   const value: ThemeContextType = {
     primary,
     secondary,
@@ -50,6 +55,7 @@ export function ThemeProvider({ children }: Props) {
     quinary,
     senary,
     septenary,
+    octonary,
   };
 
   return (

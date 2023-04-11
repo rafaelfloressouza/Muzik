@@ -11,6 +11,7 @@ export default function Avatar(): ReactElement {
 
   return (
     <AvatarContainer
+      className="avatar"
       bgColor={theme?.septenary(0.45) ?? ""}
       hoverColor={theme?.secondary() ?? ""}
       onClick={() => setMenuOpened(!menuOpened)}

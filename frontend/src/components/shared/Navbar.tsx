@@ -7,15 +7,21 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 import Avatar from "./Avatar";
 import Searchbar from "./Searchbar";
 import ButtonGroup, { IElement } from "./ButtonGroup";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import Svg from "./Svg";
+import PlayButton from "./PlayButton";
 
 type Props = {
   height: string;
+  width: string;
   page: PageType;
+  bgColor: string;
 };
 
-export default function Navbar({ height, page }: Props): ReactElement {
+export default function Navbar({
+  height,
+  width,
+  page,
+  bgColor,
+}: Props): ReactElement {
   const theme = useContext(ThemeContext);
 
   // Helpers
@@ -70,29 +76,16 @@ export default function Navbar({ height, page }: Props): ReactElement {
     if (page !== PageType.CreatePlaylist && page !== PageType.LikedSongs)
       return <></>;
     return (
-      <Svg
-        svgStyle={{
-          muiComponent: PlayArrowIcon,
-          borderRadius: "50%",
-          bgColor: theme?.primary(),
-          color: theme?.septenary(),
-          hoverColor: theme?.septenary(),
-          height: "30px",
-          width: "30px",
-          padding: "9px",
-        }}
-        labelStyle={{
-          label: "Alternative/Indie",
-          fontSize: "1.5rem",
-          isBold: true,
-        }}
-        colSpace="0.9rem"
-      ></Svg>
+      <PlayButton
+        label={"Alternative/Indie"}
+        fontSize={"1.5rem"}
+        isBold={true}
+      />
     );
   };
 
   return (
-    <NavbarContainer height={height}>
+    <NavbarContainer height={height} width={width} bgColor={bgColor}>
       <div className="arrows-searchbar-and-categories">
         {getArrows()}
         {getPlayBtn()}
@@ -106,13 +99,19 @@ export default function Navbar({ height, page }: Props): ReactElement {
 
 const NavbarContainer = styled.div<{
   height: string;
+  width: string;
+  bgColor: string;
 }>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   height: ${(props) => props.height};
-  padding: 0 15px;
+  position: fixed;
+  width: ${(props) => props.width};
+  top: 0;
+  z-index: 100;
+  background-color: ${(props) => props.bgColor};
 
   & .arrows-searchbar-and-categories {
     display: flex;
@@ -126,6 +125,10 @@ const NavbarContainer = styled.div<{
   & .btn-group {
     margin-left: 25px;
   }
+
+  & .avatar {
+    margin-right: 40px;
+  }
 `;
 
 const Arrows = styled.div<{
@@ -134,7 +137,7 @@ const Arrows = styled.div<{
   display: flex;
   flex-direction: row;
   column-gap: 15px;
-  margin-left: 15px;
+  margin-left: 30px;
 
   & .back-arrow,
   .front-arrow {

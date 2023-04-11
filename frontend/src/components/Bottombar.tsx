@@ -92,6 +92,7 @@ const BottombarContainer = styled.div<{
   min-height: 90px;
   border-top: ${(props) => `1px solid ${props.borderColor}`};
   font-weight: none;
+  z-index: 10;
 `;
 
 const LeftContainer = styled.div<{

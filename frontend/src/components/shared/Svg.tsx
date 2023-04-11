@@ -113,6 +113,7 @@ const SvgContainer = styled.div<{
   flex-direction: row;
   align-items: center;
   column-gap: ${(props) => props.colSpace};
+  font-weight: bold;
 
   &:hover {
     cursor: pointer;

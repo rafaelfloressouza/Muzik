@@ -20,9 +20,11 @@ export default function App() {
   const bottomBarHeight = `90px`;
   const topContainerHeight = `calc(100% - ${bottomBarHeight})`;
   const pageWidth = `calc(100% - ${sideBarWidth})`;
+  const pageHeight = `calc(100% - ${bottomBarHeight})`;
 
   // State
   const [page, setPage] = useState(PageType.Home);
+  const [scrollTop, setScrollTop] = useState(0);
 
   // Handlers
   const pageChange = (newPage: PageType) => {
@@ -30,11 +32,16 @@ export default function App() {
     setPage(newPage);
   };
 
+  const scrollChanged = (scrollTop: number) => {
+    console.log(scrollTop);
+    setScrollTop(scrollTop);
+  };
+
   // Helpers
   const getPageContent = (): ReactElement => {
     switch (page) {
       case PageType.Home:
-        return <Home />;
+        return <Home scrollChanged={scrollChanged} />;
       case PageType.Search:
         return <></>;
       case PageType.YourLibrary:
@@ -55,8 +62,10 @@ export default function App() {
           <Sidebar width={sideBarWidth} page={page} pageSelected={pageChange} />
           <Page
             width={pageWidth}
+            height={pageHeight}
             children={getPageContent()}
             page={page}
+            scrollTop={scrollTop}
           ></Page>
         </TopContainer>
         <Bottombar height={bottomBarHeight} />
