@@ -1,65 +1,93 @@
 import { ReactElement, useState } from "react";
 import styled from "styled-components";
 import PlayButton from "./PlayButton";
+import { ITextStyle } from "../../utils/types";
+import CloseIcon from "@mui/icons-material/Close";
 
-export interface ITextStyle {
-  text?: string;
-  size?: string;
-  color?: string;
+export enum CardType {
+  WithImg,
+  Plain,
 }
 
 export interface ICardStyle {
   src?: string;
   width?: string;
   height?: string;
-  padding: string;
+  padding?: string;
   bgColor?: string;
   hoverBgColor?: string;
   borderRadius?: string;
+  closeIconColor?: string;
   onClick?: () => void;
+  onClose?: () => void;
 }
 
 type Props = {
   cardStyle: ICardStyle;
   titleStyle?: ITextStyle;
-  descStyle: ITextStyle;
+  descStyle?: ITextStyle;
+  cardType?: CardType;
+  closeable?: boolean;
 };
 
 export default function Card({
   cardStyle,
   titleStyle,
   descStyle,
+  cardType = CardType.WithImg,
+  closeable = false,
 }: Props): ReactElement {
   const [hoveredOn, setHoveredOn] = useState(false);
 
   return (
-    <CardContainer
-      cardStyle={cardStyle}
-      titleStyle={titleStyle}
-      descStyle={descStyle}
-      onMouseEnter={() => setHoveredOn(true)}
-      onMouseLeave={() => setHoveredOn(false)}
-      hoveredOn={hoveredOn}
-      onClick={() => {
-        if (cardStyle?.onClick) cardStyle?.onClick();
-      }}
-    >
-      <div className="img-container">
-        <div className="img"></div>
-        <PlayButton />
-      </div>
-
-      <div className="info">
-        <span className="title">Daily Mix 1</span>
-        <div className="description">
-          This is a brief description of what this is doing.
-        </div>
-      </div>
-    </CardContainer>
+    <>
+      {cardType === CardType.WithImg && (
+        <CardWithImgContainer
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          descStyle={descStyle}
+          onMouseEnter={() => setHoveredOn(true)}
+          onMouseLeave={() => setHoveredOn(false)}
+          hoveredOn={hoveredOn}
+          onClick={() => {
+            if (cardStyle?.onClick) cardStyle?.onClick();
+          }}
+        >
+          {closeable && (
+            <CloseIcon
+              className="close-btn"
+              onClick={() => {
+                if (cardStyle?.onClose) cardStyle?.onClose();
+              }}
+            />
+          )}
+          <div className="img-container">
+            <div className="img"></div>
+            <PlayButton />
+          </div>
+          <div className="info">
+            <span className="title">Daily Mix 1</span>
+            <div className="description">
+              <span>Jorge Drexler</span>, <span>Don Diablo</span>,
+              <span>Jorge Drexler</span>, <span>Don Diablo</span>
+            </div>
+          </div>
+        </CardWithImgContainer>
+      )}
+      {cardType === CardType.Plain && (
+        <PlainCardContainer
+          bgColor={cardStyle?.bgColor ?? "white"}
+          titleStyle={titleStyle}
+        >
+          {titleStyle?.text}
+          <div className="placeholder-img" />
+        </PlainCardContainer>
+      )}
+    </>
   );
 }
 
-const CardContainer = styled.div<{
+const CardWithImgContainer = styled.div<{
   cardStyle?: ICardStyle;
   titleStyle?: ITextStyle;
   descStyle?: ITextStyle;
@@ -67,18 +95,17 @@ const CardContainer = styled.div<{
 }>`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: space-between;
   min-width: 140px;
-  min-height: 210px;
-  /* width: 140px;
-  height: 210px; */
+  min-height: 180px;
   width: ${(props) => props.cardStyle?.width ?? "140px"};
-  height: ${(props) => props.cardStyle?.height ?? "210px"};
-  padding: 15px;
+  height: ${(props) => props.cardStyle?.height ?? "180px"};
+  padding: ${(props) => props.cardStyle?.padding ?? "15px"};
   background-color: ${(props) => props.cardStyle?.bgColor ?? "white"};
   border-radius: ${(props) => props.cardStyle?.borderRadius ?? "5px"};
   transition: ease-in-out 0.2s;
   row-gap: 15px;
+  position: relative;
 
   &:hover {
     background-color: ${(props) => props.cardStyle?.hoverBgColor ?? "white"};
@@ -108,8 +135,25 @@ const CardContainer = styled.div<{
     }
   }
 
+  & .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 300;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    transition: ease-in-out 0.1s;
+    background-color: ${(props) => props.cardStyle?.closeIconColor};
+
+    &:hover {
+      padding: 1px 1px 1px 1px;
+      cursor: default;
+    }
+  }
+
   & .info {
-    height: 30%;
+    height: 40%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -139,7 +183,43 @@ const CardContainer = styled.div<{
       -webkit-box-orient: vertical;
       font-size: ${(props) => props?.descStyle?.size ?? "0.85rem"};
       color: ${(props) => props?.descStyle?.color ?? "white"};
-      line-height: 20px;
+      line-height: 25px;
     }
+  }
+`;
+
+const PlainCardContainer = styled.div<{
+  bgColor: string;
+  titleStyle?: ITextStyle;
+}>`
+  display: flex;
+  flex-direction: column;
+  align-items: top;
+  justify-content: start;
+  height: 170px;
+  width: 170px;
+  padding: 20px;
+  background-color: ${(props) => props.bgColor};
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  font-size: ${(props) => props.titleStyle?.size};
+  color: ${(props) => props.titleStyle?.color};
+  font-weight: bold;
+  line-height: 30px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.bgColor};
+  }
+
+  & .placeholder-img {
+    position: absolute;
+    bottom: 0;
+    right: -20px;
+    transform: rotate(25deg);
+    width: 90px;
+    height: 90px;
+    background-color: gray;
   }
 `;

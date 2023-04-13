@@ -52,13 +52,6 @@ export default function Sidebar({
   // Contexts
   const theme = useContext(ThemeContext);
 
-  // Refs
-  const plDivRef = useRef<HTMLDivElement | null>(null);
-
-  // State
-  const [plMenuOpened, setPlMenuOpened] = useState<boolean>(false);
-  const [plItemMenuOpened, setPlItemMenuOpened] = useState<boolean>(false);
-
   const getPlaylists = () => {
     const playlists = [];
     for (let i = 0; i < 40; i++) {
@@ -67,9 +60,6 @@ export default function Sidebar({
           key={i}
           color={theme?.quinary() ?? ""}
           hoverColor={theme?.senary() ?? ""}
-          onContextMenu={(e) => {
-            setPlItemMenuOpened(!plItemMenuOpened);
-          }}
         >
           Playlist #{i + 1}
         </PlayList>
@@ -106,19 +96,6 @@ export default function Sidebar({
 
   return (
     <>
-      <Menu
-        open={plMenuOpened}
-        menuProps={{
-          elRef: plDivRef,
-          items: [
-            {
-              label: "Account",
-              type: MenuItemType.Standard,
-            },
-          ],
-          setOpen: (open: boolean) => setPlMenuOpened(open),
-        }}
-      />
       <SidebarContainer width={width}>
         <TopContainer
           color={theme?.quinary() ?? ""}
@@ -146,12 +123,6 @@ export default function Sidebar({
         <BottomContainer
           color={theme?.quinary() ?? ""}
           hoverColor={theme?.senary() ?? ""}
-          // ref={plDivRef}
-          // onContextMenu={(e) =>
-          //   setPlMenuOpened(
-          //     e.type === "contextmenu" ? !plMenuOpened : plMenuOpened
-          //   )
-          // }
         >
           {getPlaylists()}
         </BottomContainer>
