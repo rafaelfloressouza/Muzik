@@ -2,6 +2,7 @@ import { ReactElement, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Card from "./shared/Card";
 import { ThemeContext } from "../contexts/ThemeContext";
+import Row from "./shared/Row";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;
@@ -32,11 +33,10 @@ export default function Home({ scrollChanged }: Props): ReactElement {
         <Card
           key={i}
           cardStyle={{
-            height: "15vw",
+            height: "13vw",
             width: "9vw",
             bgColor: theme?.octonary(),
             hoverBgColor: theme?.secondary(),
-            padding: "",
           }}
           descStyle={{ color: theme?.quinary() }}
         />
@@ -49,13 +49,11 @@ export default function Home({ scrollChanged }: Props): ReactElement {
     const cardRows = [];
     for (let i = 0; i < 10; i++) {
       cardRows.push(
-        <CardContainer key={i} showAllColor={theme?.quinary() ?? ""}>
-          <div className="top">
-            <span className="title">Electronic/Dance</span>
-            <span className="show-all">Show all</span>
-          </div>
-          <div className="bottom">{getCards().map((el) => el)}</div>
-        </CardContainer>
+        <Row
+          children={getCards()}
+          titleLeftStyle={{ text: "Electronic/Dance" }}
+          titleRightStyle={{ text: "Show All", color: theme?.quinary() }}
+        />
       );
     }
     return cardRows;
@@ -70,7 +68,7 @@ export default function Home({ scrollChanged }: Props): ReactElement {
 
   return (
     <HomeContainer ref={homeDivRef} bgColor={theme?.tertiary() ?? ""}>
-      {getCardRows().map((el) => el)}
+      {getCardRows()}
     </HomeContainer>
   );
 }
@@ -82,7 +80,6 @@ const HomeContainer = styled.div<{ bgColor: string }>`
   padding: 30px;
   overflow-y: auto;
   padding-top: 90px;
-
   background-color: ${(props) => props.bgColor};
 `;
 
@@ -117,9 +114,9 @@ const CardContainer = styled.div<{
     }
   }
 
-  & .bottom {
+  /* & .bottom {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-  }
+  } */
 `;

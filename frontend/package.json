@@ -25,6 +25,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.11.16",
     "@mui/styled-engine-sc": "^5.11.11",
+    "randomcolor": "^0.6.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
@@ -40,6 +41,7 @@
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@types/styled-components": "^5.1.26",
+    "@types/randomcolor": "^0.5.7",
     "electron": "^23.1.1"
   },
   "browserslist": {

@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import { ReactElement, useEffect, useState } from "react";
 import Page from "./components/shared/Page";
 import * as Material from "@mui/material";
+import Search from "./components/Search";
 
 export enum PageType {
   Home = "Home",
@@ -63,7 +64,7 @@ export default function App() {
       case PageType.Home:
         return <Home scrollChanged={scrollChanged} />;
       case PageType.Search:
-        return <></>;
+        return <Search />;
       case PageType.YourLibrary:
         return <></>;
       case PageType.CreatePlaylist:
