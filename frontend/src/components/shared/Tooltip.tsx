@@ -34,7 +34,7 @@ export default function Tooltip({
       TransitionComponent={Material.Grow}
       title={title ?? ""}
       placement={placement}
-      enterDelay={450}
+      enterDelay={700}
       leaveDelay={0}
       PopperProps={{
         sx: {

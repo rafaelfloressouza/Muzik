@@ -1,6 +1,6 @@
 import { SvgIconTypeMap } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
 import Tooltip from "./Tooltip";
 
@@ -51,6 +51,7 @@ type Props = {
   noChangeColorSvg?: boolean;
   selected?: boolean;
   onClick?: () => void;
+  refEl?: React.MutableRefObject<HTMLDivElement | null>;
 };
 
 export default function Svg({
@@ -61,6 +62,7 @@ export default function Svg({
   noChangeColorSvg = false,
   selected = false,
   onClick,
+  refEl,
 }: Props): ReactElement {
   const SvgMuiComponent = svgStyle?.muiComponent;
 
@@ -88,6 +90,7 @@ export default function Svg({
             bgColor={tooltipStyle?.bgColor}
           >
             <SvgContainer
+              ref={refEl}
               className="svg"
               svgWidth={svgStyle.width ?? "28px"}
               svgHeight={svgStyle.height ?? "28px"}
@@ -109,6 +112,8 @@ export default function Svg({
                 setCurSvgColor(svgStyle?.color ?? "white");
                 setCurLabelColor(labelStyle?.color ?? "white");
               }}
+              onMouseDown={() => setCurSvgColor(svgStyle?.bgColor ?? "white")}
+              onMouseUp={() => getSvgColor()}
               onClick={onClick}
             >
               {svgStyle?.fileUrl && (

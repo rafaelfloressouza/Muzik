@@ -3,16 +3,29 @@ import styled from "styled-components";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Bottombar from "./components/Bottombar";
 import Home from "./components/Home";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import Page from "./components/shared/Page";
+import * as Material from "@mui/material";
 
 export enum PageType {
-  Home,
-  Search,
-  YourLibrary,
-  CreatePlaylist,
-  LikedSongs,
+  Home = "Home",
+  Search = "Search",
+  YourLibrary = "Your Library",
+  CreatePlaylist = "Create Playlist",
+  LikedSongs = "Liked Songs",
 }
+
+const muiTheme = Material.createTheme({
+  typography: {
+    fontFamily: [
+      "Gotham Spotify",
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+    ].join(","),
+  },
+});
 
 export default function App() {
   // Constants
@@ -26,6 +39,14 @@ export default function App() {
   const [page, setPage] = useState(PageType.Home);
   const [scrollTop, setScrollTop] = useState(0);
 
+  // useEffects
+  useEffect(() => {
+    // Does not open browsers context menu
+    const handleRightClick = (event: MouseEvent) => event.preventDefault();
+    document.addEventListener("contextmenu", handleRightClick);
+    return () => document.removeEventListener("contextmenu", handleRightClick);
+  }, []);
+
   // Handlers
   const pageChange = (newPage: PageType) => {
     if (newPage === page) return;
@@ -33,7 +54,6 @@ export default function App() {
   };
 
   const scrollChanged = (scrollTop: number) => {
-    console.log(scrollTop);
     setScrollTop(scrollTop);
   };
 
@@ -57,19 +77,25 @@ export default function App() {
 
   return (
     <AppContainer>
-      <ThemeProvider>
-        <TopContainer height={topContainerHeight}>
-          <Sidebar width={sideBarWidth} page={page} pageSelected={pageChange} />
-          <Page
-            width={pageWidth}
-            height={pageHeight}
-            children={getPageContent()}
-            page={page}
-            scrollTop={scrollTop}
-          ></Page>
-        </TopContainer>
-        <Bottombar height={bottomBarHeight} />
-      </ThemeProvider>
+      <Material.ThemeProvider theme={muiTheme}>
+        <ThemeProvider>
+          <TopContainer height={topContainerHeight}>
+            <Sidebar
+              width={sideBarWidth}
+              page={page}
+              pageSelected={pageChange}
+            />
+            <Page
+              width={pageWidth}
+              height={pageHeight}
+              children={getPageContent()}
+              page={page}
+              scrollTop={scrollTop}
+            ></Page>
+          </TopContainer>
+          <Bottombar height={bottomBarHeight} />
+        </ThemeProvider>
+      </Material.ThemeProvider>
     </AppContainer>
   );
 }
