@@ -93,6 +93,7 @@ export default function Bottombar({ height }: Props) {
               hoverColor: theme?.senary(),
               height: "42px",
               width: "42px",
+              animate: true,
             }}
             tooltipStyle={{
               tooltip: "Play",

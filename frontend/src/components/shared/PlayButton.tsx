@@ -26,6 +26,7 @@ export default function PlayButton({
         height: "30px",
         width: "30px",
         padding: "9px",
+        animate: true,
       }}
       labelStyle={{
         label: label,

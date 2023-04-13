@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Navbar from "./Navbar";
 import { PageType } from "../../App";
 import { ThemeContext } from "../../contexts/ThemeContext";
+import { CategoryType } from "../YourLibrary";
 
 type Props = {
   width: string;
@@ -10,6 +11,8 @@ type Props = {
   children: ReactElement | ReactElement[];
   page: PageType;
   scrollTop?: number;
+  category?: CategoryType;
+  categoryChange: (category: CategoryType) => void;
 };
 
 export default function Page({
@@ -18,6 +21,7 @@ export default function Page({
   children,
   page,
   scrollTop,
+  categoryChange,
 }: Props): ReactElement {
   // Constant
   const navbarHeight = `60px`;
@@ -47,6 +51,7 @@ export default function Page({
         width={width}
         page={page}
         bgColor={getNavbarColor()}
+        categoryChange={categoryChange}
       />
       {children}
     </PageContainer>

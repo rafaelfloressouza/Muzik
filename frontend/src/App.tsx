@@ -7,6 +7,7 @@ import { ReactElement, useEffect, useState } from "react";
 import Page from "./components/shared/Page";
 import * as Material from "@mui/material";
 import Search from "./components/Search";
+import YourLibrary, { CategoryType } from "./components/YourLibrary";
 
 export enum PageType {
   Home = "Home",
@@ -37,8 +38,9 @@ export default function App() {
   const pageHeight = `calc(100% - ${bottomBarHeight})`;
 
   // State
-  const [page, setPage] = useState(PageType.Home);
+  const [page, setPage] = useState(PageType.YourLibrary);
   const [scrollTop, setScrollTop] = useState(0);
+  const [category, setCategory] = useState(CategoryType.Audiobooks);
 
   // useEffects
   useEffect(() => {
@@ -58,15 +60,21 @@ export default function App() {
     setScrollTop(scrollTop);
   };
 
+  const categoryChange = (category: CategoryType) => {
+    setCategory(category);
+  };
+
   // Helpers
   const getPageContent = (): ReactElement => {
     switch (page) {
       case PageType.Home:
         return <Home scrollChanged={scrollChanged} />;
       case PageType.Search:
-        return <Search />;
+        return <Search scrollChanged={scrollChanged} />;
       case PageType.YourLibrary:
-        return <></>;
+        return (
+          <YourLibrary scrollChanged={scrollChanged} category={category} />
+        );
       case PageType.CreatePlaylist:
         return <></>;
       case PageType.LikedSongs:
@@ -92,6 +100,7 @@ export default function App() {
               children={getPageContent()}
               page={page}
               scrollTop={scrollTop}
+              categoryChange={categoryChange}
             ></Page>
           </TopContainer>
           <Bottombar height={bottomBarHeight} />

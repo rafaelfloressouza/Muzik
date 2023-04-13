@@ -20,6 +20,7 @@ export interface ICardStyle {
   closeIconColor?: string;
   onClick?: () => void;
   onClose?: () => void;
+  onDescItemClick?: () => void;
 }
 
 type Props = {
@@ -28,6 +29,7 @@ type Props = {
   descStyle?: ITextStyle;
   cardType?: CardType;
   closeable?: boolean;
+  descHoverable?: boolean;
 };
 
 export default function Card({
@@ -36,6 +38,7 @@ export default function Card({
   descStyle,
   cardType = CardType.WithImg,
   closeable = false,
+  descHoverable = false,
 }: Props): ReactElement {
   const [hoveredOn, setHoveredOn] = useState(false);
 
@@ -49,6 +52,7 @@ export default function Card({
           onMouseEnter={() => setHoveredOn(true)}
           onMouseLeave={() => setHoveredOn(false)}
           hoveredOn={hoveredOn}
+          descHoverable={descHoverable}
           onClick={() => {
             if (cardStyle?.onClick) cardStyle?.onClick();
           }}
@@ -68,17 +72,40 @@ export default function Card({
           <div className="info">
             <span className="title">Daily Mix 1</span>
             <div className="description">
-              <span>Jorge Drexler</span>, <span>Don Diablo</span>,
-              <span>Jorge Drexler</span>, <span>Don Diablo</span>
+              <span
+                onClick={() => {
+                  if (cardStyle.onDescItemClick) cardStyle.onDescItemClick();
+                }}
+              >
+                Jorge Drexler,{" "}
+              </span>
+              <span
+                onClick={() => {
+                  if (cardStyle.onDescItemClick) cardStyle.onDescItemClick();
+                }}
+              >
+                Don Diablo,{" "}
+              </span>
+              <span
+                onClick={() => {
+                  if (cardStyle.onDescItemClick) cardStyle.onDescItemClick();
+                }}
+              >
+                John Jhonny,{" "}
+              </span>
+              <span
+                onClick={() => {
+                  if (cardStyle.onDescItemClick) cardStyle.onDescItemClick();
+                }}
+              >
+                Michael Jackson
+              </span>
             </div>
           </div>
         </CardWithImgContainer>
       )}
       {cardType === CardType.Plain && (
-        <PlainCardContainer
-          bgColor={cardStyle?.bgColor ?? "white"}
-          titleStyle={titleStyle}
-        >
+        <PlainCardContainer cardStyle={cardStyle} titleStyle={titleStyle}>
           {titleStyle?.text}
           <div className="placeholder-img" />
         </PlainCardContainer>
@@ -92,6 +119,7 @@ const CardWithImgContainer = styled.div<{
   titleStyle?: ITextStyle;
   descStyle?: ITextStyle;
   hoveredOn?: boolean;
+  descHoverable?: boolean;
 }>`
   display: flex;
   flex-direction: column;
@@ -139,7 +167,7 @@ const CardWithImgContainer = styled.div<{
     position: absolute;
     top: 10px;
     right: 10px;
-    z-index: 300;
+    z-index: 100;
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -184,22 +212,31 @@ const CardWithImgContainer = styled.div<{
       font-size: ${(props) => props?.descStyle?.size ?? "0.85rem"};
       color: ${(props) => props?.descStyle?.color ?? "white"};
       line-height: 25px;
+      transition: ease-in-out 0.1s;
+
+      & :hover {
+        text-decoration: ${(props) =>
+          props.descHoverable ? "underline" : "none"};
+      }
     }
   }
 `;
 
 const PlainCardContainer = styled.div<{
-  bgColor: string;
+  cardStyle: ICardStyle;
   titleStyle?: ITextStyle;
 }>`
   display: flex;
   flex-direction: column;
   align-items: top;
   justify-content: start;
-  height: 170px;
-  width: 170px;
+  min-height: 120px;
+  min-width: 120px;
+  height: ${(props) => props.cardStyle?.height ?? "100vw"};
+  width: ${(props) => props.cardStyle?.width};
+
   padding: 20px;
-  background-color: ${(props) => props.bgColor};
+  background-color: ${(props) => props.cardStyle.bgColor};
   border-radius: 10px;
   position: relative;
   overflow: hidden;
@@ -210,7 +247,7 @@ const PlainCardContainer = styled.div<{
 
   &:hover {
     cursor: pointer;
-    background-color: ${(props) => props.bgColor};
+    background-color: ${(props) => props.cardStyle.bgColor};
   }
 
   & .placeholder-img {

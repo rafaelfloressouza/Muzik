@@ -33,6 +33,7 @@ export interface ISvgStyle {
   hoverColor?: string;
   bgColor?: string;
   padding?: string;
+  animate?: boolean;
 }
 
 export interface ILabelStyle {
@@ -96,6 +97,7 @@ export default function Svg({
               svgHeight={svgStyle.height ?? "28px"}
               svgBorderRadius={svgStyle.borderRadius ?? "0"}
               svgPadding={svgStyle.padding ?? "0"}
+              animate={svgStyle?.animate ?? false}
               labelColor={
                 selected ? svgStyle?.hoverColor ?? "white" : curLabelColor
               }
@@ -135,6 +137,7 @@ const SvgContainer = styled.div<{
   svgColor: string;
   svgBgColor: string;
   svgPadding: string;
+  animate: boolean;
 
   labelColor: string;
   labelFontSize: string;
@@ -177,6 +180,7 @@ const SvgContainer = styled.div<{
 
     &:hover {
       cursor: pointer;
+      transform: ${(props) => (props.animate ? "scale(1.05)" : "none")};
     }
   }
 

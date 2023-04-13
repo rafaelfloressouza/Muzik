@@ -50,6 +50,7 @@ export default function Home({ scrollChanged }: Props): ReactElement {
     for (let i = 0; i < 10; i++) {
       cardRows.push(
         <Row
+          key={i}
           children={getCards()}
           titleLeftStyle={{ text: "Electronic/Dance" }}
           titleRightStyle={{ text: "Show All", color: theme?.quinary() }}
@@ -81,42 +82,4 @@ const HomeContainer = styled.div<{ bgColor: string }>`
   overflow-y: auto;
   padding-top: 90px;
   background-color: ${(props) => props.bgColor};
-`;
-
-const CardContainer = styled.div<{
-  showAllColor: string;
-}>`
-  display: flex;
-  flex-direction: column;
-  row-gap: 1.5rem;
-  width: 100%;
-
-  & .top {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    & .title {
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
-
-    & .show-all {
-      color: ${(props) => props.showAllColor};
-      font-size: 0.85rem;
-      font-weight: bold;
-      transition: ease-in-out 0.1s;
-
-      &:hover {
-        text-decoration: underline;
-        cursor: pointer;
-      }
-    }
-  }
-
-  /* & .bottom {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  } */
 `;

@@ -5,6 +5,7 @@ import { ITextStyle } from "../../utils/types";
 type Props = {
   itemSep?: string;
   children?: ReactElement | ReactElement[];
+  flexDir?: "row" | "column";
   justifyContent?: string;
   titleLeftStyle?: ITextStyle;
   titleRightStyle?: ITextStyle;
@@ -13,6 +14,7 @@ type Props = {
 export default function Row({
   itemSep = "1.5rem",
   children,
+  flexDir = "row",
   justifyContent = "space-between",
   titleLeftStyle,
   titleRightStyle,
@@ -30,7 +32,7 @@ export default function Row({
           )}
         </div>
       )}
-      <CRow itemSep={itemSep} justifyContent={justifyContent}>
+      <CRow itemSep={itemSep} justifyContent={justifyContent} flexDir={flexDir}>
         {children}
       </CRow>
     </RowContainer>
@@ -72,10 +74,15 @@ const RowContainer = styled.div<{
   }
 `;
 
-const CRow = styled.div<{ itemSep: string; justifyContent: string }>`
+const CRow = styled.div<{
+  itemSep: string;
+  justifyContent: string;
+  flexDir: string;
+}>`
   width: 100%;
-  column-gap: ${(props) => props.itemSep};
+  column-gap: ${(props) => (props.flexDir === "row" ? props.itemSep : "0")};
+  row-gap: ${(props) => (props.flexDir === "column" ? props.itemSep : "0")};
   display: flex;
-  flex-direction: row;
+  flex-direction: ${(props) => props.flexDir};
   justify-content: ${(props) => props.justifyContent};
 `;

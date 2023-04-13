@@ -8,12 +8,14 @@ import Avatar from "./Avatar";
 import Searchbar from "./Searchbar";
 import ButtonGroup, { IElement } from "./ButtonGroup";
 import PlayButton from "./PlayButton";
+import { CategoryType } from "../YourLibrary";
 
 type Props = {
   height: string;
   width: string;
   page: PageType;
   bgColor: string;
+  categoryChange: (category: CategoryType) => void;
 };
 
 export default function Navbar({
@@ -21,6 +23,7 @@ export default function Navbar({
   width,
   page,
   bgColor,
+  categoryChange,
 }: Props): ReactElement {
   const theme = useContext(ThemeContext);
 
@@ -62,7 +65,7 @@ export default function Navbar({
         bgColor={"transparent"}
         bgHoverColor={"transparent"}
         bgColorSelected={theme?.quaternary(0.5) ?? ""}
-        onClick={(el: IElement) => {}}
+        onClick={(el: IElement) => categoryChange(el.name as CategoryType)}
       />
     );
   };
