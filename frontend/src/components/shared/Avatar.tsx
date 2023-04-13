@@ -1,31 +1,79 @@
-import { ReactElement, useContext, useState } from "react";
+import { ReactElement, useContext, useRef, useState } from "react";
 import Svg from "./Svg";
 import styled from "styled-components";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
 import ArrowDropUpSharpIcon from "@mui/icons-material/ArrowDropUpSharp";
+import Tooltip from "./Tooltip";
+import Menu, { MenuItemType } from "./Menu";
+import OpenInNewSharpIcon from "@mui/icons-material/OpenInNewSharp";
 
 export default function Avatar(): ReactElement {
+  // Contexts
   const theme = useContext(ThemeContext);
+
+  // State
   const [menuOpened, setMenuOpened] = useState(false);
 
-  return (
-    <AvatarContainer
-      className="avatar"
-      bgColor={theme?.septenary(0.45) ?? ""}
-      hoverColor={theme?.secondary() ?? ""}
-      onClick={() => setMenuOpened(!menuOpened)}
-    >
-      <Svg
-        svgStyle={{ fileUrl: "svgs/unknown-avatar.svg", borderRadius: "50%" }}
+  // Refs
+  const avatarDivRef = useRef<HTMLDivElement | null>(null);
+
+  // Helpers
+  const getMenu = () => {
+    return (
+      <Menu
+        open={menuOpened}
+        menuProps={{
+          elRef: avatarDivRef,
+          items: [
+            {
+              label: "Account",
+              type: MenuItemType.WithIcon,
+              icon: OpenInNewSharpIcon,
+            },
+            { label: "Profile", type: MenuItemType.Standard },
+            { label: "Private Session", type: MenuItemType.Standard },
+            { label: "Settings", type: MenuItemType.Standard },
+            { type: MenuItemType.Divider },
+            { label: "Log out", type: MenuItemType.Standard },
+          ],
+          setOpen: (open: boolean) => setMenuOpened(open),
+        }}
       />
-      <span>Rafael Flores Souza</span>
-      {menuOpened ? (
-        <ArrowDropUpSharpIcon sx={{ transform: "scale(1.2)", mr: "2px" }} />
-      ) : (
-        <ArrowDropDownSharpIcon sx={{ transform: "scale(1.2)", mr: "2px" }} />
-      )}
-    </AvatarContainer>
+    );
+  };
+
+  return (
+    <>
+      <Tooltip
+        title={menuOpened ? "" : "Rafael Flores Souza"}
+        bgColor={theme?.secondary()}
+      >
+        <AvatarContainer
+          ref={avatarDivRef}
+          className="avatar"
+          bgColor={theme?.septenary() ?? ""}
+          hoverColor={theme?.secondary() ?? ""}
+          onClick={() => setMenuOpened(!menuOpened)}
+        >
+          <Svg
+            svgStyle={{
+              fileUrl: "svgs/unknown-avatar.svg",
+              borderRadius: "50%",
+            }}
+          />
+          <span>Rafael Flores Souza</span>
+          {menuOpened ? (
+            <ArrowDropUpSharpIcon sx={{ transform: "scale(1.2)", mr: "2px" }} />
+          ) : (
+            <ArrowDropDownSharpIcon
+              sx={{ transform: "scale(1.2)", mr: "2px" }}
+            />
+          )}
+        </AvatarContainer>
+      </Tooltip>
+      {getMenu()}
+    </>
   );
 }
 

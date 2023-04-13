@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement, useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
@@ -8,6 +8,9 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { PageType } from "../App";
 import Svg from "./shared/Svg";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { SvgIconTypeMap } from "@mui/material";
+import Menu, { MenuItemType } from "./shared/Menu";
 
 type Props = {
   width: string;
@@ -22,168 +25,138 @@ export default function Sidebar({
   pageSelected = () => {},
   playlistSelected = () => {},
 }: Props): ReactElement {
+  // Constants
+  const topButtons = [
+    { muiComponent: HomeRoundedIcon, pageType: PageType.Home },
+    {
+      muiComponent: SearchOutlinedIcon,
+      pageType: PageType.Search,
+    },
+    {
+      muiComponent: LibraryBooksOutlinedIcon,
+      pageType: PageType.YourLibrary,
+    },
+  ];
+
+  const bottomButtons = [
+    {
+      muiComponent: AddBoxIcon,
+      pageType: PageType.CreatePlaylist,
+    },
+    {
+      muiComponent: LibraryBooksOutlinedIcon,
+      pageType: PageType.LikedSongs,
+    },
+  ];
+
+  // Contexts
   const theme = useContext(ThemeContext);
 
+  // Refs
+  const plDivRef = useRef<HTMLDivElement | null>(null);
+
+  // State
+  const [plMenuOpened, setPlMenuOpened] = useState<boolean>(false);
+  const [plItemMenuOpened, setPlItemMenuOpened] = useState<boolean>(false);
+
+  const getPlaylists = () => {
+    const playlists = [];
+    for (let i = 0; i < 40; i++) {
+      playlists.push(
+        <PlayList
+          key={i}
+          color={theme?.quinary() ?? ""}
+          hoverColor={theme?.senary() ?? ""}
+          onContextMenu={(e) => {
+            setPlItemMenuOpened(!plItemMenuOpened);
+          }}
+        >
+          Playlist #{i + 1}
+        </PlayList>
+      );
+    }
+    return playlists;
+  };
+
+  const getSvg = (
+    muiComponent: OverridableComponent<SvgIconTypeMap<{}, "svg">>,
+    pageType: PageType,
+    key: number
+  ) => {
+    return (
+      <Svg
+        key={key}
+        svgStyle={{
+          muiComponent: muiComponent,
+          color: theme?.quinary(),
+          hoverColor: theme?.senary(),
+        }}
+        labelStyle={{
+          label: pageType,
+          color: theme?.quinary(),
+          hoverColor: theme?.senary(),
+          isBold: true,
+        }}
+        noChangeColorSvg={true}
+        onClick={() => pageSelected(pageType)}
+        selected={page === pageType}
+      />
+    );
+  };
+
   return (
-    <SidebarContainer width={width}>
-      <TopContainer
-        color={theme?.quinary() ?? ""}
-        hoverColor={theme?.senary() ?? ""}
-      >
-        <MoreHorizIcon sx={{ color: theme?.senary() }} onClick={() => {}} />
-        <div className="top-buttons">
+    <>
+      <Menu
+        open={plMenuOpened}
+        menuProps={{
+          elRef: plDivRef,
+          items: [
+            {
+              label: "Account",
+              type: MenuItemType.Standard,
+            },
+          ],
+          setOpen: (open: boolean) => setPlMenuOpened(open),
+        }}
+      />
+      <SidebarContainer width={width}>
+        <TopContainer
+          color={theme?.quinary() ?? ""}
+          hoverColor={theme?.senary() ?? ""}
+        >
           <Svg
             svgStyle={{
-              muiComponent: HomeRoundedIcon,
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
-            }}
-            labelStyle={{
-              label: "Home",
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
-              isBold: true,
+              muiComponent: MoreHorizIcon,
+              color: theme?.senary(),
             }}
             noChangeColorSvg={true}
-            onClick={() => pageSelected(PageType.Home)}
-            selected={page === PageType.Home}
           />
-          <Svg
-            svgStyle={{
-              muiComponent: SearchOutlinedIcon,
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
-            }}
-            labelStyle={{
-              label: "Search",
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
-              isBold: true,
-            }}
-            noChangeColorSvg={true}
-            onClick={() => pageSelected(PageType.Search)}
-            selected={page === PageType.Search}
-          />
-          <Svg
-            svgStyle={{
-              muiComponent: LibraryBooksOutlinedIcon,
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
-            }}
-            labelStyle={{
-              label: "Your Library",
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
-              isBold: true,
-            }}
-            noChangeColorSvg={true}
-            onClick={() => pageSelected(PageType.YourLibrary)}
-            selected={page === PageType.YourLibrary}
-          />
-        </div>
-        <div className="bottom-buttons">
-          <Svg
-            svgStyle={{
-              muiComponent: AddBoxIcon,
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
-            }}
-            labelStyle={{
-              label: "Create Playlist",
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
-              isBold: true,
-            }}
-            onClick={() => pageSelected(PageType.CreatePlaylist)}
-            selected={page === PageType.CreatePlaylist}
-          />
-          <Svg
-            svgStyle={{
-              muiComponent: LibraryBooksOutlinedIcon,
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
-            }}
-            labelStyle={{
-              label: "Liked Songs",
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
-              isBold: true,
-            }}
-            onClick={() => pageSelected(PageType.LikedSongs)}
-            selected={page === PageType.LikedSongs}
-          />
-        </div>
-      </TopContainer>
-      <Divider color={theme?.secondary() ?? ""} />
-      <BottomContainer
-        color={theme?.quinary() ?? ""}
-        hoverColor={theme?.senary() ?? ""}
-      >
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test3</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test3</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test3</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test3</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test3</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test3</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test3</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-        <p>Test3</p>
-        <p>Test4</p>
-        <p>Test5</p>
-        <p>Test5</p>
-        <p>Test</p>
-        <p>Test2</p>
-      </BottomContainer>
-    </SidebarContainer>
+          <div className="top-buttons">
+            {topButtons.map((el, idx) => {
+              return getSvg(el.muiComponent, el.pageType, idx);
+            })}
+          </div>
+          <div className="bottom-buttons">
+            {bottomButtons.map((el, idx) => {
+              return getSvg(el.muiComponent, el.pageType, idx);
+            })}
+          </div>
+        </TopContainer>
+        <Divider color={theme?.secondary() ?? ""} />
+        <BottomContainer
+          color={theme?.quinary() ?? ""}
+          hoverColor={theme?.senary() ?? ""}
+          // ref={plDivRef}
+          // onContextMenu={(e) =>
+          //   setPlMenuOpened(
+          //     e.type === "contextmenu" ? !plMenuOpened : plMenuOpened
+          //   )
+          // }
+        >
+          {getPlaylists()}
+        </BottomContainer>
+      </SidebarContainer>
+    </>
   );
 }
 
@@ -204,7 +177,7 @@ const TopContainer = styled.div<{ color: string; hoverColor: string }>`
   flex-direction: column;
   justify-content: space-between;
   height: 260px;
-  padding: 2% 10%;
+  padding: 4% 10% 2% 10%;
 
   & .svg {
     margin-bottom: 10px;
@@ -221,6 +194,8 @@ const Divider = styled.div<{ color: string }>`
 `;
 
 const BottomContainer = styled.div<{ color: string; hoverColor: string }>`
+  display: flex;
+  flex-direction: column;
   height: calc(100% - 260px);
   overflow-y: hidden;
   font-weight: normal;
@@ -231,14 +206,15 @@ const BottomContainer = styled.div<{ color: string; hoverColor: string }>`
   &:hover {
     overflow-y: auto;
   }
+`;
 
-  & p {
-    color: ${(props) => props.color};
-    margin: 18px 0;
+const PlayList = styled.span<{ color: string; hoverColor: string }>`
+  color: ${(props) => props.color};
+  padding: 10px 0;
+  z-index: 500;
 
-    &:hover {
-      color: ${(props) => props.hoverColor};
-      cursor: default;
-    }
+  &:hover {
+    color: ${(props) => props.hoverColor};
+    cursor: default;
   }
 `;

@@ -1,7 +1,27 @@
 import { SvgIconTypeMap } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
+import Tooltip from "./Tooltip";
+
+export interface ITooltipStyle {
+  bgColor?: string;
+  tooltip?: string;
+  tooltipPlacement?:
+    | "top"
+    | "bottom-end"
+    | "bottom-start"
+    | "bottom"
+    | "left-end"
+    | "left-start"
+    | "left"
+    | "right-end"
+    | "right-start"
+    | "right"
+    | "top-end"
+    | "top-start"
+    | undefined;
+}
 
 export interface ISvgStyle {
   fileUrl?: string;
@@ -24,21 +44,25 @@ export interface ILabelStyle {
 }
 
 type Props = {
+  tooltipStyle?: ITooltipStyle;
   svgStyle?: ISvgStyle;
   labelStyle?: ILabelStyle;
   colSpace?: string;
   noChangeColorSvg?: boolean;
   selected?: boolean;
   onClick?: () => void;
+  refEl?: React.MutableRefObject<HTMLDivElement | null>;
 };
 
 export default function Svg({
+  tooltipStyle,
   svgStyle,
   labelStyle,
   colSpace = "0.8rem",
   noChangeColorSvg = false,
   selected = false,
   onClick,
+  refEl,
 }: Props): ReactElement {
   const SvgMuiComponent = svgStyle?.muiComponent;
 
@@ -60,36 +84,45 @@ export default function Svg({
     <>
       {(svgStyle?.fileUrl || svgStyle?.muiComponent) &&
         !(svgStyle?.fileUrl && svgStyle?.muiComponent) && (
-          <SvgContainer
-            className="svg"
-            svgWidth={svgStyle.width ?? "28px"}
-            svgHeight={svgStyle.height ?? "28px"}
-            svgBorderRadius={svgStyle.borderRadius ?? "0"}
-            svgPadding={svgStyle.padding ?? "0"}
-            labelColor={
-              selected ? svgStyle?.hoverColor ?? "white" : curLabelColor
-            }
-            svgColor={getSvgColor()}
-            svgBgColor={svgStyle?.bgColor ?? "transparent"}
-            labelFontSize={labelStyle?.fontSize ?? "0.8rem"}
-            isLabelBold={labelStyle?.isBold ?? false}
-            colSpace={colSpace}
-            onMouseEnter={() => {
-              setCurSvgColor(svgStyle?.hoverColor ?? "white");
-              setCurLabelColor(labelStyle?.hoverColor ?? "white");
-            }}
-            onMouseLeave={() => {
-              setCurSvgColor(svgStyle?.color ?? "white");
-              setCurLabelColor(labelStyle?.color ?? "white");
-            }}
-            onClick={onClick}
+          <Tooltip
+            title={tooltipStyle?.tooltip}
+            placement={tooltipStyle?.tooltipPlacement}
+            bgColor={tooltipStyle?.bgColor}
           >
-            {svgStyle?.fileUrl && (
-              <object className="file-svg" data={svgStyle.fileUrl} />
-            )}
-            {SvgMuiComponent && <SvgMuiComponent className="mui-svg" />}
-            {labelStyle?.label && <span>{labelStyle?.label}</span>}
-          </SvgContainer>
+            <SvgContainer
+              ref={refEl}
+              className="svg"
+              svgWidth={svgStyle.width ?? "28px"}
+              svgHeight={svgStyle.height ?? "28px"}
+              svgBorderRadius={svgStyle.borderRadius ?? "0"}
+              svgPadding={svgStyle.padding ?? "0"}
+              labelColor={
+                selected ? svgStyle?.hoverColor ?? "white" : curLabelColor
+              }
+              svgColor={getSvgColor()}
+              svgBgColor={svgStyle?.bgColor ?? "transparent"}
+              labelFontSize={labelStyle?.fontSize ?? "0.8rem"}
+              isLabelBold={labelStyle?.isBold ?? false}
+              colSpace={colSpace}
+              onMouseEnter={() => {
+                setCurSvgColor(svgStyle?.hoverColor ?? "white");
+                setCurLabelColor(labelStyle?.hoverColor ?? "white");
+              }}
+              onMouseLeave={() => {
+                setCurSvgColor(svgStyle?.color ?? "white");
+                setCurLabelColor(labelStyle?.color ?? "white");
+              }}
+              onMouseDown={() => setCurSvgColor(svgStyle?.bgColor ?? "white")}
+              onMouseUp={() => getSvgColor()}
+              onClick={onClick}
+            >
+              {svgStyle?.fileUrl && (
+                <object className="file-svg" data={svgStyle.fileUrl} />
+              )}
+              {SvgMuiComponent && <SvgMuiComponent className="mui-svg" />}
+              {labelStyle?.label && <span>{labelStyle?.label}</span>}
+            </SvgContainer>
+          </Tooltip>
         )}
     </>
   );
