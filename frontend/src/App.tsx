@@ -40,7 +40,7 @@ export default function App() {
   // State
   const [page, setPage] = useState(PageType.YourLibrary);
   const [scrollTop, setScrollTop] = useState(0);
-  const [category, setCategory] = useState(CategoryType.Audiobooks);
+  const [category, setCategory] = useState(CategoryType.Playlists);
 
   // useEffects
   useEffect(() => {
