@@ -1,9 +1,9 @@
 import { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Navbar from "./Navbar";
-import { PageType } from "../../App";
-import { ThemeContext } from "../../contexts/ThemeContext";
-import { CategoryType } from "../YourLibrary";
+import { PageType } from "../../../App";
+import { ThemeContext } from "../../../contexts/ThemeContext";
+import { CategoryType } from "../../YourLibrary";
 
 type Props = {
   width: string;

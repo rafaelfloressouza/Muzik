@@ -1,9 +1,8 @@
 import { ReactElement, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
-import Card, { CardType } from "./shared/Card";
-import Row from "./shared/Row";
-import randomColor from "randomcolor";
+import Card, { CardType } from "./shared/containers/Card";
+import Row from "./shared/containers/Row";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;
@@ -85,7 +84,7 @@ export default function Search({ scrollChanged }: Props): ReactElement {
 
     for (let i = 0; i < 12; i++) {
       categoryCards.push(
-        <Row key={i} titleLeftStyle={{ text: i == 0 ? "Browse All" : "" }}>
+        <Row key={i} titleLeftProps={{ text: i == 0 ? "Browse All" : "" }}>
           {getCards()}
         </Row>
       );
@@ -95,7 +94,7 @@ export default function Search({ scrollChanged }: Props): ReactElement {
 
   return (
     <SearchContainer ref={searchDivRef} bgColor={theme?.tertiary() ?? ""}>
-      <Row justifyContent="left" titleLeftStyle={{ text: "Recent Searches" }}>
+      <Row justifyContent="left" titleLeftProps={{ text: "Recent Searches" }}>
         {getRecentRearches()}
       </Row>
       {getCategoryCards()}

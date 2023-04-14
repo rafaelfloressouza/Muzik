@@ -1,16 +1,15 @@
-import { ReactElement, useContext, useRef, useState } from "react";
+import { ReactElement, useContext } from "react";
 import styled from "styled-components";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
 import AddBoxIcon from "@mui/icons-material/AddBox";
-import { ThemeContext } from "../contexts/ThemeContext";
-import { PageType } from "../App";
-import Svg from "./shared/Svg";
+import { ThemeContext } from "../../../contexts/ThemeContext";
+import { PageType } from "../../../App";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { SvgIconTypeMap } from "@mui/material";
-import Menu, { MenuItemType } from "./shared/Menu";
+import Button from "../buttons/Button";
 
 type Props = {
   width: string;
@@ -68,28 +67,31 @@ export default function Sidebar({
     return playlists;
   };
 
-  const getSvg = (
+  const getButton = (
     muiComponent: OverridableComponent<SvgIconTypeMap<{}, "svg">>,
     pageType: PageType,
     key: number
   ) => {
     return (
-      <Svg
+      <Button
         key={key}
-        svgStyle={{
+        buttonProps={{
+          onClick: () => pageSelected(pageType),
+          selected: page === pageType,
+        }}
+        svgProps={{
           muiComponent: muiComponent,
+          fill: theme?.quinary(),
+          hoverFill: theme?.senary(),
+          height: "30px",
+          width: "30px",
+        }}
+        textProps={{
+          text: pageType,
           color: theme?.quinary(),
           hoverColor: theme?.senary(),
+          weight: "bold",
         }}
-        labelStyle={{
-          label: pageType,
-          color: theme?.quinary(),
-          hoverColor: theme?.senary(),
-          isBold: true,
-        }}
-        noChangeColorSvg={true}
-        onClick={() => pageSelected(pageType)}
-        selected={page === pageType}
       />
     );
   };
@@ -101,21 +103,23 @@ export default function Sidebar({
           color={theme?.quinary() ?? ""}
           hoverColor={theme?.senary() ?? ""}
         >
-          <Svg
-            svgStyle={{
+          <Button
+            id="elipsis-btn"
+            svgProps={{
               muiComponent: MoreHorizIcon,
-              color: theme?.senary(),
+              fill: theme?.senary(),
+              height: "30px",
+              width: "30px",
             }}
-            noChangeColorSvg={true}
           />
           <div className="top-buttons">
             {topButtons.map((el, idx) => {
-              return getSvg(el.muiComponent, el.pageType, idx);
+              return getButton(el.muiComponent, el.pageType, idx);
             })}
           </div>
           <div className="bottom-buttons">
             {bottomButtons.map((el, idx) => {
-              return getSvg(el.muiComponent, el.pageType, idx);
+              return getButton(el.muiComponent, el.pageType, idx);
             })}
           </div>
         </TopContainer>
@@ -147,11 +151,15 @@ const TopContainer = styled.div<{ color: string; hoverColor: string }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 260px;
+  height: 275px;
   padding: 4% 10% 2% 10%;
 
-  & .svg {
+  & .btn {
     margin-bottom: 10px;
+  }
+
+  & #elipsis-btn {
+    margin-bottom: 0px;
   }
 `;
 
@@ -167,7 +175,7 @@ const Divider = styled.div<{ color: string }>`
 const BottomContainer = styled.div<{ color: string; hoverColor: string }>`
   display: flex;
   flex-direction: column;
-  height: calc(100% - 260px);
+  height: calc(100% - 275px);
   overflow-y: hidden;
   font-weight: normal;
   font-size: 0.85rem;

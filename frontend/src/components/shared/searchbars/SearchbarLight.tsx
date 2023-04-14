@@ -1,10 +1,10 @@
 import { ReactElement, useContext, useState } from "react";
-import { ThemeContext } from "../../contexts/ThemeContext";
+import { ThemeContext } from "../../../contexts/ThemeContext";
 import styled from "styled-components";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
-export default function Searchbar(): ReactElement {
+export default function SearchbarLight(): ReactElement {
   // Contexts
   const theme = useContext(ThemeContext);
 

@@ -1,8 +1,8 @@
 import { ReactElement, useState } from "react";
 import styled from "styled-components";
-import PlayButton from "./PlayButton";
-import { ITextStyle } from "../../utils/types";
+import PlayButton from "../buttons/PlayButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { ITextProps } from "../../../utils/types";
 
 export enum CardType {
   WithImg,
@@ -18,18 +18,18 @@ export interface ICardStyle {
   hoverBgColor?: string;
   borderRadius?: string;
   closeIconColor?: string;
-  onClick?: () => void;
-  onClose?: () => void;
-  onDescItemClick?: () => void;
 }
 
 type Props = {
   cardStyle: ICardStyle;
-  titleStyle?: ITextStyle;
-  descStyle?: ITextStyle;
+  titleStyle?: ITextProps;
+  descStyle?: ITextProps;
   cardType?: CardType;
   closeable?: boolean;
   descHoverable?: boolean;
+  onClick?: () => void;
+  onClose?: () => void;
+  onDescItemClick?: () => void;
 };
 
 export default function Card({
@@ -39,6 +39,9 @@ export default function Card({
   cardType = CardType.WithImg,
   closeable = false,
   descHoverable = false,
+  onClick,
+  onClose,
+  onDescItemClick,
 }: Props): ReactElement {
   const [hoveredOn, setHoveredOn] = useState(false);
 
@@ -53,18 +56,9 @@ export default function Card({
           onMouseLeave={() => setHoveredOn(false)}
           hoveredOn={hoveredOn}
           descHoverable={descHoverable}
-          onClick={() => {
-            if (cardStyle?.onClick) cardStyle?.onClick();
-          }}
+          onClick={onClick}
         >
-          {closeable && (
-            <CloseIcon
-              className="close-btn"
-              onClick={() => {
-                if (cardStyle?.onClose) cardStyle?.onClose();
-              }}
-            />
-          )}
+          {closeable && <CloseIcon className="close-btn" onClick={onClose} />}
           <div className="img-container">
             <div className="img"></div>
             <PlayButton />
@@ -72,34 +66,10 @@ export default function Card({
           <div className="info">
             <span className="title">Daily Mix 1</span>
             <div className="description">
-              <span
-                onClick={() => {
-                  if (cardStyle.onDescItemClick) cardStyle.onDescItemClick();
-                }}
-              >
-                Jorge Drexler,{" "}
-              </span>
-              <span
-                onClick={() => {
-                  if (cardStyle.onDescItemClick) cardStyle.onDescItemClick();
-                }}
-              >
-                Don Diablo,{" "}
-              </span>
-              <span
-                onClick={() => {
-                  if (cardStyle.onDescItemClick) cardStyle.onDescItemClick();
-                }}
-              >
-                John Jhonny,{" "}
-              </span>
-              <span
-                onClick={() => {
-                  if (cardStyle.onDescItemClick) cardStyle.onDescItemClick();
-                }}
-              >
-                Michael Jackson
-              </span>
+              <span onClick={onDescItemClick}>Jorge Drexler, </span>
+              <span onClick={onDescItemClick}>Don Diablo, </span>
+              <span onClick={onDescItemClick}>John Jhonny, </span>
+              <span onClick={onDescItemClick}>Michael Jackson</span>
             </div>
           </div>
         </CardWithImgContainer>
@@ -116,8 +86,8 @@ export default function Card({
 
 const CardWithImgContainer = styled.div<{
   cardStyle?: ICardStyle;
-  titleStyle?: ITextStyle;
-  descStyle?: ITextStyle;
+  titleStyle?: ITextProps;
+  descStyle?: ITextProps;
   hoveredOn?: boolean;
   descHoverable?: boolean;
 }>`
@@ -175,7 +145,7 @@ const CardWithImgContainer = styled.div<{
     background-color: ${(props) => props.cardStyle?.closeIconColor};
 
     &:hover {
-      padding: 1px 1px 1px 1px;
+      transform: scale(1.1);
       cursor: default;
     }
   }
@@ -224,7 +194,7 @@ const CardWithImgContainer = styled.div<{
 
 const PlainCardContainer = styled.div<{
   cardStyle: ICardStyle;
-  titleStyle?: ITextStyle;
+  titleStyle?: ITextProps;
 }>`
   display: flex;
   flex-direction: column;

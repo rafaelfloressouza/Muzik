@@ -1,14 +1,14 @@
 import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
-import { PageType } from "../../App";
+import { PageType } from "../../../App";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import { ThemeContext } from "../../contexts/ThemeContext";
-import Avatar from "./Avatar";
-import Searchbar from "./Searchbar";
-import ButtonGroup, { IElement } from "./ButtonGroup";
-import PlayButton from "./PlayButton";
-import { CategoryType } from "../YourLibrary";
+import { ThemeContext } from "../../../contexts/ThemeContext";
+import Avatar from "../others/Avatar";
+import Searchbar from "../searchbars/SearchbarLight";
+import ButtonGroup, { IElement } from "../buttons/ButtonGroup";
+import PlayButton from "../buttons/PlayButton";
+import { CategoryType } from "../../YourLibrary";
 
 type Props = {
   height: string;

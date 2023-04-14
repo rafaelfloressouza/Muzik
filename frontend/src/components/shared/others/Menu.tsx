@@ -3,7 +3,7 @@ import { ReactElement, useContext } from "react";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import ArrowRightSharpIcon from "@mui/icons-material/ArrowRightSharp";
 import Svg from "./Svg";
-import { ThemeContext } from "../../contexts/ThemeContext";
+import { ThemeContext } from "../../../contexts/ThemeContext";
 
 export enum MenuItemType {
   Standard,
@@ -80,7 +80,7 @@ export default function Menu({
             <Material.Grow
               {...TransitionProps}
               style={{
-                transformOrigin: "center-top",
+                // transformOrigin: "center-top",
                 // anchorOrigin: { vertical: "bottom", horizontal: "center" },
                 // transformOrigin: { vertical: "top", horizontal: "center" },
                 // placement === "bottom-start" ? "left top" : "left bottom",
@@ -180,11 +180,11 @@ function MenuItem({
           data.icon &&
           !(data.icon instanceof String) && (
             <Svg
-              svgStyle={{
+              svgProps={{
                 muiComponent: data.icon as OverridableComponent<
                   Material.SvgIconTypeMap<{}, "svg">
                 >,
-                color: textColor,
+                fill: textColor,
                 height: "18px",
                 width: "18px",
               }}
@@ -195,9 +195,9 @@ function MenuItem({
           data.icon &&
           data.icon instanceof String && (
             <Svg
-              svgStyle={{
+              svgProps={{
                 fileUrl: data.icon as string,
-                color: textColor,
+                fill: textColor,
                 height: "18px",
                 width: "18px",
               }}
@@ -206,9 +206,9 @@ function MenuItem({
           )}
         {data.type === MenuItemType.Expandable && (
           <Svg
-            svgStyle={{
+            svgProps={{
               muiComponent: ArrowRightSharpIcon,
-              color: textColor,
+              fill: textColor,
               height: "18px",
               width: "18px",
             }}

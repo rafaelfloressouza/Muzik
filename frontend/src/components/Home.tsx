@@ -1,8 +1,8 @@
 import { ReactElement, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
-import Card from "./shared/Card";
+import Card from "./shared/containers/Card";
 import { ThemeContext } from "../contexts/ThemeContext";
-import Row from "./shared/Row";
+import Row from "./shared/containers/Row";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;
@@ -52,8 +52,8 @@ export default function Home({ scrollChanged }: Props): ReactElement {
         <Row
           key={i}
           children={getCards()}
-          titleLeftStyle={{ text: "Electronic/Dance" }}
-          titleRightStyle={{ text: "Show All", color: theme?.quinary() }}
+          titleLeftProps={{ text: "Electronic/Dance" }}
+          titleRightProps={{ text: "Show All", color: theme?.quinary() }}
         />
       );
     }

@@ -1,12 +1,13 @@
 import { ReactElement, useContext, useRef, useState } from "react";
 import Svg from "./Svg";
 import styled from "styled-components";
-import { ThemeContext } from "../../contexts/ThemeContext";
+import { ThemeContext } from "../../../contexts/ThemeContext";
 import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
 import ArrowDropUpSharpIcon from "@mui/icons-material/ArrowDropUpSharp";
-import Tooltip from "./Tooltip";
+import Tooltip from "../others/Tooltip";
 import Menu, { MenuItemType } from "./Menu";
 import OpenInNewSharpIcon from "@mui/icons-material/OpenInNewSharp";
+import Button from "../buttons/Button";
 
 export default function Avatar(): ReactElement {
   // Contexts
@@ -46,8 +47,9 @@ export default function Avatar(): ReactElement {
   return (
     <>
       <Tooltip
-        title={menuOpened ? "" : "Rafael Flores Souza"}
-        bgColor={theme?.secondary()}
+        tooltipProps={{
+          textStyle: { text: menuOpened ? "" : "Rafael Flores Souza" },
+        }}
       >
         <AvatarContainer
           ref={avatarDivRef}
@@ -56,10 +58,11 @@ export default function Avatar(): ReactElement {
           hoverColor={theme?.secondary() ?? ""}
           onClick={() => setMenuOpened(!menuOpened)}
         >
-          <Svg
-            svgStyle={{
+          <Button
+            svgProps={{
               fileUrl: "svgs/unknown-avatar.svg",
               borderRadius: "50%",
+              // bgColor: "white",
             }}
           />
           <span>Rafael Flores Souza</span>

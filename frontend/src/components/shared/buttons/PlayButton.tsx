@@ -1,7 +1,7 @@
 import { ReactElement, useContext } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import Svg from "./Svg";
-import { ThemeContext } from "../../contexts/ThemeContext";
+import Svg from "../others/Svg";
+import { ThemeContext } from "../../../contexts/ThemeContext";
 
 type Props = {
   label?: string;
@@ -17,23 +17,23 @@ export default function PlayButton({
   const theme = useContext(ThemeContext);
   return (
     <Svg
-      svgStyle={{
+      svgProps={{
         muiComponent: PlayArrowIcon,
         borderRadius: "50%",
         bgColor: theme?.primary(),
-        color: theme?.septenary(),
-        hoverColor: theme?.septenary(),
+        fill: theme?.septenary(),
+        hoverFill: theme?.septenary(),
         height: "30px",
         width: "30px",
         padding: "9px",
         animate: true,
       }}
-      labelStyle={{
-        label: label,
-        fontSize: fontSize,
-        isBold: isBold,
-      }}
-      colSpace="0.9rem"
+      // labelStyle={{
+      //   text: label,
+      //   size: fontSize,
+      //   weight: isBold ? "bold" : "normal",
+      // }}
+      // colSpace="0.9rem"
     />
   );
 }

@@ -1,14 +1,14 @@
 import { ReactElement } from "react";
 import styled from "styled-components";
-import { ITextStyle } from "../../utils/types";
+import { ITextProps } from "../../../utils/types";
 
 type Props = {
   itemSep?: string;
   children?: ReactElement | ReactElement[];
   flexDir?: "row" | "column";
   justifyContent?: string;
-  titleLeftStyle?: ITextStyle;
-  titleRightStyle?: ITextStyle;
+  titleLeftProps?: ITextProps;
+  titleRightProps?: ITextProps;
 };
 
 export default function Row({
@@ -16,19 +16,19 @@ export default function Row({
   children,
   flexDir = "row",
   justifyContent = "space-between",
-  titleLeftStyle,
-  titleRightStyle,
+  titleLeftProps,
+  titleRightProps,
 }: Props): ReactElement {
   return (
     <RowContainer
-      titleLeftStyle={titleLeftStyle}
-      titleRightStyle={titleRightStyle}
+      titleLeftStyle={titleLeftProps}
+      titleRightStyle={titleRightProps}
     >
-      {titleLeftStyle?.text && (
+      {titleLeftProps?.text && (
         <div className="title-container">
-          <span className="title-left">{titleLeftStyle?.text}</span>
-          {titleRightStyle?.text && (
-            <span className="title-right">{titleRightStyle.text}</span>
+          <span className="title-left">{titleLeftProps?.text}</span>
+          {titleRightProps?.text && (
+            <span className="title-right">{titleRightProps.text}</span>
           )}
         </div>
       )}
@@ -40,8 +40,8 @@ export default function Row({
 }
 
 const RowContainer = styled.div<{
-  titleLeftStyle?: ITextStyle;
-  titleRightStyle?: ITextStyle;
+  titleLeftStyle?: ITextProps;
+  titleRightStyle?: ITextProps;
 }>`
   display: flex;
   flex-direction: column;

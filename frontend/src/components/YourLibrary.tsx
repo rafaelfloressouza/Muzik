@@ -1,11 +1,10 @@
 import { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
-import Row from "./shared/Row";
-import Card from "./shared/Card";
+import Row from "./shared/containers/Row";
+import Card from "./shared/containers/Card";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
-import Button from "./shared/Button";
-import { borderRadius } from "@mui/system";
+import Button from "./shared/buttons/Button";
 
 export enum CategoryType {
   Playlists = "Playlists",
@@ -28,7 +27,7 @@ export default function YourLibrary({
   const theme = useContext(ThemeContext);
 
   // State
-  const [data, setData] = useState([""]);
+  const [data, setData] = useState([]);
 
   // Refs
   const yourLibraryDivRef = useRef<HTMLDivElement | null>(null);
@@ -66,11 +65,12 @@ export default function YourLibrary({
               hoverBgColor: theme?.secondary(),
             }}
             descStyle={{ color: theme?.quinary() }}
+            descHoverable={category === CategoryType.Albums}
           />
         );
       }
       allPlaylists.push(
-        <Row key={i} titleLeftStyle={{ text: i === 0 ? category : "" }}>
+        <Row key={i} titleLeftProps={{ text: i === 0 ? category : "" }}>
           {playlists}
         </Row>
       );
@@ -96,18 +96,34 @@ export default function YourLibrary({
               Save audiobooks by tapping the save button.
             </span>
             <Button
-              textStyle={{
+              textProps={{
                 text: "Find Audiobooks",
                 weight: "bold",
                 color: theme?.tertiary(),
                 size: "0.9rem",
               }}
-              buttonStyle={{
+              buttonProps={{
                 bgColor: theme?.senary(),
                 padding: "15px 25px",
                 borderRadius: "25px",
+                animate: true,
               }}
             />
+            <Button
+              // textStyle={{
+              //   text: "Find Audiobooks",
+              //   weight: "bold",
+              //   color: theme?.septenary(),
+              //   size: "0.9rem",
+              // }}
+              buttonProps={{
+                bgColor: theme?.primary(),
+                // padding: "15px 25px",
+                borderRadius: "50%",
+                animate: true,
+                hoverBgColor: theme?.septenary(),
+              }}
+            ></Button>
           </EmptyAudiobooks>
         );
       case CategoryType.Artists:
@@ -123,6 +139,7 @@ export default function YourLibrary({
       bgColor={theme?.tertiary() ?? ""}
       isEmpty={data.length <= 0}
     >
+      <Button buttonProps={{}}></Button>
       {data.length > 0 && getData()}
       {data.length <= 0 && getEmptyPage()}
     </YourLibraryContainer>

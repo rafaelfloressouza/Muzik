@@ -1,10 +1,10 @@
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/shared/containers/Sidebar";
 import styled from "styled-components";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Bottombar from "./components/Bottombar";
+import Bottombar from "./components/shared/containers/Bottombar";
 import Home from "./components/Home";
 import { ReactElement, useEffect, useState } from "react";
-import Page from "./components/shared/Page";
+import Page from "./components/shared/containers/Page";
 import * as Material from "@mui/material";
 import Search from "./components/Search";
 import YourLibrary, { CategoryType } from "./components/YourLibrary";
