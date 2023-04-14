@@ -7,22 +7,19 @@ import { ThemeContext } from "../../../contexts/ThemeContext";
 import Avatar from "../others/Avatar";
 import Searchbar from "../searchbars/SearchbarLight";
 import ButtonGroup, { IElement } from "../buttons/ButtonGroup";
-import PlayButton from "../buttons/PlayButton";
 import { CategoryType } from "../../YourLibrary";
+import { PlayButton } from "../buttons/Button";
+import { IContainerProps } from "../../../utils/types";
 
 type Props = {
-  height: string;
-  width: string;
   page: PageType;
-  bgColor: string;
+  navbarProps: IContainerProps;
   categoryChange: (category: CategoryType) => void;
 };
 
 export default function Navbar({
-  height,
-  width,
+  navbarProps,
   page,
-  bgColor,
   categoryChange,
 }: Props): ReactElement {
   const theme = useContext(ThemeContext);
@@ -79,16 +76,12 @@ export default function Navbar({
     if (page !== PageType.CreatePlaylist && page !== PageType.LikedSongs)
       return <></>;
     return (
-      <PlayButton
-        label={"Alternative/Indie"}
-        fontSize={"1.5rem"}
-        isBold={true}
-      />
+      <PlayButton textProps={{ text: "Alternative/Indie", color: "red" }} />
     );
   };
 
   return (
-    <NavbarContainer height={height} width={width} bgColor={bgColor}>
+    <NavbarContainer navbarProps={navbarProps}>
       <div className="arrows-searchbar-and-categories">
         {getArrows()}
         {getPlayBtn()}
@@ -101,20 +94,18 @@ export default function Navbar({
 }
 
 const NavbarContainer = styled.div<{
-  height: string;
-  width: string;
-  bgColor: string;
+  navbarProps: IContainerProps;
 }>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: ${(props) => props.height};
+  height: ${(props) => props.navbarProps.height};
   position: fixed;
-  width: ${(props) => props.width};
+  width: ${(props) => props.navbarProps.width};
   top: 0;
   z-index: 100;
-  background-color: ${(props) => props.bgColor};
+  background-color: ${(props) => props.navbarProps.bgColor};
 
   & .arrows-searchbar-and-categories {
     display: flex;

@@ -1,8 +1,8 @@
 import { ReactElement, useState } from "react";
 import styled from "styled-components";
-import PlayButton from "../buttons/PlayButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { ITextProps } from "../../../utils/types";
+import { PlayButton } from "../buttons/Button";
 
 export enum CardType {
   WithImg,
@@ -122,14 +122,12 @@ const CardWithImgContainer = styled.div<{
       border-radius: 5px;
     }
 
-    & .svg {
+    & .btn {
       position: absolute;
       bottom: ${(props) => (props.hoveredOn ? "10px" : "0px")};
       right: 10px;
-      border-radius: 50%;
-      box-shadow: 0px 5px 5px 1px rgb(0, 0, 0, 0.2);
       opacity: ${(props) => (props.hoveredOn ? 1 : 0)};
-      transition: ease-in-out 0.2s;
+      transition: ease-in-out 0.3s;
     }
   }
 

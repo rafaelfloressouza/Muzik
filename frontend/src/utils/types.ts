@@ -20,6 +20,13 @@ export interface IContainerProps {
   borderRadius?: string;
   padding?: string;
   boxShadow?: string;
+  justifyContent?: string;
+  position?: "relative" | "absolute";
+  opacity?: string;
+  right?: string;
+  left?: string;
+  top?: string;
+  bottom?: string;
   animate?: boolean;
   selected?: boolean;
   onClick?: () => void;
@@ -27,8 +34,11 @@ export interface IContainerProps {
 }
 
 export interface ISvgProps extends IContainerProps {
-  fileUrl?: string;
-  muiComponent?: OverridableComponent<SvgIconTypeMap<{}, "svg">> | undefined;
+  fileUrl?: string[] | string;
+  muiComponent?:
+    | OverridableComponent<SvgIconTypeMap<{}, "svg">>
+    | OverridableComponent<SvgIconTypeMap<{}, "svg">>[]
+    | undefined;
   fill?: string;
   hoverFill?: string;
 }

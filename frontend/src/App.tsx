@@ -103,7 +103,7 @@ export default function App() {
               categoryChange={categoryChange}
             ></Page>
           </TopContainer>
-          <Bottombar height={bottomBarHeight} />
+          <Bottombar bottombarProps={{ height: bottomBarHeight }} />
         </ThemeProvider>
       </Material.ThemeProvider>
     </AppContainer>

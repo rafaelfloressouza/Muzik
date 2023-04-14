@@ -1,5 +1,4 @@
 import { ReactElement, useContext, useRef, useState } from "react";
-import Svg from "./Svg";
 import styled from "styled-components";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
@@ -62,10 +61,12 @@ export default function Avatar(): ReactElement {
             svgProps={{
               fileUrl: "svgs/unknown-avatar.svg",
               borderRadius: "50%",
-              // bgColor: "white",
+              height: "28px",
+              width: "28px",
             }}
           />
           <span>Rafael Flores Souza</span>
+
           {menuOpened ? (
             <ArrowDropUpSharpIcon sx={{ transform: "scale(1.2)", mr: "2px" }} />
           ) : (
@@ -109,11 +110,11 @@ const AvatarContainer = styled.div<{ bgColor: string; hoverColor: string }>`
     }
   }
 
-  & svg {
+  /* & svg {
     @media (max-width: 1050px) {
       display: none;
     }
-  }
+  } */
 
   @media (max-width: 1050px) {
     justify-content: left;

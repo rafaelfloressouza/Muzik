@@ -1,4 +1,4 @@
-import { ReactElement, useContext, useEffect, useRef, useState } from "react";
+import { ReactElement, useContext } from "react";
 import styled from "styled-components";
 import Navbar from "./Navbar";
 import { PageType } from "../../../App";
@@ -47,10 +47,12 @@ export default function Page({
   return (
     <PageContainer width={width} height={height}>
       <Navbar
-        height={navbarHeight}
-        width={width}
+        navbarProps={{
+          height: navbarHeight,
+          width: width,
+          bgColor: getNavbarColor(),
+        }}
         page={page}
-        bgColor={getNavbarColor()}
         categoryChange={categoryChange}
       />
       {children}

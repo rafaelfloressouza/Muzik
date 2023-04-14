@@ -13,14 +13,14 @@ import DevicesOutlinedIcon from "@mui/icons-material/DevicesOutlined";
 import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
 import OpenInFullOutlinedIcon from "@mui/icons-material/OpenInFullOutlined";
 import Slider from "../others/Slider";
-import Svg from "../others/Svg";
 import Button from "../buttons/Button";
+import { IContainerProps } from "../../../utils/types";
 
 type Props = {
-  height: string;
+  bottombarProps: IContainerProps;
 };
 
-export default function Bottombar({ height }: Props) {
+export default function Bottombar({ bottombarProps }: Props) {
   const theme = useContext(ThemeContext);
 
   return (
@@ -28,7 +28,7 @@ export default function Bottombar({ height }: Props) {
       color={theme?.senary() ?? ""}
       bgColor={theme?.tertiary() ?? ""}
       borderColor={theme?.quinary(0.1) ?? ""}
-      height={height}
+      height={bottombarProps?.height ?? "auto"}
     >
       <LeftContainer
         artistNameTextColor={theme?.quinary() ?? ""}
@@ -43,7 +43,6 @@ export default function Bottombar({ height }: Props) {
         <Button
           svgProps={{
             muiComponent: FavoriteBorderIcon,
-
             height: "20px",
             width: "20px",
           }}
@@ -63,7 +62,6 @@ export default function Bottombar({ height }: Props) {
           <Button
             svgProps={{
               muiComponent: ShuffleTwoToneIcon,
-
               height: "22px",
               width: "22px",
             }}
@@ -75,7 +73,6 @@ export default function Bottombar({ height }: Props) {
           <Button
             svgProps={{
               muiComponent: SkipPreviousIcon,
-
               height: "32px",
               width: "32px",
             }}
@@ -87,7 +84,6 @@ export default function Bottombar({ height }: Props) {
           <Button
             svgProps={{
               muiComponent: PlayCircleIcon,
-
               height: "42px",
               width: "42px",
               animate: true,
@@ -99,7 +95,6 @@ export default function Bottombar({ height }: Props) {
           <Button
             svgProps={{
               muiComponent: SkipNextIcon,
-
               height: "32px",
               width: "32px",
             }}
@@ -253,16 +248,6 @@ const LeftContainer = styled.div<{
     }
   }
 
-  & svg {
-    width: 20px;
-    height: 20px;
-    fill: ${(props) => props.heartFillColor};
-
-    &:hover {
-      fill: ${(props) => props.hoverColor};
-    }
-  }
-
   & .song-album-img {
     height: 60px;
     width: 60px;
@@ -288,34 +273,6 @@ const CenterContainer = styled.div<{
     flex-direction: row;
     align-items: center;
     column-gap: 15px;
-
-    & .play-btn {
-      width: 40px;
-      height: 40px;
-      fill: ${(props) => props.playBtnFill};
-    }
-
-    & .prev-btn,
-    .next-btn {
-      width: 30px;
-      height: 30px;
-      fill: ${(props) => props.otherBtnsFill};
-
-      &:hover {
-        fill: ${(props) => props.hoverFill};
-      }
-    }
-
-    & .repeat-btn,
-    .shuffle-btn {
-      width: 22px;
-      height: 22px;
-      fill: ${(props) => props.otherBtnsFill};
-
-      &:hover {
-        fill: ${(props) => props.hoverFill};
-      }
-    }
   }
 
   & .music-progress {
@@ -339,9 +296,4 @@ const RightContainer = styled.div<{
   justify-content: center;
   padding: 15px 20px;
   column-gap: 15px;
-
-  /* & .expand-btn {
-    height: 18px;
-    width: 18px;
-  } */
 `;

@@ -2,8 +2,8 @@ import * as Material from "@mui/material";
 import { ReactElement, useContext } from "react";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import ArrowRightSharpIcon from "@mui/icons-material/ArrowRightSharp";
-import Svg from "./Svg";
 import { ThemeContext } from "../../../contexts/ThemeContext";
+import Button from "../buttons/Button";
 
 export enum MenuItemType {
   Standard,
@@ -80,11 +80,7 @@ export default function Menu({
             <Material.Grow
               {...TransitionProps}
               style={{
-                // transformOrigin: "center-top",
-                // anchorOrigin: { vertical: "bottom", horizontal: "center" },
-                // transformOrigin: { vertical: "top", horizontal: "center" },
-                // placement === "bottom-start" ? "left top" : "left bottom",
-                // transformOrigin: placement,
+                transformOrigin: placement,
                 marginTop: "10px",
                 background: menuStyle?.bgColor ?? theme?.secondary() ?? "",
                 width: menuStyle?.width ?? "190px",
@@ -179,7 +175,7 @@ function MenuItem({
         {data.type === MenuItemType.WithIcon &&
           data.icon &&
           !(data.icon instanceof String) && (
-            <Svg
+            <Button
               svgProps={{
                 muiComponent: data.icon as OverridableComponent<
                   Material.SvgIconTypeMap<{}, "svg">
@@ -194,7 +190,7 @@ function MenuItem({
         {data.type === MenuItemType.WithIcon &&
           data.icon &&
           data.icon instanceof String && (
-            <Svg
+            <Button
               svgProps={{
                 fileUrl: data.icon as string,
                 fill: textColor,
@@ -205,7 +201,7 @@ function MenuItem({
             />
           )}
         {data.type === MenuItemType.Expandable && (
-          <Svg
+          <Button
             svgProps={{
               muiComponent: ArrowRightSharpIcon,
               fill: textColor,
