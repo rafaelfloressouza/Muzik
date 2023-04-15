@@ -11,7 +11,6 @@ import {
   ITooltipProps,
   Ordering,
 } from "../../../utils/types";
-import { text } from "stream/consumers";
 
 type Props = {
   buttonProps?: IContainerProps;

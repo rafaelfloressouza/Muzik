@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 import styled from "styled-components";
 import { ITextProps } from "../../../utils/types";
 
+// https://travishorn.com/responsive-grid-in-2-minutes-with-css-grid-layout-4842a41420fe
 type Props = {
   itemSep?: string;
   children?: ReactElement | ReactElement[];

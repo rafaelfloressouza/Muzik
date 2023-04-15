@@ -5,11 +5,11 @@ import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import Avatar from "../others/Avatar";
-import Searchbar from "../searchbars/SearchbarLight";
 import ButtonGroup, { IElement } from "../buttons/ButtonGroup";
 import { CategoryType } from "../../YourLibrary";
 import { PlayButton } from "../buttons/Button";
 import { IContainerProps } from "../../../utils/types";
+import Searchbar from "../others/Searchbar";
 
 type Props = {
   page: PageType;

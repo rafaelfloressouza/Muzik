@@ -5,6 +5,7 @@ import Row from "./shared/containers/Row";
 import Card from "./shared/containers/Card";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
 import Button from "./shared/buttons/Button";
+import { SearchbarDark } from "./shared/others/Searchbar";
 
 export enum CategoryType {
   Playlists = "Playlists",
@@ -27,7 +28,7 @@ export default function YourLibrary({
   const theme = useContext(ThemeContext);
 
   // State
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([""]);
 
   // Refs
   const yourLibraryDivRef = useRef<HTMLDivElement | null>(null);
@@ -109,21 +110,6 @@ export default function YourLibrary({
                 animate: true,
               }}
             />
-            <Button
-              // textStyle={{
-              //   text: "Find Audiobooks",
-              //   weight: "bold",
-              //   color: theme?.septenary(),
-              //   size: "0.9rem",
-              // }}
-              buttonProps={{
-                bgColor: theme?.primary(),
-                // padding: "15px 25px",
-                borderRadius: "50%",
-                animate: true,
-                hoverBgColor: theme?.septenary(),
-              }}
-            ></Button>
           </EmptyAudiobooks>
         );
       case CategoryType.Artists:
@@ -139,7 +125,7 @@ export default function YourLibrary({
       bgColor={theme?.tertiary() ?? ""}
       isEmpty={data.length <= 0}
     >
-      <Button buttonProps={{}}></Button>
+      <SearchbarDark />
       {data.length > 0 && getData()}
       {data.length <= 0 && getEmptyPage()}
     </YourLibraryContainer>
