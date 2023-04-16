@@ -100,8 +100,9 @@ export default function App() {
               children={getPageContent()}
               page={page}
               scrollTop={scrollTop}
+              category={category}
               categoryChange={categoryChange}
-            ></Page>
+            />
           </TopContainer>
           <Bottombar bottombarProps={{ height: bottomBarHeight }} />
         </ThemeProvider>

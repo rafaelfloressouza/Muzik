@@ -4,6 +4,10 @@ import Navbar from "./Navbar";
 import { PageType } from "../../../App";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import { CategoryType } from "../../YourLibrary";
+import { SearchbarDark } from "../others/Searchbar";
+import Button from "../buttons/Button";
+import { Ordering } from "../../../utils/types";
+import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
 
 type Props = {
   width: string;
@@ -21,6 +25,7 @@ export default function Page({
   children,
   page,
   scrollTop,
+  category,
   categoryChange,
 }: Props): ReactElement {
   // Constant
@@ -68,3 +73,35 @@ const PageContainer = styled.div<{ width: string; height: string }>`
   background-color: rgb(18, 18, 18);
   position: relative;
 `;
+
+// const PageHeader = styled.div<{}>`
+//   display: flex;
+//   justify-content: space-between;
+//   margin-top: 90px;
+//   padding: 0px 30px;
+//   font-size: 1.4rem;
+//   font-weight: bold;
+
+//   & .filtering-div {
+//     display: flex;
+//     flex-direction: row;
+//     column-gap: 1rem;
+//     font-size: 0.8rem;
+//     font-weight: normal;
+//   }
+// `;
+
+{
+  /* <PageHeader>
+        <span>{category}</span>
+        <div className="filtering-div">
+          <SearchbarDark />
+          <Button
+            textProps={{ text: "Custom order" }}
+            svgProps={{ muiComponent: ArrowDropDownSharpIcon }}
+            ordering={Ordering.AfterText}
+            colGap="2px"
+          />
+        </div>
+      </PageHeader> */
+}

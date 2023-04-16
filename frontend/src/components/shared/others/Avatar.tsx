@@ -23,22 +23,38 @@ export default function Avatar(): ReactElement {
     return (
       <Menu
         open={menuOpened}
-        menuProps={{
-          elRef: avatarDivRef,
-          items: [
-            {
-              label: "Account",
-              type: MenuItemType.WithIcon,
-              icon: OpenInNewSharpIcon,
+        menuProps={{ refEl: avatarDivRef }}
+        menuItemProps={[
+          {
+            textProps: { text: "Account" },
+            iconProps: {
+              muiComponent: OpenInNewSharpIcon,
+              width: "18px",
+              height: "18px",
             },
-            { label: "Profile", type: MenuItemType.Standard },
-            { label: "Private Session", type: MenuItemType.Standard },
-            { label: "Settings", type: MenuItemType.Standard },
-            { type: MenuItemType.Divider },
-            { label: "Log out", type: MenuItemType.Standard },
-          ],
-          setOpen: (open: boolean) => setMenuOpened(open),
-        }}
+            type: MenuItemType.WithIcon,
+          },
+          {
+            textProps: { text: "Profile" },
+            type: MenuItemType.Standard,
+          },
+          {
+            textProps: { text: "Private Session" },
+            type: MenuItemType.Standard,
+          },
+          {
+            textProps: { text: "Settings" },
+            type: MenuItemType.Standard,
+          },
+          {
+            type: MenuItemType.Divider,
+          },
+          {
+            textProps: { text: "Log out" },
+            type: MenuItemType.Standard,
+          },
+        ]}
+        setOpen={(open: boolean) => setMenuOpened(open)}
       />
     );
   };

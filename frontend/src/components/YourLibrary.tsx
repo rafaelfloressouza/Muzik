@@ -5,7 +5,7 @@ import Row from "./shared/containers/Row";
 import Card from "./shared/containers/Card";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
 import Button from "./shared/buttons/Button";
-import { SearchbarDark } from "./shared/others/Searchbar";
+import Title, { TitleType } from "./shared/containers/Title";
 
 export enum CategoryType {
   Playlists = "Playlists",
@@ -125,8 +125,22 @@ export default function YourLibrary({
       bgColor={theme?.tertiary() ?? ""}
       isEmpty={data.length <= 0}
     >
-      <SearchbarDark />
-      {data.length > 0 && getData()}
+      {data.length > 0 && (
+        <>
+          <Title
+            title={category}
+            sorterCategories={[
+              { id: 0, text: "Most Relevant" },
+              { id: 1, text: "Recently Played" },
+              { id: 2, text: "Recently Added" },
+              { id: 3, text: "Alphabetical" },
+              { id: 4, text: "Custom Order" },
+            ]}
+            type={TitleType.WithFilters}
+          />
+          {getData()}
+        </>
+      )}
       {data.length <= 0 && getEmptyPage()}
     </YourLibraryContainer>
   );
@@ -137,11 +151,11 @@ const YourLibraryContainer = styled.div<{ bgColor: string; isEmpty: boolean }>`
   flex-direction: column;
   align-items: center;
   row-gap: 2rem;
-  padding: 30px;
   overflow-y: auto;
-  padding-top: 90px;
   background-color: ${(props) => props.bgColor};
   height: ${(props) => (props.isEmpty ? "100%" : "auto")};
+  padding: 30px;
+  padding-top: 90px;
 `;
 
 const EmptyAudiobooks = styled.div`

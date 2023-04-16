@@ -7,7 +7,11 @@ import { ThemeContext } from "../../../contexts/ThemeContext";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
-export default function SearchbarLight(): ReactElement {
+export default function SearchbarLight({
+  onSearch,
+}: {
+  onSearch?: (searchTxt: string) => void;
+}): ReactElement {
   // Contexts
   const theme = useContext(ThemeContext);
 
@@ -25,7 +29,10 @@ export default function SearchbarLight(): ReactElement {
         type="text"
         value={searchText}
         placeholder="What do you want to listen to?"
-        onChange={(e) => setSearchText(e.target.value)}
+        onChange={(e) => {
+          setSearchText(e.target.value);
+          if (onSearch) onSearch(e.target.value);
+        }}
       />
       {searchText && (
         <CloseRoundedIcon
@@ -79,8 +86,10 @@ const SearchbarContainer = styled.div<{
 
 export function SearchbarDark({
   searchIn = "Playlist",
+  onSearch,
 }: {
   searchIn?: string;
+  onSearch?: (searchTxt: string) => void;
 }): ReactElement {
   // Content
 
@@ -113,7 +122,10 @@ export function SearchbarDark({
               type={"text"}
               value={searchText}
               placeholder={`Search in ${searchIn}`}
-              onChange={(ev) => setSearchText(ev.target.value)}
+              onChange={(ev) => {
+                setSearchText(ev.target.value);
+                if (onSearch) onSearch(ev.target.value);
+              }}
             />
             <CloseRoundedIcon
               sx={{ color: theme?.quinary() ?? "", zIndex: "400" }}
@@ -124,7 +136,7 @@ export function SearchbarDark({
             sx={{
               color: theme?.quinary() ?? "",
               borderRadius: "50%",
-              padding: "10px",
+              padding: "4px",
               transition: "ease-in-out 0.2s",
               zIndex: "200",
               opacity: containerWidth === 0 ? 1 : 0,

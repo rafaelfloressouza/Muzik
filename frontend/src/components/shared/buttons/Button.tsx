@@ -43,6 +43,7 @@ export default function Button({
       <ButtonContainer
         id={id}
         className={`${className} btn`}
+        ref={buttonProps?.refEl ?? null}
         buttonProps={buttonProps}
         textProps={textProps}
         ordering={ordering}
@@ -199,3 +200,5 @@ export function PlayButton({
     />
   );
 }
+
+//

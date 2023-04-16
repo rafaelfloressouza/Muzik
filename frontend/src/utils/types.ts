@@ -30,7 +30,7 @@ export interface IContainerProps {
   animate?: boolean;
   selected?: boolean;
   onClick?: () => void;
-  ref?: React.MutableRefObject<HTMLElement | null>;
+  refEl?: React.MutableRefObject<HTMLDivElement | null>;
 }
 
 export interface ISvgProps extends IContainerProps {

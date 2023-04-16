@@ -45,3 +45,16 @@ body,
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
+body {
+  /* Defining color palette */
+  --primary: 29, 185, 84;
+  --secondary: 33, 33, 33;
+  --tertiary: 18, 18, 18;
+  --quaternary: 83, 83, 83;
+  --quinary: 179, 179, 179;
+  --senary: 255, 255, 255;
+  --septenary: 0, 0, 0;
+  --octonary: 25, 25, 25;
+  --nonary: 8, 8, 8;
+}

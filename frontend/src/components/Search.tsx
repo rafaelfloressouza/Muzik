@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
 import Card, { CardType } from "./shared/containers/Card";
 import Row from "./shared/containers/Row";
+import Title from "./shared/containers/Title";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;
@@ -83,21 +84,21 @@ export default function Search({ scrollChanged }: Props): ReactElement {
     const categoryCards: ReactElement[] = [];
 
     for (let i = 0; i < 12; i++) {
-      categoryCards.push(
-        <Row key={i} titleLeftProps={{ text: i == 0 ? "Browse All" : "" }}>
-          {getCards()}
-        </Row>
-      );
+      categoryCards.push(<Row key={i}>{getCards()}</Row>);
     }
     return categoryCards;
   };
 
   return (
     <SearchContainer ref={searchDivRef} bgColor={theme?.tertiary() ?? ""}>
-      <Row justifyContent="left" titleLeftProps={{ text: "Recent Searches" }}>
-        {getRecentRearches()}
-      </Row>
-      {getCategoryCards()}
+      <>
+        <Title title="Recent Searches" />
+        <Row justifyContent="left">{getRecentRearches()}</Row>
+      </>
+      <>
+        <Title title="Browse All" />
+        {getCategoryCards()}
+      </>
     </SearchContainer>
   );
 }

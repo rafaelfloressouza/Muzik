@@ -3,6 +3,9 @@ import styled from "styled-components";
 import Card from "./shared/containers/Card";
 import { ThemeContext } from "../contexts/ThemeContext";
 import Row from "./shared/containers/Row";
+import RowTitle, { TitleType } from "./shared/containers/Title";
+import HomeTitle from "./shared/containers/Title";
+import Title from "./shared/containers/Title";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;
@@ -49,12 +52,10 @@ export default function Home({ scrollChanged }: Props): ReactElement {
     const cardRows = [];
     for (let i = 0; i < 10; i++) {
       cardRows.push(
-        <Row
-          key={i}
-          children={getCards()}
-          titleLeftProps={{ text: "Electronic/Dance" }}
-          titleRightProps={{ text: "Show All", color: theme?.quinary() }}
-        />
+        <>
+          <Title title={"Electronic/Dance"} type={TitleType.WithShowAll} />
+          <Row key={i} children={getCards()} />
+        </>
       );
     }
     return cardRows;

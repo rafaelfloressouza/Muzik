@@ -1,10 +1,11 @@
 import * as Material from "@mui/material";
 import { ReactElement, useContext } from "react";
-import { OverridableComponent } from "@mui/material/OverridableComponent";
 import ArrowRightSharpIcon from "@mui/icons-material/ArrowRightSharp";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import Button from "../buttons/Button";
+import { IContainerProps, ISvgProps, ITextProps } from "../../../utils/types";
 
+// Types of Items in a menu
 export enum MenuItemType {
   Standard,
   WithIcon,
@@ -12,44 +13,33 @@ export enum MenuItemType {
   Expandable,
 }
 
-export interface IMenuItem {
-  label?: string;
+// Menu Items Props
+export interface IMenuItemProps extends IContainerProps {
+  id?: number | string;
+  itemProps?: IContainerProps;
+  textProps?: ITextProps;
+  iconProps?: ISvgProps;
   type: MenuItemType;
-  icon?:
-    | string
-    | OverridableComponent<Material.SvgIconTypeMap<{}, "svg">>
-    | undefined;
-  items?: IMenuItem[];
 }
 
-export interface IMenuProps {
-  elRef: React.MutableRefObject<HTMLDivElement | SVGElement | null>;
-  items: IMenuItem[];
-  setOpen: (open: boolean) => void;
-}
-
-export interface IMenuStyle {
+// Menu Props
+export interface IMenuProps extends IContainerProps {
   placement?: any;
-  width?: string;
-  height?: string;
-  bgColor?: string;
-  itemBgHoverColor?: string;
-  textColor?: string;
-  fontSize?: string;
-  dividerColor?: string;
 }
 
 type Props = {
-  open: boolean;
-  menuProps: IMenuProps;
-  menuStyle?: IMenuStyle;
+  menuProps?: IMenuProps;
+  menuItemProps?: IMenuItemProps[];
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
   listenForClickAway?: boolean;
 };
 
 export default function Menu({
   menuProps,
-  menuStyle,
-  open,
+  menuItemProps,
+  open = false,
+  setOpen,
   listenForClickAway = false,
 }: Props): ReactElement {
   // Contexts
@@ -59,20 +49,20 @@ export default function Menu({
   const handleClose = (event: Event | React.SyntheticEvent) => {
     if (
       !listenForClickAway ||
-      (menuProps?.elRef?.current &&
-        menuProps?.elRef?.current.contains(event.target as HTMLElement))
+      (menuProps?.refEl?.current &&
+        menuProps?.refEl?.current.contains(event.target as HTMLElement))
     )
       return;
-    menuProps?.setOpen(false);
+    if (setOpen) setOpen(false);
   };
 
   return (
     <>
-      {menuProps?.items.length > 0 && (
+      {menuItemProps && menuItemProps?.length > 0 && (
         <Material.Popper
           open={open}
-          anchorEl={menuProps?.elRef.current}
-          placement={menuStyle?.placement ?? "bottom-end"}
+          anchorEl={menuProps?.refEl?.current}
+          placement={menuProps?.placement ?? "bottom-end"}
           transition
           sx={{ zIndex: "300", padding: 0 }}
         >
@@ -82,45 +72,30 @@ export default function Menu({
               style={{
                 transformOrigin: placement,
                 marginTop: "10px",
-                background: menuStyle?.bgColor ?? theme?.secondary() ?? "",
-                width: menuStyle?.width ?? "190px",
-                maxWidth: menuStyle?.width ?? "190px",
-                height: menuStyle?.height ?? "auto",
-                maxHeight: menuStyle?.height ?? "auto",
+                background: menuProps?.bgColor ?? theme?.secondary() ?? "",
+                width: menuProps?.width ?? "190px",
+                maxWidth: menuProps?.width ?? "190px",
+                height: menuProps?.height ?? "auto",
+                maxHeight: menuProps?.height ?? "auto",
               }}
             >
               <Material.Paper sx={{ padding: "5px 0px" }}>
                 <Material.ClickAwayListener onClickAway={handleClose}>
-                  <Material.MenuList
-                    sx={{ backgrounColor: "red", padding: "0 5px", margin: 0 }}
-                  >
-                    {menuProps.items.map((item: IMenuItem, idx: number) => {
+                  <Material.MenuList sx={{ padding: "0 5px", margin: 0 }}>
+                    {menuItemProps.map((item: IMenuItemProps, idx: number) => {
                       switch (item.type) {
                         case MenuItemType.Divider:
                           return (
                             <Divider
                               key={idx}
-                              color={
-                                menuStyle?.dividerColor ??
-                                theme?.quaternary(0.7) ??
-                                ""
-                              }
+                              color={theme?.quaternary(0.7) ?? ""}
                             />
                           );
                         default:
                           return (
                             <MenuItem
                               key={idx}
-                              data={item}
-                              fontSize={menuStyle?.fontSize ?? "0.82rem"}
-                              textColor={
-                                menuStyle?.textColor ?? theme?.senary(0.9) ?? ""
-                              }
-                              itemBgHoverColor={
-                                menuStyle?.itemBgHoverColor ??
-                                theme?.senary(0.1) ??
-                                ""
-                              }
+                              menuItemProps={item}
                               handleClose={handleClose}
                             />
                           );
@@ -140,73 +115,61 @@ export default function Menu({
 // Custom Menu Items
 
 type MenuItemProps = {
-  data: IMenuItem;
-  fontSize: string;
-  textColor: string;
-  itemBgHoverColor: string;
+  menuItemProps: IMenuItemProps;
   handleClose: (event: Event | React.SyntheticEvent) => void;
 };
 
-function MenuItem({
-  data,
-  fontSize,
-  textColor,
-  itemBgHoverColor,
-  handleClose,
-}: MenuItemProps): ReactElement {
+function MenuItem({ menuItemProps, handleClose }: MenuItemProps): ReactElement {
+  // Contexts
+  const theme = useContext(ThemeContext);
+
   return (
     <Material.MenuItem
-      onClick={handleClose}
+      onClick={(e) => {
+        handleClose(e);
+        if (menuItemProps.onClick) menuItemProps?.onClick();
+      }}
       sx={{
-        fontSize: fontSize,
-        color: textColor,
+        fontSize: menuItemProps.textProps?.size ?? "0.82rem",
+        color: menuItemProps.textProps?.color ?? theme?.senary(),
         display: "flex",
         justifyContent: "space-between",
         width: "100%",
-        padding: "8px 6px",
+        padding: menuItemProps?.itemProps?.padding ?? "8px",
+        backgroundColor: menuItemProps?.itemProps?.bgColor ?? "transparent",
 
         "&:hover": {
-          backgroundColor: itemBgHoverColor,
+          backgroundColor:
+            menuItemProps?.itemProps?.hoverBgColor ?? theme?.senary(0.2),
         },
       }}
     >
       <>
-        {data.label}
-        {data.type === MenuItemType.WithIcon &&
-          data.icon &&
-          !(data.icon instanceof String) && (
+        {menuItemProps?.textProps?.text}
+        {menuItemProps.type === MenuItemType.WithIcon &&
+          menuItemProps?.iconProps &&
+          menuItemProps?.iconProps?.muiComponent && (
             <Button
               svgProps={{
-                muiComponent: data.icon as OverridableComponent<
-                  Material.SvgIconTypeMap<{}, "svg">
-                >,
-                fill: textColor,
-                height: "18px",
-                width: "18px",
+                ...menuItemProps?.iconProps,
               }}
               noChangeColorSvg={true}
             />
           )}
-        {data.type === MenuItemType.WithIcon &&
-          data.icon &&
-          data.icon instanceof String && (
+        {menuItemProps.type === MenuItemType.WithIcon &&
+          menuItemProps?.iconProps &&
+          menuItemProps?.iconProps?.fileUrl && (
             <Button
               svgProps={{
-                fileUrl: data.icon as string,
-                fill: textColor,
-                height: "18px",
-                width: "18px",
+                ...menuItemProps?.iconProps,
               }}
               noChangeColorSvg={true}
             />
           )}
-        {data.type === MenuItemType.Expandable && (
+        {menuItemProps.type === MenuItemType.Expandable && (
           <Button
             svgProps={{
-              muiComponent: ArrowRightSharpIcon,
-              fill: textColor,
-              height: "18px",
-              width: "18px",
+              ...menuItemProps?.iconProps,
             }}
             noChangeColorSvg={true}
           />
@@ -216,11 +179,6 @@ function MenuItem({
   );
 }
 
-// Custom Divider
-type DividerProps = {
-  color: string;
-};
-
-function Divider({ color }: DividerProps): ReactElement {
+function Divider({ color }: { color: string }): ReactElement {
   return <Material.Divider sx={{ background: color }} />;
 }
