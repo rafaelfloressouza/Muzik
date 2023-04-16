@@ -5,6 +5,7 @@ import Button from "../buttons/Button";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import { Ordering } from "../../../utils/types";
 import CheckIcon from "@mui/icons-material/Check";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 export interface ISorterItem {
   id: string | number;
@@ -99,7 +100,9 @@ export default function Sorter({
           color: theme?.quinary(),
           hoverColor: theme?.senary(),
         }}
-        svgProps={{ muiComponent: ArrowDropDownSharpIcon }}
+        svgProps={{
+          muiComponent: !menuOpened ? ArrowDropDownSharpIcon : ArrowDropUpIcon,
+        }}
         ordering={Ordering.AfterText}
         colGap="2px"
       />
