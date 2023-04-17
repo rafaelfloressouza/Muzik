@@ -1,8 +1,11 @@
 import { ReactElement, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
-import Card from "./shared/Card";
+import Card from "./shared/containers/Card";
 import { ThemeContext } from "../contexts/ThemeContext";
-import Row from "./shared/Row";
+import Row from "./shared/containers/Row";
+import RowTitle, { TitleType } from "./shared/containers/Title";
+import HomeTitle from "./shared/containers/Title";
+import Title from "./shared/containers/Title";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;
@@ -49,11 +52,10 @@ export default function Home({ scrollChanged }: Props): ReactElement {
     const cardRows = [];
     for (let i = 0; i < 10; i++) {
       cardRows.push(
-        <Row
-          children={getCards()}
-          titleLeftStyle={{ text: "Electronic/Dance" }}
-          titleRightStyle={{ text: "Show All", color: theme?.quinary() }}
-        />
+        <>
+          <Title title={"Electronic/Dance"} type={TitleType.WithShowAll} />
+          <Row key={i} children={getCards()} />
+        </>
       );
     }
     return cardRows;
@@ -81,42 +83,4 @@ const HomeContainer = styled.div<{ bgColor: string }>`
   overflow-y: auto;
   padding-top: 90px;
   background-color: ${(props) => props.bgColor};
-`;
-
-const CardContainer = styled.div<{
-  showAllColor: string;
-}>`
-  display: flex;
-  flex-direction: column;
-  row-gap: 1.5rem;
-  width: 100%;
-
-  & .top {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    & .title {
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
-
-    & .show-all {
-      color: ${(props) => props.showAllColor};
-      font-size: 0.85rem;
-      font-weight: bold;
-      transition: ease-in-out 0.1s;
-
-      &:hover {
-        text-decoration: underline;
-        cursor: pointer;
-      }
-    }
-  }
-
-  /* & .bottom {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  } */
 `;

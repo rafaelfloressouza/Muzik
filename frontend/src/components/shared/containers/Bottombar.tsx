@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import { ThemeContext } from "../contexts/ThemeContext";
+import { ThemeContext } from "../../../contexts/ThemeContext";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
@@ -12,14 +12,15 @@ import QueueMusicOutlinedIcon from "@mui/icons-material/QueueMusicOutlined";
 import DevicesOutlinedIcon from "@mui/icons-material/DevicesOutlined";
 import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
 import OpenInFullOutlinedIcon from "@mui/icons-material/OpenInFullOutlined";
-import Slider from "./shared/Slider";
-import Svg from "./shared/Svg";
+import Slider from "../others/Slider";
+import Button from "../buttons/Button";
+import { IContainerProps } from "../../../utils/types";
 
 type Props = {
-  height: string;
+  bottombarProps: IContainerProps;
 };
 
-export default function Bottombar({ height }: Props) {
+export default function Bottombar({ bottombarProps }: Props) {
   const theme = useContext(ThemeContext);
 
   return (
@@ -27,7 +28,7 @@ export default function Bottombar({ height }: Props) {
       color={theme?.senary() ?? ""}
       bgColor={theme?.tertiary() ?? ""}
       borderColor={theme?.quinary(0.1) ?? ""}
-      height={height}
+      height={bottombarProps?.height ?? "auto"}
     >
       <LeftContainer
         artistNameTextColor={theme?.quinary() ?? ""}
@@ -39,17 +40,15 @@ export default function Bottombar({ height }: Props) {
           <span className="song-name">Sone - En Vivo</span>
           <span className="song-artists">Zoe</span>
         </div>
-        <Svg
-          svgStyle={{
+        <Button
+          svgProps={{
             muiComponent: FavoriteBorderIcon,
-            color: theme?.quinary(),
-            hoverColor: theme?.senary(),
             height: "20px",
             width: "20px",
           }}
-          tooltipStyle={{
-            tooltip: "Save to Your Library",
-            bgColor: theme?.secondary(),
+          tooltipProps={{
+            textStyle: { text: "Save to Your Library" },
+            containerStyle: { bgColor: theme?.secondary() },
           }}
         />
       </LeftContainer>
@@ -60,69 +59,57 @@ export default function Bottombar({ height }: Props) {
         hoverFill={theme?.senary() ?? ""}
       >
         <div className="music-controls">
-          <Svg
-            svgStyle={{
+          <Button
+            svgProps={{
               muiComponent: ShuffleTwoToneIcon,
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
               height: "22px",
               width: "22px",
             }}
-            tooltipStyle={{
-              tooltip: "Disable Shuffle",
-              bgColor: theme?.secondary(),
+            tooltipProps={{
+              textStyle: { text: "Disable Shuffle" },
+              containerStyle: { bgColor: theme?.secondary() },
             }}
           />
-          <Svg
-            svgStyle={{
+          <Button
+            svgProps={{
               muiComponent: SkipPreviousIcon,
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
               height: "32px",
               width: "32px",
             }}
-            tooltipStyle={{
-              tooltip: "Previous",
-              bgColor: theme?.secondary(),
+            tooltipProps={{
+              textStyle: { text: "Previous" },
+              containerStyle: { bgColor: theme?.secondary() },
             }}
           />
-          <Svg
-            svgStyle={{
+          <Button
+            svgProps={{
               muiComponent: PlayCircleIcon,
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
               height: "42px",
               width: "42px",
+              animate: true,
             }}
-            tooltipStyle={{
-              tooltip: "Play",
-              bgColor: theme?.secondary(),
+            tooltipProps={{
+              textStyle: { text: "Play" },
             }}
           />
-          <Svg
-            svgStyle={{
+          <Button
+            svgProps={{
               muiComponent: SkipNextIcon,
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
               height: "32px",
               width: "32px",
             }}
-            tooltipStyle={{
-              tooltip: "Next",
-              bgColor: theme?.secondary(),
+            tooltipProps={{
+              textStyle: { text: "Next" },
             }}
           />
-          <Svg
-            svgStyle={{
+          <Button
+            svgProps={{
               muiComponent: RepeatRoundedIcon,
-              color: theme?.quinary(),
-              hoverColor: theme?.senary(),
               height: "22px",
               width: "22px",
             }}
-            tooltipStyle={{
-              tooltip: "Enable Repeat One",
-              bgColor: theme?.secondary(),
+            tooltipProps={{
+              textStyle: { text: "Enable Repeat" },
             }}
           />
         </div>
@@ -136,72 +123,65 @@ export default function Bottombar({ height }: Props) {
         iconColor={theme?.quinary() ?? ""}
         iconHoverColor={theme?.senary() ?? ""}
       >
-        <Svg
-          svgStyle={{
+        <Button
+          svgProps={{
             muiComponent: MicNoneOutlinedIcon,
-            color: theme?.quinary(),
-            hoverColor: theme?.senary(),
+            fill: theme?.quinary(),
+            hoverFill: theme?.senary(),
             height: "22px",
             width: "22px",
           }}
-          tooltipStyle={{
-            tooltip: "Lyrics",
-            bgColor: theme?.secondary(),
+          tooltipProps={{
+            textStyle: { text: "Lyrics" },
           }}
         />
-        <Svg
-          svgStyle={{
+        <Button
+          svgProps={{
             muiComponent: QueueMusicOutlinedIcon,
-            color: theme?.quinary(),
-            hoverColor: theme?.senary(),
+            fill: theme?.quinary(),
+            hoverFill: theme?.senary(),
             height: "22px",
             width: "22px",
           }}
-          tooltipStyle={{
-            tooltip: "Queue",
-            bgColor: theme?.secondary(),
+          tooltipProps={{
+            textStyle: { text: "Queue" },
           }}
         />
-        <Svg
-          svgStyle={{
+        <Button
+          svgProps={{
             muiComponent: DevicesOutlinedIcon,
-            color: theme?.quinary(),
-            hoverColor: theme?.senary(),
+            fill: theme?.quinary(),
+            hoverFill: theme?.senary(),
             height: "22px",
             width: "22px",
           }}
-          tooltipStyle={{
-            tooltip: "Connect to a device",
-            bgColor: theme?.secondary(),
+          tooltipProps={{
+            textStyle: { text: "Connect to a device" },
           }}
         />
-        <Svg
-          svgStyle={{
+        <Button
+          svgProps={{
             muiComponent: VolumeUpOutlinedIcon,
-            color: theme?.quinary(),
-            hoverColor: theme?.senary(),
+            fill: theme?.quinary(),
+            hoverFill: theme?.senary(),
             height: "22px",
             width: "22px",
           }}
-          tooltipStyle={{
-            tooltip: "Mute",
-            bgColor: theme?.secondary(),
+          tooltipProps={{
+            textStyle: { text: "Mute" },
           }}
         />
         <div className="slider-container">
           <Slider width={"100px"} />
         </div>
-        <Svg
-          svgStyle={{
+        <Button
+          svgProps={{
             muiComponent: OpenInFullOutlinedIcon,
-            color: theme?.quinary(),
-            hoverColor: theme?.senary(),
-            height: "22px",
-            width: "22px",
+            height: "18px",
+            width: "18px",
           }}
-          tooltipStyle={{
-            tooltip: "Full screen",
-            bgColor: theme?.secondary(),
+          tooltipProps={{
+            textStyle: { text: "Full Screen" },
           }}
         />
       </RightContainer>
@@ -253,6 +233,7 @@ const LeftContainer = styled.div<{
     & span {
       &:hover {
         text-decoration: underline;
+        cursor: pointer;
         color: ${(props) => props.hoverColor};
       }
     }
@@ -264,16 +245,6 @@ const LeftContainer = styled.div<{
     & .song-artists {
       font-size: 0.7rem;
       color: ${(props) => props.artistNameTextColor};
-    }
-  }
-
-  & svg {
-    width: 20px;
-    height: 20px;
-    fill: ${(props) => props.heartFillColor};
-
-    &:hover {
-      fill: ${(props) => props.hoverColor};
     }
   }
 
@@ -302,34 +273,6 @@ const CenterContainer = styled.div<{
     flex-direction: row;
     align-items: center;
     column-gap: 15px;
-
-    & .play-btn {
-      width: 40px;
-      height: 40px;
-      fill: ${(props) => props.playBtnFill};
-    }
-
-    & .prev-btn,
-    .next-btn {
-      width: 30px;
-      height: 30px;
-      fill: ${(props) => props.otherBtnsFill};
-
-      &:hover {
-        fill: ${(props) => props.hoverFill};
-      }
-    }
-
-    & .repeat-btn,
-    .shuffle-btn {
-      width: 22px;
-      height: 22px;
-      fill: ${(props) => props.otherBtnsFill};
-
-      &:hover {
-        fill: ${(props) => props.hoverFill};
-      }
-    }
   }
 
   & .music-progress {
@@ -353,19 +296,4 @@ const RightContainer = styled.div<{
   justify-content: center;
   padding: 15px 20px;
   column-gap: 15px;
-
-  & .expand-btn {
-    height: 18px;
-    width: 18px;
-  }
-
-  & svg {
-    fill: ${(props) => props.iconColor};
-    height: 22px;
-    width: 22px;
-
-    &:hover {
-      fill: ${(props) => props.iconHoverColor};
-    }
-  }
 `;

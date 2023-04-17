@@ -1,12 +1,13 @@
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/shared/containers/Sidebar";
 import styled from "styled-components";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Bottombar from "./components/Bottombar";
+import Bottombar from "./components/shared/containers/Bottombar";
 import Home from "./components/Home";
 import { ReactElement, useEffect, useState } from "react";
-import Page from "./components/shared/Page";
+import Page from "./components/shared/containers/Page";
 import * as Material from "@mui/material";
 import Search from "./components/Search";
+import YourLibrary, { CategoryType } from "./components/YourLibrary";
 
 export enum PageType {
   Home = "Home",
@@ -37,8 +38,9 @@ export default function App() {
   const pageHeight = `calc(100% - ${bottomBarHeight})`;
 
   // State
-  const [page, setPage] = useState(PageType.Home);
+  const [page, setPage] = useState(PageType.YourLibrary);
   const [scrollTop, setScrollTop] = useState(0);
+  const [category, setCategory] = useState(CategoryType.Playlists);
 
   // useEffects
   useEffect(() => {
@@ -58,15 +60,21 @@ export default function App() {
     setScrollTop(scrollTop);
   };
 
+  const categoryChange = (category: CategoryType) => {
+    setCategory(category);
+  };
+
   // Helpers
   const getPageContent = (): ReactElement => {
     switch (page) {
       case PageType.Home:
         return <Home scrollChanged={scrollChanged} />;
       case PageType.Search:
-        return <Search />;
+        return <Search scrollChanged={scrollChanged} />;
       case PageType.YourLibrary:
-        return <></>;
+        return (
+          <YourLibrary scrollChanged={scrollChanged} category={category} />
+        );
       case PageType.CreatePlaylist:
         return <></>;
       case PageType.LikedSongs:
@@ -92,9 +100,11 @@ export default function App() {
               children={getPageContent()}
               page={page}
               scrollTop={scrollTop}
-            ></Page>
+              category={category}
+              categoryChange={categoryChange}
+            />
           </TopContainer>
-          <Bottombar height={bottomBarHeight} />
+          <Bottombar bottombarProps={{ height: bottomBarHeight }} />
         </ThemeProvider>
       </Material.ThemeProvider>
     </AppContainer>

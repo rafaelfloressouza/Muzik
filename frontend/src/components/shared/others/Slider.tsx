@@ -1,6 +1,6 @@
 import { ReactElement, useContext, useState } from "react";
 import * as Material from "@mui/material";
-import { ThemeContext } from "../../contexts/ThemeContext";
+import { ThemeContext } from "../../../contexts/ThemeContext";
 
 type Props = {
   width?: string;

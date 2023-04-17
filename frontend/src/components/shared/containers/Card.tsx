@@ -1,8 +1,8 @@
 import { ReactElement, useState } from "react";
 import styled from "styled-components";
-import PlayButton from "./PlayButton";
-import { ITextStyle } from "../../utils/types";
 import CloseIcon from "@mui/icons-material/Close";
+import { ITextProps } from "../../../utils/types";
+import { PlayButton } from "../buttons/Button";
 
 export enum CardType {
   WithImg,
@@ -18,16 +18,18 @@ export interface ICardStyle {
   hoverBgColor?: string;
   borderRadius?: string;
   closeIconColor?: string;
-  onClick?: () => void;
-  onClose?: () => void;
 }
 
 type Props = {
   cardStyle: ICardStyle;
-  titleStyle?: ITextStyle;
-  descStyle?: ITextStyle;
+  titleStyle?: ITextProps;
+  descStyle?: ITextProps;
   cardType?: CardType;
   closeable?: boolean;
+  descHoverable?: boolean;
+  onClick?: () => void;
+  onClose?: () => void;
+  onDescItemClick?: () => void;
 };
 
 export default function Card({
@@ -36,6 +38,10 @@ export default function Card({
   descStyle,
   cardType = CardType.WithImg,
   closeable = false,
+  descHoverable = false,
+  onClick,
+  onClose,
+  onDescItemClick,
 }: Props): ReactElement {
   const [hoveredOn, setHoveredOn] = useState(false);
 
@@ -49,18 +55,10 @@ export default function Card({
           onMouseEnter={() => setHoveredOn(true)}
           onMouseLeave={() => setHoveredOn(false)}
           hoveredOn={hoveredOn}
-          onClick={() => {
-            if (cardStyle?.onClick) cardStyle?.onClick();
-          }}
+          descHoverable={descHoverable}
+          onClick={onClick}
         >
-          {closeable && (
-            <CloseIcon
-              className="close-btn"
-              onClick={() => {
-                if (cardStyle?.onClose) cardStyle?.onClose();
-              }}
-            />
-          )}
+          {closeable && <CloseIcon className="close-btn" onClick={onClose} />}
           <div className="img-container">
             <div className="img"></div>
             <PlayButton />
@@ -68,17 +66,16 @@ export default function Card({
           <div className="info">
             <span className="title">Daily Mix 1</span>
             <div className="description">
-              <span>Jorge Drexler</span>, <span>Don Diablo</span>,
-              <span>Jorge Drexler</span>, <span>Don Diablo</span>
+              <span onClick={onDescItemClick}>Jorge Drexler, </span>
+              <span onClick={onDescItemClick}>Don Diablo, </span>
+              <span onClick={onDescItemClick}>John Jhonny, </span>
+              <span onClick={onDescItemClick}>Michael Jackson</span>
             </div>
           </div>
         </CardWithImgContainer>
       )}
       {cardType === CardType.Plain && (
-        <PlainCardContainer
-          bgColor={cardStyle?.bgColor ?? "white"}
-          titleStyle={titleStyle}
-        >
+        <PlainCardContainer cardStyle={cardStyle} titleStyle={titleStyle}>
           {titleStyle?.text}
           <div className="placeholder-img" />
         </PlainCardContainer>
@@ -89,9 +86,10 @@ export default function Card({
 
 const CardWithImgContainer = styled.div<{
   cardStyle?: ICardStyle;
-  titleStyle?: ITextStyle;
-  descStyle?: ITextStyle;
+  titleStyle?: ITextProps;
+  descStyle?: ITextProps;
   hoveredOn?: boolean;
+  descHoverable?: boolean;
 }>`
   display: flex;
   flex-direction: column;
@@ -124,14 +122,12 @@ const CardWithImgContainer = styled.div<{
       border-radius: 5px;
     }
 
-    & .svg {
+    & .btn {
       position: absolute;
       bottom: ${(props) => (props.hoveredOn ? "10px" : "0px")};
       right: 10px;
-      border-radius: 50%;
-      box-shadow: 0px 5px 5px 1px rgb(0, 0, 0, 0.2);
       opacity: ${(props) => (props.hoveredOn ? 1 : 0)};
-      transition: ease-in-out 0.2s;
+      transition: ease-in-out 0.3s;
     }
   }
 
@@ -139,7 +135,7 @@ const CardWithImgContainer = styled.div<{
     position: absolute;
     top: 10px;
     right: 10px;
-    z-index: 300;
+    z-index: 100;
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -147,7 +143,7 @@ const CardWithImgContainer = styled.div<{
     background-color: ${(props) => props.cardStyle?.closeIconColor};
 
     &:hover {
-      padding: 1px 1px 1px 1px;
+      transform: scale(1.1);
       cursor: default;
     }
   }
@@ -184,22 +180,31 @@ const CardWithImgContainer = styled.div<{
       font-size: ${(props) => props?.descStyle?.size ?? "0.85rem"};
       color: ${(props) => props?.descStyle?.color ?? "white"};
       line-height: 25px;
+      transition: ease-in-out 0.1s;
+
+      & :hover {
+        text-decoration: ${(props) =>
+          props.descHoverable ? "underline" : "none"};
+      }
     }
   }
 `;
 
 const PlainCardContainer = styled.div<{
-  bgColor: string;
-  titleStyle?: ITextStyle;
+  cardStyle: ICardStyle;
+  titleStyle?: ITextProps;
 }>`
   display: flex;
   flex-direction: column;
   align-items: top;
   justify-content: start;
-  height: 170px;
-  width: 170px;
+  min-height: 120px;
+  min-width: 120px;
+  height: ${(props) => props.cardStyle?.height ?? "100vw"};
+  width: ${(props) => props.cardStyle?.width};
+
   padding: 20px;
-  background-color: ${(props) => props.bgColor};
+  background-color: ${(props) => props.cardStyle.bgColor};
   border-radius: 10px;
   position: relative;
   overflow: hidden;
@@ -210,7 +215,7 @@ const PlainCardContainer = styled.div<{
 
   &:hover {
     cursor: pointer;
-    background-color: ${(props) => props.bgColor};
+    background-color: ${(props) => props.cardStyle.bgColor};
   }
 
   & .placeholder-img {
