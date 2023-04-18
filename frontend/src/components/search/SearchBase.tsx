@@ -1,37 +1,24 @@
 import { ReactElement, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { ThemeContext } from "../contexts/ThemeContext";
-import Card, { CardType } from "./shared/containers/Card";
-import Row from "./shared/containers/Row";
-import Title from "./shared/containers/Title";
+import { ThemeContext } from "../../contexts/ThemeContext";
+import Card, { CardType } from "../shared/containers/Card";
+import Row from "../shared/containers/Row";
+import Title from "../shared/containers/Title";
+import useHandleScroll from "../../hooks/useHandleScroll";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;
 };
 
-export default function Search({ scrollChanged }: Props): ReactElement {
+export default function SearchBase({ scrollChanged }: Props): ReactElement {
   // Contexts
   const theme = useContext(ThemeContext);
 
   // Refs
   const searchDivRef = useRef<HTMLDivElement | null>(null);
 
-  // useEffects
-  useEffect(() => {
-    const scrollHostElement = searchDivRef.current;
-    if (!scrollHostElement) return;
-    scrollHostElement.addEventListener("scroll", handleScroll, true);
-    return () => {
-      scrollHostElement.removeEventListener("scroll", handleScroll, true);
-    };
-  }, []);
-
-  // Handlers
-  const handleScroll = () => {
-    const scrollHostElement = searchDivRef.current;
-    if (!scrollHostElement) return;
-    scrollChanged(scrollHostElement.scrollTop);
-  };
+  // Hooks
+  useHandleScroll(searchDivRef, scrollChanged);
 
   // Helpers
   const getRecentRearches = (): ReactElement[] => {
@@ -40,7 +27,7 @@ export default function Search({ scrollChanged }: Props): ReactElement {
       cards.push(
         <Card
           key={i + 10}
-          cardStyle={{
+          cardProps={{
             height: "13vw",
             width: "9vw",
             bgColor: theme?.octonary(),
@@ -48,7 +35,7 @@ export default function Search({ scrollChanged }: Props): ReactElement {
             closeIconColor: theme?.secondary(0.2),
           }}
           closeable={true}
-          descStyle={{ color: theme?.quinary() }}
+          descProps={{ color: theme?.quinary() }}
           descHoverable
         />
       );
@@ -62,13 +49,13 @@ export default function Search({ scrollChanged }: Props): ReactElement {
       cardList.push(
         <Card
           key={i}
-          cardStyle={{
+          cardProps={{
             bgColor: "rgb(195, 64, 87, 0.5)",
             height: "7vw",
             width: "7vw",
           }}
           cardType={CardType.Plain}
-          titleStyle={{
+          titleProps={{
             color: theme?.senary(),
             size: "1.2rem",
             text: "Asian Pacific Islander Heritage Month",
@@ -90,7 +77,7 @@ export default function Search({ scrollChanged }: Props): ReactElement {
   };
 
   return (
-    <SearchContainer ref={searchDivRef} bgColor={theme?.tertiary() ?? ""}>
+    <SearchBaseContainer ref={searchDivRef} bgColor={theme?.tertiary() ?? ""}>
       <>
         <Title title="Recent Searches" />
         <Row justifyContent="left">{getRecentRearches()}</Row>
@@ -99,11 +86,11 @@ export default function Search({ scrollChanged }: Props): ReactElement {
         <Title title="Browse All" />
         {getCategoryCards()}
       </>
-    </SearchContainer>
+    </SearchBaseContainer>
   );
 }
 
-const SearchContainer = styled.div<{ bgColor: string }>`
+const SearchBaseContainer = styled.div<{ bgColor: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;

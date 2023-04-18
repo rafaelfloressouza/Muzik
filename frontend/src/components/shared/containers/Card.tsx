@@ -1,7 +1,7 @@
 import { ReactElement, useState } from "react";
 import styled from "styled-components";
 import CloseIcon from "@mui/icons-material/Close";
-import { ITextProps } from "../../../utils/types";
+import { ICardProps, IImgProps, ITextProps } from "../../../utils/types";
 import { PlayButton } from "../buttons/Button";
 
 export enum CardType {
@@ -9,21 +9,11 @@ export enum CardType {
   Plain,
 }
 
-export interface ICardStyle {
-  src?: string;
-  width?: string;
-  height?: string;
-  padding?: string;
-  bgColor?: string;
-  hoverBgColor?: string;
-  borderRadius?: string;
-  closeIconColor?: string;
-}
-
 type Props = {
-  cardStyle: ICardStyle;
-  titleStyle?: ITextProps;
-  descStyle?: ITextProps;
+  cardProps?: ICardProps;
+  imgProps?: IImgProps;
+  titleProps?: ITextProps;
+  descProps?: ITextProps;
   cardType?: CardType;
   closeable?: boolean;
   descHoverable?: boolean;
@@ -33,9 +23,10 @@ type Props = {
 };
 
 export default function Card({
-  cardStyle,
-  titleStyle,
-  descStyle,
+  cardProps,
+  imgProps,
+  titleProps,
+  descProps,
   cardType = CardType.WithImg,
   closeable = false,
   descHoverable = false,
@@ -49,9 +40,10 @@ export default function Card({
     <>
       {cardType === CardType.WithImg && (
         <CardWithImgContainer
-          cardStyle={cardStyle}
-          titleStyle={titleStyle}
-          descStyle={descStyle}
+          cardProps={cardProps}
+          imgProps={imgProps}
+          titleProps={titleProps}
+          descProps={descProps}
           onMouseEnter={() => setHoveredOn(true)}
           onMouseLeave={() => setHoveredOn(false)}
           hoveredOn={hoveredOn}
@@ -75,8 +67,8 @@ export default function Card({
         </CardWithImgContainer>
       )}
       {cardType === CardType.Plain && (
-        <PlainCardContainer cardStyle={cardStyle} titleStyle={titleStyle}>
-          {titleStyle?.text}
+        <PlainCardContainer cardProps={cardProps} titleProps={titleProps}>
+          {titleProps?.text}
           <div className="placeholder-img" />
         </PlainCardContainer>
       )}
@@ -85,9 +77,10 @@ export default function Card({
 }
 
 const CardWithImgContainer = styled.div<{
-  cardStyle?: ICardStyle;
-  titleStyle?: ITextProps;
-  descStyle?: ITextProps;
+  cardProps?: ICardProps;
+  imgProps?: IImgProps;
+  titleProps?: ITextProps;
+  descProps?: ITextProps;
   hoveredOn?: boolean;
   descHoverable?: boolean;
 }>`
@@ -96,17 +89,17 @@ const CardWithImgContainer = styled.div<{
   align-items: space-between;
   min-width: 140px;
   min-height: 180px;
-  width: ${(props) => props.cardStyle?.width ?? "140px"};
-  height: ${(props) => props.cardStyle?.height ?? "180px"};
-  padding: ${(props) => props.cardStyle?.padding ?? "15px"};
-  background-color: ${(props) => props.cardStyle?.bgColor ?? "white"};
-  border-radius: ${(props) => props.cardStyle?.borderRadius ?? "5px"};
+  width: ${(props) => props.cardProps?.width ?? "140px"};
+  height: ${(props) => props.cardProps?.height ?? "180px"};
+  padding: ${(props) => props.cardProps?.padding ?? "15px"};
+  background-color: ${(props) => props.cardProps?.bgColor ?? "white"};
+  border-radius: ${(props) => props.cardProps?.borderRadius ?? "5px"};
   transition: ease-in-out 0.2s;
   row-gap: 15px;
   position: relative;
 
   &:hover {
-    background-color: ${(props) => props.cardStyle?.hoverBgColor ?? "white"};
+    background-color: ${(props) => props.cardProps?.hoverBgColor ?? "white"};
     cursor: pointer;
   }
 
@@ -120,6 +113,9 @@ const CardWithImgContainer = styled.div<{
       height: 100%;
       width: 100%;
       border-radius: 5px;
+      border-radius: ${(props) => props.imgProps?.borderRadius};
+      box-shadow: ${(props) =>
+        props.imgProps?.boxShadow ?? "0 2px 15px 0px black"};
     }
 
     & .btn {
@@ -140,7 +136,7 @@ const CardWithImgContainer = styled.div<{
     height: 28px;
     border-radius: 50%;
     transition: ease-in-out 0.1s;
-    background-color: ${(props) => props.cardStyle?.closeIconColor};
+    background-color: ${(props) => props.cardProps?.closeIconColor};
 
     &:hover {
       transform: scale(1.1);
@@ -167,8 +163,8 @@ const CardWithImgContainer = styled.div<{
       -webkit-line-clamp: 1;
       line-clamp: 1;
       -webkit-box-orient: vertical;
-      font-size: ${(props) => props?.titleStyle?.size ?? "1rem"};
-      color: ${(props) => props?.titleStyle?.color ?? "white"};
+      font-size: ${(props) => props?.titleProps?.size ?? "1rem"};
+      color: ${(props) => props?.titleProps?.color ?? "white"};
       font-weight: bold;
     }
 
@@ -177,8 +173,8 @@ const CardWithImgContainer = styled.div<{
       -webkit-line-clamp: 2;
       line-clamp: 2;
       -webkit-box-orient: vertical;
-      font-size: ${(props) => props?.descStyle?.size ?? "0.85rem"};
-      color: ${(props) => props?.descStyle?.color ?? "white"};
+      font-size: ${(props) => props?.descProps?.size ?? "0.85rem"};
+      color: ${(props) => props?.descProps?.color ?? "white"};
       line-height: 25px;
       transition: ease-in-out 0.1s;
 
@@ -191,8 +187,9 @@ const CardWithImgContainer = styled.div<{
 `;
 
 const PlainCardContainer = styled.div<{
-  cardStyle: ICardStyle;
-  titleStyle?: ITextProps;
+  cardProps?: ICardProps;
+  imgProps?: IImgProps;
+  titleProps?: ITextProps;
 }>`
   display: flex;
   flex-direction: column;
@@ -200,22 +197,22 @@ const PlainCardContainer = styled.div<{
   justify-content: start;
   min-height: 120px;
   min-width: 120px;
-  height: ${(props) => props.cardStyle?.height ?? "100vw"};
-  width: ${(props) => props.cardStyle?.width};
+  height: ${(props) => props.cardProps?.height ?? "100vw"};
+  width: ${(props) => props.cardProps?.width};
 
   padding: 20px;
-  background-color: ${(props) => props.cardStyle.bgColor};
+  background-color: ${(props) => props.cardProps?.bgColor};
   border-radius: 10px;
   position: relative;
   overflow: hidden;
-  font-size: ${(props) => props.titleStyle?.size};
-  color: ${(props) => props.titleStyle?.color};
+  font-size: ${(props) => props.titleProps?.size};
+  color: ${(props) => props.titleProps?.color};
   font-weight: bold;
   line-height: 30px;
 
   &:hover {
     cursor: pointer;
-    background-color: ${(props) => props.cardStyle.bgColor};
+    background-color: ${(props) => props.cardProps?.bgColor};
   }
 
   & .placeholder-img {

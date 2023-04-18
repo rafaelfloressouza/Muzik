@@ -1,6 +1,5 @@
 import * as Material from "@mui/material";
 import { ReactElement, useContext } from "react";
-import ArrowRightSharpIcon from "@mui/icons-material/ArrowRightSharp";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import Button from "../buttons/Button";
 import { IContainerProps, ISvgProps, ITextProps } from "../../../utils/types";

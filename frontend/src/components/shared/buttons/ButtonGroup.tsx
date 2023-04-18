@@ -1,50 +1,44 @@
 import { ReactElement, useState } from "react";
-import { text } from "stream/consumers";
 import styled from "styled-components";
+import { IContainerProps, ITextProps } from "../../../utils/types";
 
-export interface IElement {
+export interface IButtonProps {
   id: string | number;
   name: string;
+  buttonProps?: IContainerProps;
+  textProps?: ITextProps;
 }
 
 type Props = {
-  elements: IElement[];
-  textColor: string;
-  bgColor: string;
-  bgHoverColor: string;
-  bgColorSelected: string;
-  onClick: (element: IElement) => void;
+  containerProps?: IContainerProps;
+  elements: IButtonProps[];
 };
 
 export default function ButtonGroup({
+  containerProps,
   elements,
-  textColor,
-  bgColor,
-  bgHoverColor,
-  bgColorSelected,
-  onClick,
 }: Props): ReactElement {
   const [selectedElId, setSelectedElId] = useState<string | number | null>(
     elements && elements.length > 0 ? elements[0].id : null
   );
 
   // Handlers
-  const buttonClick = (el: IElement) => {
+  const buttonClick = (el: IButtonProps) => {
     setSelectedElId(el.id);
-    onClick(el);
+    if (el?.buttonProps?.onClick) el?.buttonProps?.onClick();
   };
 
   return (
-    <ButtonGroupContainer className="btn-group">
-      {elements.map((el: IElement) => {
+    <ButtonGroupContainer className="btn-group" containerProps={containerProps}>
+      {elements.map((el: IButtonProps) => {
         return (
           <Button
             key={el.id}
-            textColor={textColor}
-            bgColor={selectedElId === el.id ? bgColorSelected : bgColor}
-            bgHoverColor={
-              selectedElId == el.id ? bgColorSelected : bgHoverColor
-            }
+            buttonProps={{
+              ...el.buttonProps,
+              selected: selectedElId !== el.id,
+            }}
+            textProps={el.textProps}
             onClick={() => buttonClick(el)}
           >
             {el.name}
@@ -55,32 +49,44 @@ export default function ButtonGroup({
   );
 }
 
-const ButtonGroupContainer = styled.div`
+const ButtonGroupContainer = styled.div<{ containerProps?: IContainerProps }>`
   display: flex;
   flex-direction: row;
-  font-weight: bold;
-  align-items: center;
+  align-items: left;
+  background-color: ${(props) => props.containerProps?.bgColor};
+  margin: ${(props) => props.containerProps?.margin};
+  padding: ${(props) => props.containerProps?.padding};
 `;
 
 const Button = styled.div<{
-  textColor: string;
-  bgColor: string;
-  bgHoverColor: string;
+  buttonProps?: IContainerProps;
+  textProps?: ITextProps;
 }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 14px 16px;
-  font-size: 0.78rem;
-  background-color: ${(props) => props.bgColor};
-  border-radius: 5px;
-  color: ${(props) => props.textColor};
-  margin-right: 2.2%;
+  padding: ${(props) => props.buttonProps?.padding ?? "14px 16px"};
+  font-size: ${(props) => props.textProps?.size ?? "0.78rem"};
+  font-weight: ${(props) => props.textProps?.weight ?? "bold"};
+  background-color: ${(props) =>
+    props?.buttonProps?.selected
+      ? props.buttonProps?.bgColor
+      : props.buttonProps?.selectedBgColor};
+  border-radius: ${(props) => props.buttonProps?.borderRadius ?? "5px"};
+  color: ${(props) =>
+    !props?.buttonProps?.selected
+      ? props.textProps?.selectedColor
+      : props.textProps?.color};
+  margin: ${(props) => props.buttonProps?.margin ?? "2.2%"};
   transition: none;
+  white-space: nowrap;
 
   &:hover {
-    background-color: ${(props) => props.bgHoverColor};
+    background-color: ${(props) =>
+      !props?.buttonProps?.selected
+        ? props.buttonProps?.selectedBgColor
+        : props.buttonProps?.hoverBgColor};
     cursor: pointer;
   }
 `;

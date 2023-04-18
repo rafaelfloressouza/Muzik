@@ -1,13 +1,9 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
 import Navbar from "./Navbar";
 import { PageType } from "../../../App";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import { CategoryType } from "../../YourLibrary";
-import { SearchbarDark } from "../others/Searchbar";
-import Button from "../buttons/Button";
-import { Ordering } from "../../../utils/types";
-import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
 
 type Props = {
   width: string;
@@ -17,6 +13,7 @@ type Props = {
   scrollTop?: number;
   category?: CategoryType;
   categoryChange: (category: CategoryType) => void;
+  onSearch: (searchTxt: string) => void;
 };
 
 export default function Page({
@@ -26,6 +23,7 @@ export default function Page({
   page,
   scrollTop,
   category,
+  onSearch,
   categoryChange,
 }: Props): ReactElement {
   // Constant
@@ -59,6 +57,7 @@ export default function Page({
         }}
         page={page}
         categoryChange={categoryChange}
+        onSearch={onSearch}
       />
       {children}
     </PageContainer>
