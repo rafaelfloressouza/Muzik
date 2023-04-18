@@ -7,6 +7,7 @@ export interface ITextProps {
   text?: string;
   size?: string;
   color?: string;
+  selectedColor?: string;
   hoverColor?: string;
   weight?: string;
   onClick?: () => void;
@@ -17,6 +18,7 @@ export interface IContainerProps {
   height?: string;
   bgColor?: string;
   hoverBgColor?: string;
+  selectedBgColor?: string;
   borderRadius?: string;
   padding?: string;
   boxShadow?: string;
@@ -29,8 +31,9 @@ export interface IContainerProps {
   bottom?: string;
   animate?: boolean;
   selected?: boolean;
-  onClick?: () => void;
+  onClick?: (a?: any, b?: any) => void;
   refEl?: React.MutableRefObject<HTMLDivElement | null>;
+  margin?: string;
 }
 
 export interface ISvgProps extends IContainerProps {

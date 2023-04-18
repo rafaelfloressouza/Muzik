@@ -37,7 +37,10 @@ export default function SearchbarLight({
       {searchText && (
         <CloseRoundedIcon
           sx={{ color: theme?.secondary() }}
-          onClick={() => setSearchText("")}
+          onClick={() => {
+            setSearchText("");
+            if (onSearch) onSearch("");
+          }}
         />
       )}
     </SearchbarContainer>

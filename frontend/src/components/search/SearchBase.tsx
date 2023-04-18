@@ -1,15 +1,15 @@
 import { ReactElement, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { ThemeContext } from "../contexts/ThemeContext";
-import Card, { CardType } from "./shared/containers/Card";
-import Row from "./shared/containers/Row";
-import Title from "./shared/containers/Title";
+import { ThemeContext } from "../../contexts/ThemeContext";
+import Card, { CardType } from "../shared/containers/Card";
+import Row from "../shared/containers/Row";
+import Title from "../shared/containers/Title";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;
 };
 
-export default function Search({ scrollChanged }: Props): ReactElement {
+export default function SearchBase({ scrollChanged }: Props): ReactElement {
   // Contexts
   const theme = useContext(ThemeContext);
 
@@ -90,7 +90,7 @@ export default function Search({ scrollChanged }: Props): ReactElement {
   };
 
   return (
-    <SearchContainer ref={searchDivRef} bgColor={theme?.tertiary() ?? ""}>
+    <SearchBaseContainer ref={searchDivRef} bgColor={theme?.tertiary() ?? ""}>
       <>
         <Title title="Recent Searches" />
         <Row justifyContent="left">{getRecentRearches()}</Row>
@@ -99,11 +99,11 @@ export default function Search({ scrollChanged }: Props): ReactElement {
         <Title title="Browse All" />
         {getCategoryCards()}
       </>
-    </SearchContainer>
+    </SearchBaseContainer>
   );
 }
 
-const SearchContainer = styled.div<{ bgColor: string }>`
+const SearchBaseContainer = styled.div<{ bgColor: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;

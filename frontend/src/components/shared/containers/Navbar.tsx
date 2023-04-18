@@ -5,7 +5,7 @@ import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import Avatar from "../others/Avatar";
-import ButtonGroup, { IElement } from "../buttons/ButtonGroup";
+import ButtonGroup, { IButtonProps } from "../buttons/ButtonGroup";
 import { CategoryType } from "../../YourLibrary";
 import { PlayButton } from "../buttons/Button";
 import { IContainerProps } from "../../../utils/types";
@@ -15,13 +15,25 @@ type Props = {
   page: PageType;
   navbarProps: IContainerProps;
   categoryChange: (category: CategoryType) => void;
+  onSearch: (searchTxt: string) => void;
 };
 
 export default function Navbar({
   navbarProps,
   page,
   categoryChange,
+  onSearch,
 }: Props): ReactElement {
+  // constants
+  const categories = [
+    { id: 1, name: "Playlists" },
+    { id: 2, name: "Podcasts" },
+    { id: 3, name: "Audiobooks" },
+    { id: 4, name: "Artists" },
+    { id: 5, name: "Albums" },
+  ];
+
+  // Contexts
   const theme = useContext(ThemeContext);
 
   // Helpers
@@ -51,25 +63,34 @@ export default function Navbar({
     if (page !== PageType.YourLibrary) return <></>;
     return (
       <ButtonGroup
-        elements={[
-          { id: 1, name: "Playlists" },
-          { id: 2, name: "Podcasts" },
-          { id: 3, name: "Audiobooks" },
-          { id: 4, name: "Artists" },
-          { id: 5, name: "Albums" },
-        ]}
-        textColor={theme?.senary() ?? ""}
-        bgColor={"transparent"}
-        bgHoverColor={"transparent"}
-        bgColorSelected={theme?.quaternary(0.5) ?? ""}
-        onClick={(el: IElement) => categoryChange(el.name as CategoryType)}
+        elements={categories.map(
+          ({
+            id,
+            name,
+          }: {
+            id: string | number;
+            name: string;
+          }): IButtonProps => {
+            return {
+              id: id,
+              name: name,
+              textProps: { color: theme?.senary() },
+              buttonProps: {
+                bgColor: "transparent",
+                hoverBgColor: "transparent",
+                selectedBgColor: theme?.quaternary(0.5),
+                onClick: () => categoryChange(name as CategoryType),
+              },
+            };
+          }
+        )}
       />
     );
   };
 
   const getSearchBar = (): ReactElement => {
     if (page !== PageType.Search) return <></>;
-    return <Searchbar />;
+    return <Searchbar onSearch={onSearch} />;
   };
 
   const getPlayBtn = (): ReactElement => {

@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
 import Navbar from "./Navbar";
 import { PageType } from "../../../App";
@@ -8,6 +8,7 @@ import { SearchbarDark } from "../others/Searchbar";
 import Button from "../buttons/Button";
 import { Ordering } from "../../../utils/types";
 import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
+import ButtonGroup, { IButtonProps } from "../buttons/ButtonGroup";
 
 type Props = {
   width: string;
@@ -17,6 +18,7 @@ type Props = {
   scrollTop?: number;
   category?: CategoryType;
   categoryChange: (category: CategoryType) => void;
+  onSearch: (searchTxt: string) => void;
 };
 
 export default function Page({
@@ -26,6 +28,7 @@ export default function Page({
   page,
   scrollTop,
   category,
+  onSearch,
   categoryChange,
 }: Props): ReactElement {
   // Constant
@@ -59,6 +62,7 @@ export default function Page({
         }}
         page={page}
         categoryChange={categoryChange}
+        onSearch={onSearch}
       />
       {children}
     </PageContainer>

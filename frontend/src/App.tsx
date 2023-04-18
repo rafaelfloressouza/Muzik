@@ -6,8 +6,9 @@ import Home from "./components/Home";
 import { ReactElement, useEffect, useState } from "react";
 import Page from "./components/shared/containers/Page";
 import * as Material from "@mui/material";
-import Search from "./components/Search";
 import YourLibrary, { CategoryType } from "./components/YourLibrary";
+import SearchBase from "./components/search/SearchBase";
+import Search from "./components/search/Search";
 
 export enum PageType {
   Home = "Home",
@@ -41,6 +42,7 @@ export default function App() {
   const [page, setPage] = useState(PageType.YourLibrary);
   const [scrollTop, setScrollTop] = useState(0);
   const [category, setCategory] = useState(CategoryType.Playlists);
+  const [search, setSearch] = useState<string>("");
 
   // useEffects
   useEffect(() => {
@@ -51,18 +53,14 @@ export default function App() {
   }, []);
 
   // Handlers
-  const pageChange = (newPage: PageType) => {
-    if (newPage === page) return;
-    setPage(newPage);
-  };
+  const pageChange = (newPage: PageType) =>
+    setPage(newPage === page ? page : newPage);
 
-  const scrollChanged = (scrollTop: number) => {
-    setScrollTop(scrollTop);
-  };
+  const scrollChanged = (scrollTop: number) => setScrollTop(scrollTop);
 
-  const categoryChange = (category: CategoryType) => {
-    setCategory(category);
-  };
+  const categoryChange = (category: CategoryType) => setCategory(category);
+
+  const onSearch = (text: string) => setSearch(text);
 
   // Helpers
   const getPageContent = (): ReactElement => {
@@ -70,7 +68,11 @@ export default function App() {
       case PageType.Home:
         return <Home scrollChanged={scrollChanged} />;
       case PageType.Search:
-        return <Search scrollChanged={scrollChanged} />;
+        if (search) {
+          return <Search />;
+        } else {
+          return <SearchBase scrollChanged={scrollChanged} />;
+        }
       case PageType.YourLibrary:
         return (
           <YourLibrary scrollChanged={scrollChanged} category={category} />
@@ -102,6 +104,7 @@ export default function App() {
               scrollTop={scrollTop}
               category={category}
               categoryChange={categoryChange}
+              onSearch={onSearch}
             />
           </TopContainer>
           <Bottombar bottombarProps={{ height: bottomBarHeight }} />
