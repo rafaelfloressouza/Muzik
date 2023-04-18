@@ -6,6 +6,7 @@ import Card from "./shared/containers/Card";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
 import Button from "./shared/buttons/Button";
 import Title, { TitleType } from "./shared/containers/Title";
+import useHandleScroll from "../hooks/useHandleScroll";
 
 export enum CategoryType {
   Playlists = "Playlists",
@@ -33,22 +34,8 @@ export default function YourLibrary({
   // Refs
   const yourLibraryDivRef = useRef<HTMLDivElement | null>(null);
 
-  // useEffects
-  useEffect(() => {
-    const scrollHostElement = yourLibraryDivRef.current;
-    if (!scrollHostElement) return;
-    scrollHostElement.addEventListener("scroll", handleScroll, true);
-    return () => {
-      scrollHostElement.removeEventListener("scroll", handleScroll, true);
-    };
-  }, []);
-
-  // Handlers
-  const handleScroll = () => {
-    const scrollHostElement = yourLibraryDivRef.current;
-    if (!scrollHostElement) return;
-    scrollChanged(scrollHostElement.scrollTop);
-  };
+  // Hooks
+  useHandleScroll(yourLibraryDivRef, scrollChanged);
 
   // Helpers
   const getData = (): ReactElement[] => {

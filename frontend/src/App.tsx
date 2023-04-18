@@ -52,6 +52,12 @@ export default function App() {
     return () => document.removeEventListener("contextmenu", handleRightClick);
   }, []);
 
+  useEffect(() => {
+    if (page !== PageType.Search) {
+      setSearch("");
+    }
+  }, [page]);
+
   // Handlers
   const pageChange = (newPage: PageType) =>
     setPage(newPage === page ? page : newPage);
@@ -69,7 +75,7 @@ export default function App() {
         return <Home scrollChanged={scrollChanged} />;
       case PageType.Search:
         if (search) {
-          return <Search />;
+          return <Search scrollChanged={scrollChanged} />;
         } else {
           return <SearchBase scrollChanged={scrollChanged} />;
         }

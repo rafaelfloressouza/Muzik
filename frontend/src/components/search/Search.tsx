@@ -1,9 +1,14 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import ButtonGroup, { IButtonProps } from "../shared/buttons/ButtonGroup";
+import useHandleScroll from "../../hooks/useHandleScroll";
 
-export default function Search(): ReactElement {
+type Props = {
+  scrollChanged: (scrollTop: number) => void;
+};
+
+export default function Search({ scrollChanged }: Props): ReactElement {
   // Constants
   const categories = [
     { id: 1, name: "All" },
@@ -17,8 +22,14 @@ export default function Search(): ReactElement {
     { id: 9, name: "Audiobooks" },
   ];
 
+  // Refs
+  const searchDivRef = useRef<HTMLDivElement | null>(null);
+
   // Contexts
   const theme = useContext(ThemeContext);
+
+  // Hooks
+  useHandleScroll(searchDivRef, scrollChanged);
 
   return (
     <>
@@ -60,7 +71,7 @@ export default function Search(): ReactElement {
           }
         )}
       />
-      <SearchContainer></SearchContainer>
+      <SearchContainer ref={searchDivRef}>Test</SearchContainer>
     </>
   );
 }

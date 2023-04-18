@@ -3,9 +3,8 @@ import styled from "styled-components";
 import Card from "./shared/containers/Card";
 import { ThemeContext } from "../contexts/ThemeContext";
 import Row from "./shared/containers/Row";
-import RowTitle, { TitleType } from "./shared/containers/Title";
-import HomeTitle from "./shared/containers/Title";
-import Title from "./shared/containers/Title";
+import Title, { TitleType } from "./shared/containers/Title";
+import useHandleScroll from "../hooks/useHandleScroll";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;
@@ -18,15 +17,8 @@ export default function Home({ scrollChanged }: Props): ReactElement {
   // Refs
   const homeDivRef = useRef<HTMLDivElement | null>(null);
 
-  // useEffects
-  useEffect(() => {
-    const scrollHostElement = homeDivRef.current;
-    if (!scrollHostElement) return;
-    scrollHostElement.addEventListener("scroll", handleScroll, true);
-    return () => {
-      scrollHostElement.removeEventListener("scroll", handleScroll, true);
-    };
-  }, []);
+  // Hooks
+  useHandleScroll(homeDivRef, scrollChanged);
 
   // Helpers
   const getCards = () => {
@@ -59,13 +51,6 @@ export default function Home({ scrollChanged }: Props): ReactElement {
       );
     }
     return cardRows;
-  };
-
-  // Handlers
-  const handleScroll = () => {
-    const scrollHostElement = homeDivRef.current;
-    if (!scrollHostElement) return;
-    scrollChanged(scrollHostElement.scrollTop);
   };
 
   return (

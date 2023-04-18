@@ -4,11 +4,6 @@ import Navbar from "./Navbar";
 import { PageType } from "../../../App";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import { CategoryType } from "../../YourLibrary";
-import { SearchbarDark } from "../others/Searchbar";
-import Button from "../buttons/Button";
-import { Ordering } from "../../../utils/types";
-import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
-import ButtonGroup, { IButtonProps } from "../buttons/ButtonGroup";
 
 type Props = {
   width: string;

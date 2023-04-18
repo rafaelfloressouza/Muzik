@@ -4,6 +4,7 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 import Card, { CardType } from "../shared/containers/Card";
 import Row from "../shared/containers/Row";
 import Title from "../shared/containers/Title";
+import useHandleScroll from "../../hooks/useHandleScroll";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;
@@ -16,22 +17,8 @@ export default function SearchBase({ scrollChanged }: Props): ReactElement {
   // Refs
   const searchDivRef = useRef<HTMLDivElement | null>(null);
 
-  // useEffects
-  useEffect(() => {
-    const scrollHostElement = searchDivRef.current;
-    if (!scrollHostElement) return;
-    scrollHostElement.addEventListener("scroll", handleScroll, true);
-    return () => {
-      scrollHostElement.removeEventListener("scroll", handleScroll, true);
-    };
-  }, []);
-
-  // Handlers
-  const handleScroll = () => {
-    const scrollHostElement = searchDivRef.current;
-    if (!scrollHostElement) return;
-    scrollChanged(scrollHostElement.scrollTop);
-  };
+  // Hooks
+  useHandleScroll(searchDivRef, scrollChanged);
 
   // Helpers
   const getRecentRearches = (): ReactElement[] => {

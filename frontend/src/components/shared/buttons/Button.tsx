@@ -1,6 +1,5 @@
 import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
-
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import Tooltip from "../others/Tooltip";
