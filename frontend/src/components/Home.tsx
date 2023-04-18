@@ -35,13 +35,13 @@ export default function Home({ scrollChanged }: Props): ReactElement {
       cards.push(
         <Card
           key={i}
-          cardStyle={{
+          cardProps={{
             height: "13vw",
             width: "9vw",
             bgColor: theme?.octonary(),
             hoverBgColor: theme?.secondary(),
           }}
-          descStyle={{ color: theme?.quinary() }}
+          descProps={{ color: theme?.quinary() }}
         />
       );
     }

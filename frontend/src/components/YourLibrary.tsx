@@ -59,13 +59,13 @@ export default function YourLibrary({
         playlists.push(
           <Card
             key={j}
-            cardStyle={{
+            cardProps={{
               height: "13vw",
               width: "9vw",
               bgColor: theme?.octonary(),
               hoverBgColor: theme?.secondary(),
             }}
-            descStyle={{ color: theme?.quinary() }}
+            descProps={{ color: theme?.quinary() }}
             descHoverable={category === CategoryType.Albums}
           />
         );

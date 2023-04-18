@@ -40,7 +40,7 @@ export default function SearchBase({ scrollChanged }: Props): ReactElement {
       cards.push(
         <Card
           key={i + 10}
-          cardStyle={{
+          cardProps={{
             height: "13vw",
             width: "9vw",
             bgColor: theme?.octonary(),
@@ -48,7 +48,7 @@ export default function SearchBase({ scrollChanged }: Props): ReactElement {
             closeIconColor: theme?.secondary(0.2),
           }}
           closeable={true}
-          descStyle={{ color: theme?.quinary() }}
+          descProps={{ color: theme?.quinary() }}
           descHoverable
         />
       );
@@ -62,13 +62,13 @@ export default function SearchBase({ scrollChanged }: Props): ReactElement {
       cardList.push(
         <Card
           key={i}
-          cardStyle={{
+          cardProps={{
             bgColor: "rgb(195, 64, 87, 0.5)",
             height: "7vw",
             width: "7vw",
           }}
           cardType={CardType.Plain}
-          titleStyle={{
+          titleProps={{
             color: theme?.senary(),
             size: "1.2rem",
             text: "Asian Pacific Islander Heritage Month",

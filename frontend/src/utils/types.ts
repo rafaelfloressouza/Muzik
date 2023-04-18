@@ -47,8 +47,11 @@ export interface ISvgProps extends IContainerProps {
 }
 
 export interface ICardProps extends IContainerProps {
-  src?: string;
   closeIconColor?: string;
+}
+
+export interface IImgProps extends IContainerProps {
+  src?: string;
 }
 
 export interface ITooltipProps {
