@@ -9,6 +9,7 @@ import * as Material from "@mui/material";
 import YourLibrary, { CategoryType } from "./components/YourLibrary";
 import SearchBase from "./components/search/SearchBase";
 import Search from "./components/search/Search";
+import CreatePlaylist from "./components/CreatePlaylist";
 
 export enum PageType {
   Home = "Home",
@@ -39,7 +40,7 @@ export default function App() {
   const pageHeight = `calc(100% - ${bottomBarHeight})`;
 
   // State
-  const [page, setPage] = useState(PageType.YourLibrary);
+  const [page, setPage] = useState(PageType.CreatePlaylist);
   const [scrollTop, setScrollTop] = useState(0);
   const [category, setCategory] = useState(CategoryType.Playlists);
   const [search, setSearch] = useState<string>("");
@@ -84,7 +85,7 @@ export default function App() {
           <YourLibrary scrollChanged={scrollChanged} category={category} />
         );
       case PageType.CreatePlaylist:
-        return <></>;
+        return <CreatePlaylist scrollChanged={scrollChanged} />;
       case PageType.LikedSongs:
         return <></>;
       default:

@@ -88,6 +88,8 @@ const ButtonContainer = styled.div<{
   font-weight: ${(props) => props?.textProps?.weight};
   box-shadow: ${(props) => props?.buttonProps?.boxShadow};
   transition: ease-in-out 0.1s;
+  border: ${(props) => props?.buttonProps?.border};
+  margin: ${(props) => props?.buttonProps?.margin};
 
   &:hover {
     background-color: ${(props) =>
@@ -95,9 +97,11 @@ const ButtonContainer = styled.div<{
         ? props.buttonProps?.hoverBgColor
         : props.buttonProps?.bgColor};
     color: ${(props) => props.textProps?.hoverColor};
-    cursor: pointer;
+    cursor: ${(props) => props?.buttonProps?.hoverCursor ?? "pointer"};
     transform: ${(props) =>
       props.buttonProps?.animate ? "scale(1.05)" : "none"};
+    text-decoration: ${(props) => props.textProps?.hoverDecoration};
+    border: ${(props) => props?.buttonProps?.hoverBorder};
   }
 `;
 
@@ -152,7 +156,6 @@ const SvgContainer = styled.div<{
     box-shadow: ${(props) => props.svgProps?.boxShadow};
 
     &:hover {
-      cursor: pointer;
       fill: ${(props) => props.svgProps.hoverFill ?? props.svgProps?.fill};
       transform: ${(props) =>
         props.svgProps?.animate ? "scale(1.05)" : "none"};

@@ -89,15 +89,21 @@ const SearchbarContainer = styled.div<{
 
 export function SearchbarDark({
   searchIn = "Playlist",
+  width,
   onSearch,
+  onClickAway = true,
+  expanded = false,
 }: {
   searchIn?: string;
+  width?: number;
   onSearch?: (searchTxt: string) => void;
+  onClickAway?: boolean;
+  expanded?: boolean;
 }): ReactElement {
   // Content
 
   const [searchText, setSearchText] = useState("");
-  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [containerWidth, setContainerWidth] = useState<number>(width ?? 0);
 
   // Contexts
   const theme = useContext(ThemeContext);
@@ -106,7 +112,7 @@ export function SearchbarDark({
     <>
       <Material.ClickAwayListener
         onClickAway={() => {
-          setContainerWidth(0);
+          if (onClickAway) setContainerWidth(0);
           setSearchText("");
         }}
       >
@@ -118,6 +124,7 @@ export function SearchbarDark({
           textProps={{
             color: theme?.quinary(),
           }}
+          expanded={expanded}
         >
           <div>
             <SearchIcon sx={{ color: theme?.quinary() ?? "" }} id="left-btn" />
@@ -131,7 +138,11 @@ export function SearchbarDark({
               }}
             />
             <CloseRoundedIcon
-              sx={{ color: theme?.quinary() ?? "", zIndex: "400" }}
+              sx={{
+                color: theme?.quinary() ?? "",
+                zIndex: "400",
+                opacity: searchText.length > 0 ? 1 : 0,
+              }}
               onClick={() => setSearchText("")}
             />
           </div>
@@ -160,11 +171,12 @@ export function SearchbarDark({
 const SearchbarDarkContainer = styled.div<{
   searchbarProps: IContainerProps;
   textProps: ITextProps;
+  expanded: boolean;
 }>`
   display: flex;
   align-items: center;
   justify-content: right;
-  width: 180px;
+  width: ${(props) => (props.expanded ? props.searchbarProps?.width : "180px")};
   position: relative;
 
   & div {
@@ -172,7 +184,7 @@ const SearchbarDarkContainer = styled.div<{
     align-items: center;
     column-gap: 5px;
     border-radius: 5px;
-    position: absolute;
+    position: ${(props) => (props.expanded ? "relative" : "absolute")};
     width: ${(props) => props.searchbarProps?.width};
     opacity: ${(props) => (props.searchbarProps?.width !== "0px" ? 1 : 0)};
     transition: linear 0.2s;
@@ -184,7 +196,8 @@ const SearchbarDarkContainer = styled.div<{
   & input {
     background-color: transparent;
     border: none;
-    max-width: 120px;
+    width: ${(props) =>
+      props.expanded ? `calc(${props.searchbarProps.width} - 60px)` : "120px"};
     font-size: 0.75rem;
     font-weight: bold;
     color: ${(props) => props.textProps?.color};
