@@ -10,6 +10,9 @@ export interface ITextProps {
   selectedColor?: string;
   hoverColor?: string;
   weight?: string;
+  hoverDecoration?: string;
+  margin?: string;
+  hoverCursor?: string;
   onClick?: () => void;
 }
 
@@ -20,8 +23,9 @@ export interface IContainerProps {
   hoverBgColor?: string;
   selectedBgColor?: string;
   borderRadius?: string;
-  padding?: string;
+  padding?: string | number;
   boxShadow?: string;
+  alignItems?: string;
   justifyContent?: string;
   position?: "relative" | "absolute";
   opacity?: string;
@@ -31,6 +35,9 @@ export interface IContainerProps {
   bottom?: string;
   animate?: boolean;
   selected?: boolean;
+  hoverCursor?: string;
+  border?: string;
+  hoverBorder?: string;
   onClick?: (a?: any, b?: any) => void;
   refEl?: React.MutableRefObject<HTMLDivElement | null>;
   margin?: string;
