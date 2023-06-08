@@ -37,6 +37,18 @@ export default function Sorter({
   // Refs
   const filterOrderBtnRef = useRef<HTMLDivElement | null>(null);
 
+  // Helpers
+  const getButtonText = (): string => {
+    if (selectedItem != null) {
+      if (typeof selectedItem === "string") {
+        return items?.find((el) => el.id === selectedItem)?.text ?? "";
+      } else if (items && items.length > 0) {
+        return items[selectedItem].text;
+      }
+    }
+    return "";
+  };
+
   return (
     <>
       <Menu
@@ -96,7 +108,7 @@ export default function Sorter({
           refEl: filterOrderBtnRef,
         }}
         textProps={{
-          text: "Custom order",
+          text: getButtonText(),
           color: theme?.quinary(),
           hoverColor: theme?.senary(),
         }}

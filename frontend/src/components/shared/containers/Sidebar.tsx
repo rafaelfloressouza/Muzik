@@ -1,15 +1,19 @@
 import { ReactElement, useContext } from "react";
 import styled from "styled-components";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
-import AddBoxIcon from "@mui/icons-material/AddBox";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import { PageType } from "../../../App";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { SvgIconTypeMap } from "@mui/material";
 import Button from "../buttons/Button";
+import ButtonGroup, { IButtonProps } from "../buttons/ButtonGroup";
+import AddIcon from "@mui/icons-material/Add";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { SearchbarDark } from "../others/Searchbar";
+import Sorter from "../others/Sorter";
+import { IContainerProps, ITextProps } from "../../../utils/types";
 
 type Props = {
   width: string;
@@ -31,37 +35,43 @@ export default function Sidebar({
       muiComponent: SearchOutlinedIcon,
       pageType: PageType.Search,
     },
+  ];
+  const bottomButtons = [
     {
       muiComponent: LibraryBooksOutlinedIcon,
       pageType: PageType.YourLibrary,
     },
   ];
-
-  const bottomButtons = [
-    {
-      muiComponent: AddBoxIcon,
-      pageType: PageType.CreatePlaylist,
-    },
-    {
-      muiComponent: LibraryBooksOutlinedIcon,
-      pageType: PageType.LikedSongs,
-    },
+  const categories = [
+    { id: 1, name: "Playlists" },
+    { id: 2, name: "Podcasts & Shows" },
+    { id: 3, name: "Albums" },
+    { id: 4, name: "Artists" },
   ];
 
   // Contexts
   const theme = useContext(ThemeContext);
 
-  const getPlaylists = () => {
+  const getLibraryItems = () => {
     const playlists = [];
     for (let i = 0; i < 40; i++) {
       playlists.push(
-        <PlayList
+        <LibraryItem
           key={i}
-          color={theme?.quinary() ?? ""}
-          hoverColor={theme?.senary() ?? ""}
+          itemProps={{ hoverBgColor: theme?.secondary() }}
+          titleProps={{
+            color: theme?.senary(),
+            weight: "bold",
+            size: "0.9rem",
+          }}
+          subtitleProps={{ color: theme?.quinary() }}
         >
-          Playlist #{i + 1}
-        </PlayList>
+          <img src="/images/test-img.png" />
+          <div className="item-info">
+            <span className="item-title">Electronic Music</span>
+            <span className="item-subtitle">Playlist * Rafael</span>
+          </div>
+        </LibraryItem>
       );
     }
     return playlists;
@@ -91,6 +101,7 @@ export default function Sidebar({
           color: theme?.quinary(),
           hoverColor: theme?.senary(),
           weight: "bold",
+          size: "0.90rem",
         }}
       />
     );
@@ -102,33 +113,114 @@ export default function Sidebar({
         <TopContainer
           color={theme?.quinary() ?? ""}
           hoverColor={theme?.senary() ?? ""}
+          bgColor={theme?.tertiary() ?? ""}
         >
-          <Button
-            id="elipsis-btn"
-            svgProps={{
-              muiComponent: MoreHorizIcon,
-              fill: theme?.senary(),
-              height: "30px",
-              width: "30px",
-            }}
-          />
-          <div className="top-buttons">
-            {topButtons.map((el, idx) => {
-              return getButton(el.muiComponent, el.pageType, idx);
-            })}
-          </div>
-          <div className="bottom-buttons">
-            {bottomButtons.map((el, idx) => {
-              return getButton(el.muiComponent, el.pageType, idx);
-            })}
-          </div>
+          {topButtons.map((el, idx) => {
+            return getButton(el.muiComponent, el.pageType, idx);
+          })}
         </TopContainer>
-        <Divider color={theme?.secondary() ?? ""} />
         <BottomContainer
           color={theme?.quinary() ?? ""}
           hoverColor={theme?.senary() ?? ""}
+          bgColor={theme?.tertiary() ?? ""}
         >
-          {getPlaylists()}
+          <div className="top">
+            <div className="top-1">
+              {bottomButtons.map((el, idx) => {
+                return getButton(el.muiComponent, el.pageType, idx);
+              })}
+              <div className="top-1-1">
+                <Button
+                  svgProps={{
+                    muiComponent: AddIcon,
+                    height: "25px",
+                    width: "25px",
+                  }}
+                  buttonProps={{
+                    height: "25px",
+                    width: "25px",
+                    padding: "3px",
+                    borderRadius: "100%",
+                    hoverCursor: "pointer",
+                    hoverBgColor: theme?.secondary(0.7),
+                    justifyContent: "center",
+                  }}
+                />
+                <Button
+                  svgProps={{
+                    muiComponent: ArrowForwardIcon,
+                    height: "25px",
+                    width: "25px",
+                  }}
+                  buttonProps={{
+                    height: "25px",
+                    width: "25px",
+                    padding: "3px",
+                    borderRadius: "100%",
+                    hoverCursor: "pointer",
+                    hoverBgColor: theme?.secondary(0.7),
+                    justifyContent: "center",
+                  }}
+                />
+              </div>
+            </div>
+            <ButtonGroup
+              containerProps={{
+                bgColor: theme?.tertiary(),
+              }}
+              elements={categories.map(
+                ({
+                  id,
+                  name,
+                }: {
+                  id: string | number;
+                  name: string;
+                }): IButtonProps => {
+                  return {
+                    id: id,
+                    name: name,
+                    textProps: {
+                      color: theme?.senary(),
+                      selectedColor: theme?.tertiary(),
+                      weight: "normal",
+                      size: "0.8rem",
+                    },
+
+                    buttonProps: {
+                      bgColor: theme?.senary(0.1),
+                      hoverBgColor: theme?.senary(0.2),
+                      selectedBgColor: theme?.senary(),
+                      borderRadius: "50px",
+                      padding: "8px 10px",
+                      margin: "0 10px 0 0",
+                      onClick: () => {},
+                    },
+                  };
+                }
+              )}
+            />
+          </div>
+          <div className="bottom">
+            <div className="bottom-1">
+              <SearchbarDark
+                expandLeft={false}
+                searchIn="Your Library"
+                onSearch={() => {}}
+                inputWidth={130}
+              />
+              <Sorter
+                items={[
+                  { id: 0, text: "Recents" },
+                  { id: 1, text: "Recently Added" },
+                  { id: 2, text: "Alphabetical" },
+                  { id: 3, text: "Creator" },
+                ]}
+                showSortBy={true}
+                onClick={() => {}}
+              />
+            </div>
+            {getLibraryItems()}
+          </div>
         </BottomContainer>
       </SidebarContainer>
     </>
@@ -145,55 +237,115 @@ const SidebarContainer = styled.div<{ width: string }>`
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   font-size: 0.85rem;
+  padding: 0 10px;
 `;
 
-const TopContainer = styled.div<{ color: string; hoverColor: string }>`
+const TopContainer = styled.div<{
+  color: string;
+  hoverColor: string;
+  bgColor: string;
+}>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 275px;
-  padding: 4% 10% 2% 10%;
-
-  & .btn {
-    margin-bottom: 10px;
-  }
+  row-gap: 0.9rem;
+  padding: 4% 5%;
+  border-radius: 10px;
+  background-color: ${(props) => props.bgColor};
 
   & #elipsis-btn {
     margin-bottom: 0px;
   }
 `;
 
-const Divider = styled.div<{ color: string }>`
-  width: 80%;
-  height: 10px;
-  border-top: ${(props) => `1px solid ${props.color}`};
-  background-color: transparent;
-  margin-left: auto;
-  margin-right: auto;
-`;
-
-const BottomContainer = styled.div<{ color: string; hoverColor: string }>`
+const BottomContainer = styled.div<{
+  color: string;
+  hoverColor: string;
+  bgColor: string;
+}>`
   display: flex;
   flex-direction: column;
-  height: calc(100% - 275px);
-  overflow-y: hidden;
   font-weight: normal;
   font-size: 0.85rem;
   color: ${(props) => props.color};
-  padding: 0 10%;
+  margin-top: 10px;
+  border-radius: 10px;
+  background-color: ${(props) => props.bgColor};
+
+  & .top {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.2rem;
+    padding: 4% 5%;
+    box-shadow: black 0px 5px 15px -5px;
+    & .top-1 {
+      display: flex;
+      justify-content: space-between;
+
+      & .top-1-1 {
+        display: flex;
+        column-gap: 0.6rem;
+      }
+    }
+  }
+
+  & .bottom {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    z-index: 1;
+
+    & .bottom-1 {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+  }
 
   &:hover {
     overflow-y: auto;
   }
 `;
 
-const PlayList = styled.span<{ color: string; hoverColor: string }>`
+const LibraryItem = styled.span<{
+  itemProps: IContainerProps;
+  titleProps: ITextProps;
+  subtitleProps: ITextProps;
+}>`
+  display: flex;
+  align-items: center;
   color: ${(props) => props.color};
-  padding: 10px 0;
+  padding: 6px;
   z-index: 500;
+  border-radius: 5px;
+  column-gap: 0.8rem;
+
+  & .item-info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+
+    .item-title {
+      color: ${(props) => props.titleProps.color};
+      font-size: ${(props) => props.titleProps.size};
+      font-weight: ${(props) => props.titleProps.weight};
+    }
+
+    .item-subtitle {
+      color: ${(props) => props.subtitleProps.color};
+      font-size: ${(props) => props.subtitleProps.size};
+    }
+  }
+
+  & img {
+    height: 50px;
+    width: 50px;
+    border-radius: 3px;
+  }
 
   &:hover {
-    color: ${(props) => props.hoverColor};
-    cursor: default;
+    background-color: ${(props) => props.itemProps.hoverBgColor};
+    cursor: pointer;
   }
 `;
