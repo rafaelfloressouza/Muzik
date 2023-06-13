@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -49,6 +49,9 @@ export default function Sidebar({
     { id: 4, name: "Artists" },
   ];
 
+  // State
+  const [searchText, setSearchText] = useState("");
+
   // Contexts
   const theme = useContext(ThemeContext);
 
@@ -65,11 +68,16 @@ export default function Sidebar({
             size: "0.9rem",
           }}
           subtitleProps={{ color: theme?.quinary() }}
+          isArtist={i % 2 != 0}
         >
           <img src="/images/test-img.png" />
           <div className="item-info">
-            <span className="item-title">Electronic Music</span>
-            <span className="item-subtitle">Playlist * Rafael</span>
+            <span className="item-title">
+              {i % 2 == 0 ? "Electronic Music" : "Vance Joy"}
+            </span>
+            <span className="item-subtitle">
+              {i % 2 === 0 ? "Playlist * Rafael" : "Artist"}
+            </span>
           </div>
         </LibraryItem>
       );
@@ -205,7 +213,7 @@ export default function Sidebar({
               <SearchbarDark
                 expandLeft={false}
                 searchIn="Your Library"
-                onSearch={() => {}}
+                onSearch={(searchTxt: string) => setSearchText(searchTxt)}
                 inputWidth={130}
               />
               <Sorter
@@ -312,6 +320,7 @@ const LibraryItem = styled.span<{
   itemProps: IContainerProps;
   titleProps: ITextProps;
   subtitleProps: ITextProps;
+  isArtist: boolean;
 }>`
   display: flex;
   align-items: center;
@@ -341,7 +350,7 @@ const LibraryItem = styled.span<{
   & img {
     height: 50px;
     width: 50px;
-    border-radius: 3px;
+    border-radius: ${(props) => (props.isArtist ? "100%" : "3px")};
   }
 
   &:hover {

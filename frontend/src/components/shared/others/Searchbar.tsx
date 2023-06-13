@@ -166,7 +166,7 @@ export function SearchbarDark({
               },
             }}
             id="right-btn"
-            onClick={() => setContainerWidth(180)}
+            onClick={() => setContainerWidth(inputWidth + 60)}
           />
         </SearchbarDarkContainer>
       </Material.ClickAwayListener>
