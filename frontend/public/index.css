@@ -1,5 +1,60 @@
-body {
-  overflow: auto;
+/* Defining Custom Font*/
+@font-face {
+  font-family: "Gotham Spotify";
+  font-style: normal;
+  font-weight: 400;
+  src: url("fonts/Gotham-Spotify/GothamBook.ttf") format("opentype");
+}
+
+@font-face {
+  font-family: "Gotham Spotify";
+  font-style: normal;
+  font-weight: 700;
+  src: url("fonts/Gotham-Spotify/Gotham-Bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Gotham Spotify";
+  font-style: italic;
+  font-weight: 400;
+  src: url("fonts/Gotham-Spotify/Gotham-BookItalic.otf") format("opentype");
+}
+
+/* Custom Scroolbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(83, 83, 83);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(179, 179, 179);
+}
+
+body,
+.root {
   margin: 0;
   padding: 0;
+  color: white;
+  font-family: "Gotham Spotify";
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body {
+  /* Defining color palette */
+  --primary: 29, 185, 84;
+  --secondary: 33, 33, 33;
+  --tertiary: 18, 18, 18;
+  --quaternary: 83, 83, 83;
+  --quinary: 179, 179, 179;
+  --senary: 255, 255, 255;
+  --septenary: 0, 0, 0;
+  --octonary: 25, 25, 25;
+  --nonary: 8, 8, 8;
 }
