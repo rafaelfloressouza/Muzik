@@ -90,15 +90,19 @@ const SearchbarContainer = styled.div<{
 export function SearchbarDark({
   searchIn = "Playlist",
   width,
+  inputWidth = 120,
   onSearch,
   onClickAway = true,
   expanded = false,
+  expandLeft = true,
 }: {
   searchIn?: string;
   width?: number;
+  inputWidth?: number;
   onSearch?: (searchTxt: string) => void;
   onClickAway?: boolean;
   expanded?: boolean;
+  expandLeft?: boolean;
 }): ReactElement {
   // Content
 
@@ -125,6 +129,8 @@ export function SearchbarDark({
             color: theme?.quinary(),
           }}
           expanded={expanded}
+          exapandLeft={expandLeft}
+          inputWidth={inputWidth}
         >
           <div>
             <SearchIcon sx={{ color: theme?.quinary() ?? "" }} id="left-btn" />
@@ -160,7 +166,7 @@ export function SearchbarDark({
               },
             }}
             id="right-btn"
-            onClick={() => setContainerWidth(180)}
+            onClick={() => setContainerWidth(inputWidth + 60)}
           />
         </SearchbarDarkContainer>
       </Material.ClickAwayListener>
@@ -172,10 +178,12 @@ const SearchbarDarkContainer = styled.div<{
   searchbarProps: IContainerProps;
   textProps: ITextProps;
   expanded: boolean;
+  exapandLeft: boolean;
+  inputWidth: number;
 }>`
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: ${(props) => (props.exapandLeft ? "right" : "left")};
   width: ${(props) => (props.expanded ? props.searchbarProps?.width : "180px")};
   position: relative;
 
@@ -197,7 +205,9 @@ const SearchbarDarkContainer = styled.div<{
     background-color: transparent;
     border: none;
     width: ${(props) =>
-      props.expanded ? `calc(${props.searchbarProps.width} - 60px)` : "120px"};
+      props.expanded
+        ? `calc(${props.searchbarProps.width} - 60px)`
+        : `${props.inputWidth}px`};
     font-size: 0.75rem;
     font-weight: bold;
     color: ${(props) => props.textProps?.color};

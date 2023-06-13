@@ -33,7 +33,7 @@ const muiTheme = Material.createTheme({
 
 export default function App() {
   // Constants
-  const sideBarWidth = `245px`;
+  const sideBarWidth = `420px`;
   const bottomBarHeight = `90px`;
   const topContainerHeight = `calc(100% - ${bottomBarHeight})`;
   const pageWidth = `calc(100% - ${sideBarWidth})`;

@@ -78,7 +78,7 @@ const Button = styled.div<{
     !props?.buttonProps?.selected
       ? props.textProps?.selectedColor
       : props.textProps?.color};
-  margin: ${(props) => props.buttonProps?.margin ?? "2.2%"};
+  margin: ${(props) => props.buttonProps?.margin};
   transition: none;
   white-space: nowrap;
 
