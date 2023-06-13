@@ -26,7 +26,7 @@ export default function Bottombar({ bottombarProps }: Props) {
   return (
     <BottombarContainer
       color={theme?.senary() ?? ""}
-      bgColor={theme?.tertiary() ?? ""}
+      bgColor={theme?.septenary() ?? ""}
       borderColor={theme?.quinary(0.1) ?? ""}
       height={bottombarProps?.height ?? "auto"}
     >
