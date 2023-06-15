@@ -47,13 +47,14 @@ export default function Button({
         textProps={textProps}
         ordering={ordering}
         colGap={colGap}
-        onClick={buttonProps?.onClick}
+        onClick={() => buttonProps?.onClick?.()}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
         <Svg
           svgProps={{
             ...svgProps,
+            onClick: () => svgProps?.onClick?.(),
             fill:
               hovered && !noChangeColorSvg
                 ? svgProps?.hoverFill ?? theme?.senary()
@@ -126,10 +127,11 @@ function Svg({
           <SvgContainer
             className="svg"
             svgProps={svgProps}
-            onClick={svgProps?.onClick}
+            onClick={() => svgProps?.onClick?.()}
           >
             {svgProps?.fileUrl && (
               <object
+                onClick={() => svgProps?.onClick?.()}
                 className="file-svg"
                 data={Array.isArray(svgProps.fileUrl) ? "" : svgProps.fileUrl}
               />
@@ -159,6 +161,7 @@ const SvgContainer = styled.div<{
       fill: ${(props) => props.svgProps.hoverFill ?? props.svgProps?.fill};
       transform: ${(props) =>
         props.svgProps?.animate ? "scale(1.05)" : "none"};
+      cursor: ${(props) => props.svgProps.hoverCursor};
     }
   }
 `;
@@ -202,5 +205,3 @@ export function PlayButton({
     />
   );
 }
-
-//

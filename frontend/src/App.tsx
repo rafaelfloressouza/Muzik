@@ -40,7 +40,7 @@ export default function App() {
   const pageHeight = `calc(100% - ${bottomBarHeight})`;
 
   // State
-  const [page, setPage] = useState(PageType.CreatePlaylist);
+  const [page, setPage] = useState(PageType.Home);
   const [scrollTop, setScrollTop] = useState(0);
   const [category, setCategory] = useState(CategoryType.Playlists);
   const [search, setSearch] = useState<string>("");

@@ -6,6 +6,7 @@ import { ThemeContext } from "../../../contexts/ThemeContext";
 type Props = {
   tooltipProps?: ITooltipProps;
   children: ReactElement<any, any>;
+  ignoreHover?: boolean;
 };
 
 export default function Tooltip({
@@ -14,6 +15,7 @@ export default function Tooltip({
     placement: "top",
   },
   children,
+  ignoreHover = false,
 }: Props): ReactElement {
   // Contexts
   const theme = useContext(ThemeContext);
@@ -23,8 +25,10 @@ export default function Tooltip({
       TransitionComponent={Material.Grow}
       title={tooltipProps?.textStyle?.text}
       placement={tooltipProps?.placement}
-      enterDelay={700}
+      enterDelay={ignoreHover ? 1000000000 : 1000}
+      enterTouchDelay={1000}
       leaveDelay={0}
+      leaveTouchDelay={0}
       PopperProps={{
         sx: {
           "& .MuiTooltip-tooltip": {
