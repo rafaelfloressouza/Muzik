@@ -91,6 +91,9 @@ const ButtonContainer = styled.div<{
   transition: ease-in-out 0.1s;
   border: ${(props) => props?.buttonProps?.border};
   margin: ${(props) => props?.buttonProps?.margin};
+  visibility: ${(props) => props?.buttonProps?.visibility};
+  pointer-events: ${(props) => props.buttonProps?.pointerEvents};
+  opacity: ${(props) => props.buttonProps?.opacity};
 
   &:hover {
     background-color: ${(props) =>
@@ -156,6 +159,7 @@ const SvgContainer = styled.div<{
     background-color: ${(props) => props.svgProps.bgColor};
     padding: ${(props) => props.svgProps?.padding};
     box-shadow: ${(props) => props.svgProps?.boxShadow};
+    opacity: ${(props) => props.svgProps?.opacity};
 
     &:hover {
       fill: ${(props) => props.svgProps.hoverFill ?? props.svgProps?.fill};

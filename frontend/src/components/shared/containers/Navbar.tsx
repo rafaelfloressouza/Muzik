@@ -9,7 +9,7 @@ import ButtonGroup, { IButtonProps } from "../buttons/ButtonGroup";
 import { CategoryType } from "../../YourLibrary";
 import { PlayButton } from "../buttons/Button";
 import { IContainerProps } from "../../../utils/types";
-import Searchbar from "../others/Searchbar";
+import SearchbarLight from "../others/Searchbar";
 
 type Props = {
   page: PageType;
@@ -90,7 +90,7 @@ export default function Navbar({
 
   const getSearchBar = (): ReactElement => {
     if (page !== PageType.Search) return <></>;
-    return <Searchbar onSearch={onSearch} />;
+    return <SearchbarLight onSearch={onSearch} />;
   };
 
   const getPlayBtn = (): ReactElement => {
@@ -131,6 +131,7 @@ const NavbarContainer = styled.div<{
   & .arrows-searchbar-and-categories {
     display: flex;
     width: auto;
+    height: 100%;
     flex-direction: row;
     justify-content: left;
     align-items: center;

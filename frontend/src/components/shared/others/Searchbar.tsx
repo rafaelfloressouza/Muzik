@@ -6,6 +6,7 @@ import * as Material from "@mui/material";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import Button from "../buttons/Button";
 
 export default function SearchbarLight({
   onSearch,
@@ -20,11 +21,21 @@ export default function SearchbarLight({
 
   return (
     <SearchbarContainer
-      bgColor={theme?.senary() ?? ""}
-      placeholderColor={theme?.quaternary(0.8) ?? ""}
-      textColor={theme?.secondary() ?? ""}
+      bgColor={theme?.secondary() ?? ""}
+      placeholderColor={theme?.senary(0.3) ?? ""}
+      textColor={theme?.senary() ?? ""}
     >
-      <SearchRoundedIcon sx={{ color: theme?.secondary() }} />
+      <Button
+        className="search-btn"
+        buttonProps={{ pointerEvents: "none" }}
+        svgProps={{
+          muiComponent: SearchRoundedIcon,
+          fill: theme?.senary(0.8),
+          hoverFill: theme?.senary(),
+          width: "25px",
+          height: "25px",
+        }}
+      />
       <input
         type="text"
         value={searchText}
@@ -34,15 +45,21 @@ export default function SearchbarLight({
           if (onSearch) onSearch(e.target.value);
         }}
       />
-      {searchText && (
-        <CloseRoundedIcon
-          sx={{ color: theme?.secondary() }}
-          onClick={() => {
+      <Button
+        className="cancel-btn"
+        buttonProps={{
+          pointerEvents: searchText ? "auto" : "none",
+          onClick: () => {
             setSearchText("");
             if (onSearch) onSearch("");
-          }}
-        />
-      )}
+          },
+        }}
+        svgProps={{
+          opacity: searchText ? "100%" : "0%",
+          muiComponent: CloseRoundedIcon,
+          fill: theme?.senary(),
+        }}
+      />
     </SearchbarContainer>
   );
 }
@@ -52,20 +69,24 @@ const SearchbarContainer = styled.div<{
   placeholderColor: string;
   textColor: string;
 }>`
-  display: flex;
-  justify-content: space-between;
-  column-gap: 0.5rem;
-  background-color: ${(props) => props.bgColor};
-  color: ${(props) => props.textColor};
+  position: relative;
   border-radius: 25px;
-  padding: 5px;
-  width: 18.5vw;
-  max-width: 360px;
-  min-width: 240px;
+  border: 2px solid transparent;
 
-  & svg {
-    height: 30px;
-    width: 30px;
+  .search-btn {
+    position: absolute;
+    top: 9px;
+    left: 10px;
+  }
+
+  .cancel-btn {
+    position: absolute;
+    top: 9px;
+    right: 10px;
+  }
+
+  :focus-within {
+    border: 2px solid white;
   }
 
   & input {
@@ -74,15 +95,25 @@ const SearchbarContainer = styled.div<{
     font-size: 0.8rem;
     color: ${(props) => props.textColor};
     width: 100%;
-    border-radius: 30px;
+    border-radius: 25px;
+    height: 100%;
+    background-color: ${(props) => props.bgColor};
+    width: 16.8vw;
+    max-width: 360px;
+    min-width: 240px;
+    padding: 14px 0;
+    padding-left: 38px;
+    font-weight: bold;
 
-    &::placeholder {
-      font-size: 0.85rem;
-      color: ${(props) => props.placeholderColor};
+    &:hover {
+      box-shadow: white 0px 0px 2px;
+      background-color: rgb(255, 255, 255, 0.1);
     }
 
-    &:focus {
-      outline: none;
+    &::placeholder {
+      font-weight: normal;
+      font-size: 0.85rem;
+      color: ${(props) => props.placeholderColor};
     }
   }
 `;

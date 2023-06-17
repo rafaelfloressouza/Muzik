@@ -41,6 +41,8 @@ export interface IContainerProps {
   onClick?: (a?: any, b?: any) => void;
   refEl?: React.MutableRefObject<HTMLDivElement | null>;
   margin?: string;
+  visibility?: string;
+  pointerEvents?: string;
 }
 
 export interface ISvgProps extends IContainerProps {
