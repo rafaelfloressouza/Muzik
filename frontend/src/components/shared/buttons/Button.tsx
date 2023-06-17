@@ -61,7 +61,7 @@ export default function Button({
                 : svgProps?.fill ?? theme?.quinary(),
           }}
         />
-        {textProps?.text}
+        {textProps?.text && <p className="btn-txt">{textProps?.text}</p>}
       </ButtonContainer>
     </Tooltip>
   );
@@ -84,7 +84,10 @@ const ButtonContainer = styled.div<{
   background-color: ${(props) => props?.buttonProps?.bgColor};
   padding: ${(props) => props?.buttonProps?.padding};
   border-radius: ${(props) => props?.buttonProps?.borderRadius ?? "0"};
-  color: ${(props) => props?.textProps?.color};
+  color: ${(props) =>
+    props?.buttonProps?.selected
+      ? props?.buttonProps.selectedBgColor
+      : props?.textProps?.color};
   font-size: ${(props) => props?.textProps?.size};
   font-weight: ${(props) => props?.textProps?.weight};
   box-shadow: ${(props) => props?.buttonProps?.boxShadow};
@@ -94,6 +97,11 @@ const ButtonContainer = styled.div<{
   visibility: ${(props) => props?.buttonProps?.visibility};
   pointer-events: ${(props) => props.buttonProps?.pointerEvents};
   opacity: ${(props) => props.buttonProps?.opacity};
+  white-space: nowrap;
+
+  &.btn-txt {
+    width: 100%;
+  }
 
   &:hover {
     background-color: ${(props) =>
@@ -154,7 +162,10 @@ const SvgContainer = styled.div<{
     width: ${(props) => props.svgProps.width};
     height: ${(props) => props.svgProps.height};
     border-radius: ${(props) => props.svgProps.borderRadius};
-    fill: ${(props) => props.svgProps.fill};
+    fill: ${(props) =>
+      props?.svgProps?.selected
+        ? props.svgProps.hoverFill
+        : props.svgProps.fill};
     transition: ease-in-out 0.1s;
     background-color: ${(props) => props.svgProps.bgColor};
     padding: ${(props) => props.svgProps?.padding};

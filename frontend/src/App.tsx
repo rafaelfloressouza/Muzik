@@ -17,6 +17,7 @@ export enum PageType {
   YourLibrary = "Your Library",
   CreatePlaylist = "Create Playlist",
   LikedSongs = "Liked Songs",
+  Empty = "",
 }
 
 const muiTheme = Material.createTheme({
@@ -34,9 +35,11 @@ const muiTheme = Material.createTheme({
 export default function App() {
   // Constants
   const sideBarWidth = `420px`;
+  const sideBarWidthCollapsed = `90px`;
   const bottomBarHeight = `90px`;
   const topContainerHeight = `calc(100% - ${bottomBarHeight})`;
   const pageWidth = `calc(100% - ${sideBarWidth})`;
+  const pageWidthSidebarCollapsed = `calc(100% - ${sideBarWidthCollapsed})`;
   const pageHeight = `calc(100% - ${bottomBarHeight})`;
 
   // State
@@ -44,6 +47,7 @@ export default function App() {
   const [scrollTop, setScrollTop] = useState(0);
   const [category, setCategory] = useState(CategoryType.Playlists);
   const [search, setSearch] = useState<string>("");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
 
   // useEffects
   useEffect(() => {
@@ -69,6 +73,9 @@ export default function App() {
 
   const onSearch = (text: string) => setSearch(text);
 
+  const onSidebarCollapsed = (collapsed: boolean) =>
+    setSidebarCollapsed(collapsed);
+
   // Helpers
   const getPageContent = (): ReactElement => {
     switch (page) {
@@ -80,14 +87,8 @@ export default function App() {
         } else {
           return <SearchBase scrollChanged={scrollChanged} />;
         }
-      case PageType.YourLibrary:
-        return (
-          <YourLibrary scrollChanged={scrollChanged} category={category} />
-        );
       case PageType.CreatePlaylist:
         return <CreatePlaylist scrollChanged={scrollChanged} />;
-      case PageType.LikedSongs:
-        return <></>;
       default:
         return <></>;
     }
@@ -99,12 +100,13 @@ export default function App() {
         <ThemeProvider>
           <TopContainer height={topContainerHeight}>
             <Sidebar
-              width={sideBarWidth}
+              width={sidebarCollapsed ? sideBarWidthCollapsed : sideBarWidth}
               page={page}
               pageSelected={pageChange}
+              sidebarCollapsed={onSidebarCollapsed}
             />
             <Page
-              width={pageWidth}
+              width={sidebarCollapsed ? pageWidthSidebarCollapsed : pageWidth}
               height={pageHeight}
               children={getPageContent()}
               page={page}

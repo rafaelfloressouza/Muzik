@@ -20,6 +20,7 @@ type Props = {
   page: PageType;
   pageSelected?: (page: PageType) => void;
   playlistSelected?: () => void;
+  sidebarCollapsed?: (collpased: boolean) => void;
 };
 
 export default function Sidebar({
@@ -27,6 +28,7 @@ export default function Sidebar({
   page,
   pageSelected = () => {},
   playlistSelected = () => {},
+  sidebarCollapsed = (collapsed: boolean) => {},
 }: Props): ReactElement {
   // Constants
   const topButtons = [
@@ -50,7 +52,8 @@ export default function Sidebar({
   ];
 
   // State
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState<string>("");
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   // Contexts
   const theme = useContext(ThemeContext);
@@ -71,14 +74,16 @@ export default function Sidebar({
           isArtist={i % 2 != 0}
         >
           <img src="/images/test-img.png" />
-          <div className="item-info">
-            <span className="item-title">
-              {i % 2 == 0 ? "Electronic Music" : "Vance Joy"}
-            </span>
-            <span className="item-subtitle">
-              {i % 2 === 0 ? "Playlist * Rafael" : "Artist"}
-            </span>
-          </div>
+          {!isCollapsed && (
+            <div className="item-info">
+              <span className="item-title">
+                {i % 2 == 0 ? "Electronic Music" : "Vance Joy"}
+              </span>
+              <span className="item-subtitle">
+                {i % 2 === 0 ? "Playlist * Rafael" : "Artist"}
+              </span>
+            </div>
+          )}
         </LibraryItem>
       );
     }
@@ -88,14 +93,20 @@ export default function Sidebar({
   const getButton = (
     muiComponent: OverridableComponent<SvgIconTypeMap<{}, "svg">>,
     pageType: PageType,
-    key: number
+    key: number,
+    ignoreOnClick: boolean = false,
+    customOnClick?: () => void
   ) => {
     return (
       <Button
         key={key}
         buttonProps={{
-          onClick: () => pageSelected(pageType),
+          onClick: () => {
+            if (customOnClick) customOnClick();
+            if (!ignoreOnClick) pageSelected(pageType);
+          },
           selected: page === pageType,
+          justifyContent: isCollapsed ? "center" : "",
         }}
         svgProps={{
           muiComponent: muiComponent,
@@ -103,6 +114,7 @@ export default function Sidebar({
           hoverFill: theme?.senary(),
           height: "30px",
           width: "30px",
+          selected: page === pageType,
         }}
         textProps={{
           text: pageType,
@@ -122,111 +134,132 @@ export default function Sidebar({
           color={theme?.quinary() ?? ""}
           hoverColor={theme?.senary() ?? ""}
           bgColor={theme?.tertiary() ?? ""}
+          isCollapsed={isCollapsed}
         >
           {topButtons.map((el, idx) => {
-            return getButton(el.muiComponent, el.pageType, idx);
+            return getButton(
+              el.muiComponent,
+              isCollapsed ? PageType.Empty : el.pageType,
+              idx
+            );
           })}
         </TopContainer>
         <BottomContainer
           color={theme?.quinary() ?? ""}
           hoverColor={theme?.senary() ?? ""}
           bgColor={theme?.tertiary() ?? ""}
+          isCollapsed={isCollapsed}
         >
           <div className="top">
             <div className="top-1">
               {bottomButtons.map((el, idx) => {
-                return getButton(el.muiComponent, el.pageType, idx);
+                return getButton(
+                  el.muiComponent,
+                  isCollapsed ? PageType.Empty : el.pageType,
+                  idx,
+                  true,
+                  () => {
+                    setIsCollapsed(!isCollapsed);
+                    sidebarCollapsed(!isCollapsed);
+                  }
+                );
               })}
-              <div className="top-1-1">
-                <Button
-                  svgProps={{
-                    muiComponent: AddIcon,
-                    height: "25px",
-                    width: "25px",
-                  }}
-                  buttonProps={{
-                    height: "25px",
-                    width: "25px",
-                    padding: "3px",
-                    borderRadius: "100%",
-                    hoverCursor: "pointer",
-                    hoverBgColor: theme?.secondary(0.7),
-                    justifyContent: "center",
-                  }}
-                />
-                <Button
-                  svgProps={{
-                    muiComponent: ArrowForwardIcon,
-                    height: "25px",
-                    width: "25px",
-                  }}
-                  buttonProps={{
-                    height: "25px",
-                    width: "25px",
-                    padding: "3px",
-                    borderRadius: "100%",
-                    hoverCursor: "pointer",
-                    hoverBgColor: theme?.secondary(0.7),
-                    justifyContent: "center",
-                  }}
-                />
-              </div>
-            </div>
-            <ButtonGroup
-              containerProps={{
-                bgColor: theme?.tertiary(),
-              }}
-              elements={categories.map(
-                ({
-                  id,
-                  name,
-                }: {
-                  id: string | number;
-                  name: string;
-                }): IButtonProps => {
-                  return {
-                    id: id,
-                    name: name,
-                    textProps: {
-                      color: theme?.senary(),
-                      selectedColor: theme?.tertiary(),
-                      weight: "normal",
-                      size: "0.8rem",
-                    },
-
-                    buttonProps: {
-                      bgColor: theme?.senary(0.1),
-                      hoverBgColor: theme?.senary(0.2),
-                      selectedBgColor: theme?.senary(),
-                      borderRadius: "50px",
-                      padding: "8px 10px",
-                      margin: "0 10px 0 0",
-                      onClick: () => {},
-                    },
-                  };
-                }
+              {!isCollapsed && (
+                <div className="top-1-1">
+                  <Button
+                    svgProps={{
+                      muiComponent: AddIcon,
+                      height: "25px",
+                      width: "25px",
+                    }}
+                    buttonProps={{
+                      height: "25px",
+                      width: "25px",
+                      padding: "3px",
+                      borderRadius: "100%",
+                      hoverCursor: "pointer",
+                      hoverBgColor: theme?.secondary(0.7),
+                      justifyContent: "center",
+                    }}
+                  />
+                  <Button
+                    svgProps={{
+                      muiComponent: ArrowForwardIcon,
+                      height: "25px",
+                      width: "25px",
+                    }}
+                    buttonProps={{
+                      height: "25px",
+                      width: "25px",
+                      padding: "3px",
+                      borderRadius: "100%",
+                      hoverCursor: "pointer",
+                      hoverBgColor: theme?.secondary(0.7),
+                      justifyContent: "center",
+                    }}
+                  />
+                </div>
               )}
-            />
+            </div>
+            {!isCollapsed && (
+              <ButtonGroup
+                containerProps={{
+                  bgColor: theme?.tertiary(),
+                }}
+                elements={categories.map(
+                  ({
+                    id,
+                    name,
+                  }: {
+                    id: string | number;
+                    name: string;
+                  }): IButtonProps => {
+                    return {
+                      id: id,
+                      name: name,
+                      textProps: {
+                        color: theme?.senary(),
+                        selectedColor: theme?.tertiary(),
+                        weight: "normal",
+                        size: "0.8rem",
+                      },
+
+                      buttonProps: {
+                        bgColor: theme?.senary(0.1),
+                        hoverBgColor: theme?.senary(0.2),
+                        selectedBgColor: theme?.senary(),
+                        borderRadius: "50px",
+                        padding: "8px 10px",
+                        margin: "0 10px 0 0",
+                        onClick: () => {},
+                      },
+                    };
+                  }
+                )}
+              />
+            )}
           </div>
           <div className="bottom">
-            <div className="bottom-1">
-              <SearchbarDark
-                expandLeft={false}
-                searchIn="Your Library"
-                onSearch={(searchTxt: string) => setSearchText(searchTxt)}
-                inputWidth={130}
-              />
-              <Sorter
-                items={[
-                  { id: 0, text: "Recents" },
-                  { id: 1, text: "Recently Added" },
-                  { id: 2, text: "Alphabetical" },
-                  { id: 3, text: "Creator" },
-                ]}
-                showSortBy={true}
-                onClick={() => {}}
-              />
-            </div>
+            {!isCollapsed && (
+              <div className="bottom-1">
+                <SearchbarDark
+                  expandLeft={false}
+                  searchIn="Your Library"
+                  onSearch={(searchTxt: string) => setSearchText(searchTxt)}
+                  inputWidth={130}
+                />
+                <Sorter
+                  items={[
+                    { id: 0, text: "Recents" },
+                    { id: 1, text: "Recently Added" },
+                    { id: 2, text: "Alphabetical" },
+                    { id: 3, text: "Creator" },
+                  ]}
+                  showSortBy={true}
+                  onClick={() => {}}
+                />
+              </div>
+            )}
             {getLibraryItems()}
           </div>
         </BottomContainer>
@@ -252,14 +285,14 @@ const TopContainer = styled.div<{
   color: string;
   hoverColor: string;
   bgColor: string;
+  isCollapsed: boolean;
 }>`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   row-gap: 0.9rem;
-  padding: 4% 5%;
   border-radius: 10px;
   background-color: ${(props) => props.bgColor};
+  padding: ${(props) => (props.isCollapsed ? "10px" : "2% 5%")};
 
   & #elipsis-btn {
     margin-bottom: 0px;
@@ -270,6 +303,7 @@ const BottomContainer = styled.div<{
   color: string;
   hoverColor: string;
   bgColor: string;
+  isCollapsed: boolean;
 }>`
   display: flex;
   flex-direction: column;
@@ -279,6 +313,7 @@ const BottomContainer = styled.div<{
   margin-top: 10px;
   border-radius: 10px;
   background-color: ${(props) => props.bgColor};
+  overflow: hidden;
 
   & .top {
     display: flex;
@@ -286,9 +321,12 @@ const BottomContainer = styled.div<{
     row-gap: 1.2rem;
     padding: 4% 5%;
     box-shadow: black 0px 5px 15px -5px;
+
     & .top-1 {
       display: flex;
-      justify-content: space-between;
+      justify-content: ${(props) =>
+        props.isCollapsed ? "center" : "space-between"};
+      padding: ${(props) => (props.isCollapsed ? "10px" : "0")};
 
       & .top-1-1 {
         display: flex;
@@ -298,21 +336,22 @@ const BottomContainer = styled.div<{
   }
 
   & .bottom {
-    padding: 8px;
+    padding: ${(props) => (props.isCollapsed ? "0px" : "8px")};
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     z-index: 1;
+    overflow-y: hidden;
+    scrollbar-gutter: stable both-edges;
 
     & .bottom-1 {
       display: flex;
       justify-content: space-between;
       margin-bottom: 0.5rem;
     }
-  }
 
-  &:hover {
-    overflow-y: auto;
+    &:hover {
+      overflow-y: auto;
+    }
   }
 `;
 
@@ -325,7 +364,7 @@ const LibraryItem = styled.span<{
   display: flex;
   align-items: center;
   color: ${(props) => props.color};
-  padding: 6px;
+  padding: 8px;
   z-index: 500;
   border-radius: 5px;
   column-gap: 0.8rem;
