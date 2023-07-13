@@ -34,6 +34,7 @@ export default function Page({
 
   // Helpers
   const getNavbarColor = () => {
+    if (page == PageType.Search) return theme?.tertiary();
     if (!scrollTop || scrollTop < 100) {
       return "transparent";
     } else if (scrollTop < 150) {
@@ -79,5 +80,5 @@ const PageContainer = styled.div<{
   overflow-y: auto;
   background-color: ${(props) => props.bgColor};
   position: relative;
-  padding: 0 8px 0 0;
+  padding: 0 8px;
 `;

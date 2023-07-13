@@ -80,7 +80,7 @@ const ButtonContainer = styled.div<{
   justify-content: ${(props) => props.buttonProps?.justifyContent};
   column-gap: ${(props) => props.colGap};
   width: ${(props) => props.buttonProps?.width ?? "auto"};
-  height: ${(props) => props.buttonProps?.width ?? "auto"};
+  height: ${(props) => props.buttonProps?.height ?? "auto"};
   background-color: ${(props) => props?.buttonProps?.bgColor};
   padding: ${(props) => props?.buttonProps?.padding};
   border-radius: ${(props) => props?.buttonProps?.borderRadius ?? "0"};
@@ -99,8 +99,11 @@ const ButtonContainer = styled.div<{
   opacity: ${(props) => props.buttonProps?.opacity};
   white-space: nowrap;
 
-  &.btn-txt {
-    width: 100%;
+  & .btn-txt {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   &:hover {
@@ -157,6 +160,7 @@ function Svg({
 const SvgContainer = styled.div<{
   svgProps: ISvgProps;
 }>`
+  display: flex;
   & .file-svg,
   .mui-svg {
     width: ${(props) => props.svgProps.width};

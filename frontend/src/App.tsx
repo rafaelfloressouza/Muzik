@@ -36,10 +36,12 @@ export default function App() {
   // Constants
   const sideBarWidth = `420px`;
   const sideBarWidthCollapsed = `90px`;
+  const sideBarWidthExpandedDefault = `50vw`;
   const bottomBarHeight = `90px`;
   const topContainerHeight = `calc(100% - ${bottomBarHeight})`;
   const pageWidth = `calc(100% - ${sideBarWidth})`;
   const pageWidthSidebarCollapsed = `calc(100% - ${sideBarWidthCollapsed})`;
+  const pageWidthSidebarExpandedDefault = `calc(100% - ${sideBarWidthExpandedDefault})`;
   const pageHeight = `calc(100% - ${bottomBarHeight})`;
 
   // State
@@ -48,6 +50,7 @@ export default function App() {
   const [category, setCategory] = useState(CategoryType.Playlists);
   const [search, setSearch] = useState<string>("");
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
+  const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(false);
 
   // useEffects
   useEffect(() => {
@@ -76,6 +79,13 @@ export default function App() {
   const onSidebarCollapsed = (collapsed: boolean) =>
     setSidebarCollapsed(collapsed);
 
+  const onSidebarExpanded = (collapsed: boolean) =>
+    setSidebarExpanded(collapsed);
+
+  const createPlaylist = () => {
+    setPage(PageType.CreatePlaylist);
+  };
+
   // Helpers
   const getPageContent = (): ReactElement => {
     switch (page) {
@@ -94,19 +104,41 @@ export default function App() {
     }
   };
 
+  const getPageWidth = (): string => {
+    if (sidebarCollapsed) {
+      return pageWidthSidebarCollapsed;
+    } else if (sidebarExpanded) {
+      return pageWidthSidebarExpandedDefault;
+    } else {
+      return pageWidth;
+    }
+  };
+
+  const getSidebarWidth = (): string => {
+    if (sidebarCollapsed) {
+      return sideBarWidthCollapsed;
+    } else if (sidebarExpanded) {
+      return sideBarWidthExpandedDefault;
+    } else {
+      return sideBarWidth;
+    }
+  };
+
   return (
     <AppContainer>
       <Material.ThemeProvider theme={muiTheme}>
         <ThemeProvider>
           <TopContainer height={topContainerHeight}>
             <Sidebar
-              width={sidebarCollapsed ? sideBarWidthCollapsed : sideBarWidth}
+              width={getSidebarWidth()}
               page={page}
               pageSelected={pageChange}
               sidebarCollapsed={onSidebarCollapsed}
+              sidebarExpanded={onSidebarExpanded}
+              createPlaylist={createPlaylist}
             />
             <Page
-              width={sidebarCollapsed ? pageWidthSidebarCollapsed : pageWidth}
+              width={getPageWidth()}
               height={pageHeight}
               children={getPageContent()}
               page={page}

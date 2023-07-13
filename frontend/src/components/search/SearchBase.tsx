@@ -45,7 +45,7 @@ export default function SearchBase({ scrollChanged }: Props): ReactElement {
 
   const getCards = (): ReactElement[] => {
     const cardList: ReactElement[] = [];
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 7; i++) {
       cardList.push(
         <Card
           key={i}
@@ -99,4 +99,5 @@ const SearchBaseContainer = styled.div<{ bgColor: string }>`
   overflow-y: auto;
   padding-top: 90px;
   background-color: ${(props) => props.bgColor};
+  border-radius: 10px;
 `;

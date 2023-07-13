@@ -68,5 +68,5 @@ const HomeContainer = styled.div<{ bgColor: string }>`
   overflow-y: auto;
   padding-top: 90px;
   background-color: ${(props) => props.bgColor};
-  border-radius: 12px;
+  border-radius: 10px;
 `;

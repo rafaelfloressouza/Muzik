@@ -15,11 +15,9 @@ export default function Search({ scrollChanged }: Props): ReactElement {
     { id: 2, name: "Playlists" },
     { id: 3, name: "Songs" },
     { id: 4, name: "Artists" },
-    { id: 5, name: "Profiles" },
-    { id: 6, name: "Albums" },
-    { id: 7, name: "Genres & Moods" },
-    { id: 8, name: "Podcasts & Shows" },
-    { id: 9, name: "Audiobooks" },
+    { id: 5, name: "Albums" },
+    { id: 6, name: "Podcasts & Shows" },
+    { id: 7, name: "Profiles" },
   ];
 
   // Refs
@@ -36,7 +34,7 @@ export default function Search({ scrollChanged }: Props): ReactElement {
       <ButtonGroup
         containerProps={{
           margin: "60px 0 0",
-          padding: "5px 5px 5px 30px",
+          padding: "5px 5px 10px 30px",
           bgColor: theme?.tertiary(),
         }}
         elements={categories.map(
@@ -71,7 +69,7 @@ export default function Search({ scrollChanged }: Props): ReactElement {
           }
         )}
       />
-      <SearchContainer ref={searchDivRef}>Test</SearchContainer>
+      <SearchContainer ref={searchDivRef}></SearchContainer>
     </>
   );
 }
@@ -84,4 +82,5 @@ const SearchContainer = styled.div`
   padding: 30px;
   overflow-y: auto;
   padding-top: 90px;
+  border-radius: 10px;
 `;

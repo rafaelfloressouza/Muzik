@@ -43,6 +43,9 @@ export interface IContainerProps {
   margin?: string;
   visibility?: string;
   pointerEvents?: string;
+  flexDir?: "row" | "column" | "row-reverse" | "column-reverse";
+  rowGap?: string;
+  colGap?: string;
 }
 
 export interface ISvgProps extends IContainerProps {

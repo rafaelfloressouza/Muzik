@@ -1,4 +1,4 @@
-import { ReactElement, useContext, useState } from "react";
+import { ReactElement, useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -14,13 +14,20 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { SearchbarDark } from "../others/Searchbar";
 import Sorter from "../others/Sorter";
 import { IContainerProps, ITextProps } from "../../../utils/types";
+import Menu, { MenuItemType } from "../others/Menu";
+import LibraryMusicOutlinedIcon from "@mui/icons-material/LibraryMusicOutlined";
+import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 
 type Props = {
   width: string;
   page: PageType;
   pageSelected?: (page: PageType) => void;
   playlistSelected?: () => void;
-  sidebarCollapsed?: (collpased: boolean) => void;
+  sidebarCollapsed?: (collapsed: boolean) => void;
+  sidebarExpanded?: (collapsed: boolean) => void;
+  createPlaylist?: () => void;
 };
 
 export default function Sidebar({
@@ -29,6 +36,8 @@ export default function Sidebar({
   pageSelected = () => {},
   playlistSelected = () => {},
   sidebarCollapsed = (collapsed: boolean) => {},
+  sidebarExpanded = (collapsed: boolean) => {},
+  createPlaylist = () => {},
 }: Props): ReactElement {
   // Constants
   const topButtons = [
@@ -54,6 +63,12 @@ export default function Sidebar({
   // State
   const [searchText, setSearchText] = useState<string>("");
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [isGridView, setIsGridView] = useState<boolean>(false);
+  const [plusBtnMenuOpened, setPlusBtnMenuOpened] = useState<boolean>(false);
+
+  // Refs
+  const plustBtnRef = useRef<HTMLDivElement | null>(null);
 
   // Contexts
   const theme = useContext(ThemeContext);
@@ -107,6 +122,7 @@ export default function Sidebar({
           },
           selected: page === pageType,
           justifyContent: isCollapsed ? "center" : "",
+          height: "38px",
         }}
         svgProps={{
           muiComponent: muiComponent,
@@ -123,6 +139,50 @@ export default function Sidebar({
           weight: "bold",
           size: "0.90rem",
         }}
+      />
+    );
+  };
+
+  const getAddBtnMenu = () => {
+    return (
+      <Menu
+        open={plusBtnMenuOpened}
+        menuProps={{ refEl: plustBtnRef, width: "205px" }}
+        listenForClickAway={true}
+        menuItemProps={[
+          {
+            itemProps: {
+              flexDir: "row-reverse",
+              justifyContent: "left",
+              colGap: "0.5rem",
+              onClick: () => createPlaylist(),
+            },
+            textProps: { text: "Create a new playlist", size: "0.85rem" },
+            iconProps: {
+              muiComponent: LibraryMusicOutlinedIcon,
+              width: "22px",
+              height: "22px",
+              fill: theme?.senary(),
+            },
+            type: MenuItemType.WithIcon,
+          },
+          {
+            itemProps: {
+              flexDir: "row-reverse",
+              justifyContent: "left",
+              colGap: "0.5rem",
+            },
+            textProps: { text: "Create a playlist folder", size: "0.85rem" },
+            iconProps: {
+              muiComponent: FolderOpenOutlinedIcon,
+              width: "22px",
+              height: "22px",
+              fill: theme?.senary(),
+            },
+            type: MenuItemType.WithIcon,
+          },
+        ]}
+        setOpen={(open: boolean) => setPlusBtnMenuOpened(open)}
       />
     );
   };
@@ -160,6 +220,7 @@ export default function Sidebar({
                   true,
                   () => {
                     setIsCollapsed(!isCollapsed);
+                    setIsExpanded(false);
                     sidebarCollapsed(!isCollapsed);
                   }
                 );
@@ -169,33 +230,59 @@ export default function Sidebar({
                   <Button
                     svgProps={{
                       muiComponent: AddIcon,
-                      height: "25px",
-                      width: "25px",
+                      height: "22px",
+                      width: "22px",
                     }}
                     buttonProps={{
-                      height: "25px",
-                      width: "25px",
+                      refEl: plustBtnRef,
+                      height: "22px",
+                      width: "22px",
                       padding: "3px",
                       borderRadius: "100%",
                       hoverCursor: "pointer",
                       hoverBgColor: theme?.secondary(0.7),
                       justifyContent: "center",
+                      onClick: () => setPlusBtnMenuOpened(!plusBtnMenuOpened),
                     }}
                   />
+                  {isExpanded && (
+                    <Button
+                      svgProps={{
+                        muiComponent: GridViewOutlinedIcon,
+                        height: "20px",
+                        width: "20px",
+                        hoverFill: theme?.senary(),
+                      }}
+                      buttonProps={{
+                        height: "20px",
+                        width: "20px",
+                        hoverCursor: "pointer",
+                        justifyContent: "center",
+                        onClick: () => setIsGridView(!isGridView),
+                      }}
+                    />
+                  )}
                   <Button
                     svgProps={{
-                      muiComponent: ArrowForwardIcon,
-                      height: "25px",
-                      width: "25px",
+                      muiComponent: isExpanded
+                        ? ArrowBackIcon
+                        : ArrowForwardIcon,
+                      height: "22px",
+                      width: "22px",
                     }}
                     buttonProps={{
-                      height: "25px",
-                      width: "25px",
+                      height: "22px",
+                      width: "22px",
                       padding: "3px",
                       borderRadius: "100%",
                       hoverCursor: "pointer",
                       hoverBgColor: theme?.secondary(0.7),
                       justifyContent: "center",
+                      onClick: () => {
+                        setIsExpanded(!isExpanded);
+                        setIsCollapsed(false);
+                        sidebarExpanded(!isExpanded);
+                      },
                     }}
                   />
                 </div>
@@ -263,6 +350,7 @@ export default function Sidebar({
             {getLibraryItems()}
           </div>
         </BottomContainer>
+        {getAddBtnMenu()}
       </SidebarContainer>
     </>
   );
@@ -278,7 +366,7 @@ const SidebarContainer = styled.div<{ width: string }>`
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   font-size: 0.85rem;
-  padding: 0 10px;
+  padding: 0 0px 0px 8px;
 `;
 
 const TopContainer = styled.div<{
@@ -292,7 +380,7 @@ const TopContainer = styled.div<{
   row-gap: 0.9rem;
   border-radius: 10px;
   background-color: ${(props) => props.bgColor};
-  padding: ${(props) => (props.isCollapsed ? "10px" : "2% 5%")};
+  padding: 12px 20px;
 
   & #elipsis-btn {
     margin-bottom: 0px;
@@ -310,7 +398,7 @@ const BottomContainer = styled.div<{
   font-weight: normal;
   font-size: 0.85rem;
   color: ${(props) => props.color};
-  margin-top: 10px;
+  margin-top: 8px;
   border-radius: 10px;
   background-color: ${(props) => props.bgColor};
   overflow: hidden;
@@ -319,24 +407,23 @@ const BottomContainer = styled.div<{
     display: flex;
     flex-direction: column;
     row-gap: 1.2rem;
-    padding: 4% 5%;
+    padding: 15px 20px;
     box-shadow: black 0px 5px 15px -5px;
 
     & .top-1 {
       display: flex;
       justify-content: ${(props) =>
         props.isCollapsed ? "center" : "space-between"};
-      padding: ${(props) => (props.isCollapsed ? "10px" : "0")};
 
       & .top-1-1 {
         display: flex;
-        column-gap: 0.6rem;
+        column-gap: 1rem;
+        align-items: center;
       }
     }
   }
 
   & .bottom {
-    padding: ${(props) => (props.isCollapsed ? "0px" : "8px")};
     display: flex;
     flex-direction: column;
     z-index: 1;
