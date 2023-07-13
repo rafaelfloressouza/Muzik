@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import { ThemeContext } from "../../../contexts/ThemeContext";
+import { ThemeContext } from "../contexts/ThemeContext";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
@@ -12,15 +12,15 @@ import QueueMusicOutlinedIcon from "@mui/icons-material/QueueMusicOutlined";
 import DevicesOutlinedIcon from "@mui/icons-material/DevicesOutlined";
 import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
 import OpenInFullOutlinedIcon from "@mui/icons-material/OpenInFullOutlined";
-import Slider from "../others/Slider";
-import Button from "../buttons/Button";
-import { IContainerProps } from "../../../utils/types";
+import Slider from "./shared/controls/Slider";
+import Button from "./shared/controls/StandardButton";
+import { IContainerProps } from "../utils/types";
 
 type Props = {
   bottombarProps: IContainerProps;
 };
 
-export default function Bottombar({ bottombarProps }: Props) {
+export default function BottomBar({ bottombarProps }: Props) {
   const theme = useContext(ThemeContext);
 
   return (

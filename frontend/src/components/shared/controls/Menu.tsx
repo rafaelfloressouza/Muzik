@@ -1,7 +1,7 @@
 import * as Material from "@mui/material";
 import { ReactElement, useContext } from "react";
 import { ThemeContext } from "../../../contexts/ThemeContext";
-import Button from "../buttons/Button";
+import Button from "./StandardButton";
 import { IContainerProps, ISvgProps, ITextProps } from "../../../utils/types";
 
 // Types of Items in a menu

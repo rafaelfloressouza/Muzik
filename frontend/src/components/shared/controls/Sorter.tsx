@@ -1,7 +1,7 @@
 import { ReactElement, useContext, useRef, useState } from "react";
 import Menu, { IMenuItemProps, MenuItemType } from "./Menu";
 import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
-import Button from "../buttons/Button";
+import Button from "./StandardButton";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import { Ordering } from "../../../utils/types";
 import CheckIcon from "@mui/icons-material/Check";

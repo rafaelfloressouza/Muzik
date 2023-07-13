@@ -1,10 +1,10 @@
 import { ReactElement, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { ThemeContext } from "../../contexts/ThemeContext";
-import Card, { CardType } from "../shared/containers/Card";
-import Row from "../shared/containers/Row";
-import Title from "../shared/containers/Title";
-import useHandleScroll from "../../hooks/useHandleScroll";
+import { ThemeContext } from "../contexts/ThemeContext";
+import useHandleScroll from "../hooks/useHandleScroll";
+import Card, { CardType } from "../components/shared/layout/Card";
+import Title from "../components/shared/others/Title";
+import Row from "../components/shared/layout/Row";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;

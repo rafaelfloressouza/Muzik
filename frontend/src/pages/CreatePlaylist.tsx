@@ -2,13 +2,13 @@ import { ReactElement, useContext, useRef, useState } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
 import styled from "styled-components";
 import useHandleScroll from "../hooks/useHandleScroll";
-import Button from "./shared/buttons/Button";
+import Button from "../components/shared/controls/StandardButton";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
-import FindMoreMenu from "./shared/containers/FindMoreMenu";
-import Table, { Item } from "./shared/containers/Table";
-import Typography from "./shared/others/Typography";
-import ItemInfo from "./shared/others/ItemInfo";
+import FindMoreMenu from "../components/shared/controls/FindMoreMenu";
+import Typography from "../components/shared/others/Typography";
+import Table from "../components/shared/layout/Table";
+import ItemInfo from "../components/shared/layout/ItemInfo";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;

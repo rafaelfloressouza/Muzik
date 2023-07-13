@@ -1,12 +1,12 @@
-import { ReactElement, useContext, useEffect, useRef, useState } from "react";
+import { ReactElement, useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
-import Row from "./shared/containers/Row";
-import Card from "./shared/containers/Card";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
-import Button from "./shared/buttons/Button";
-import Title, { TitleType } from "./shared/containers/Title";
 import useHandleScroll from "../hooks/useHandleScroll";
+import Card from "../components/shared/layout/Card";
+import Button from "../components/shared/controls/StandardButton";
+import Title, { TitleType } from "../components/shared/others/Title";
+import Row from "../components/shared/layout/Row";
 
 export enum CategoryType {
   Playlists = "Playlists",

@@ -2,7 +2,7 @@ import { ReactElement, useState } from "react";
 import styled from "styled-components";
 import CloseIcon from "@mui/icons-material/Close";
 import { ICardProps, IImgProps, ITextProps } from "../../../utils/types";
-import { PlayButton } from "../buttons/Button";
+import { PlayButton } from "../controls/PlayButton";
 
 export enum CardType {
   WithImg,

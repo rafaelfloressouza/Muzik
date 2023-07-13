@@ -1,15 +1,15 @@
 import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
-import { PageType } from "../../../App";
+import { PageType } from "../App";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import { ThemeContext } from "../../../contexts/ThemeContext";
-import Avatar from "../others/Avatar";
-import ButtonGroup, { IButtonProps } from "../buttons/ButtonGroup";
-import { CategoryType } from "../../YourLibrary";
-import { PlayButton } from "../buttons/Button";
-import { IContainerProps } from "../../../utils/types";
-import SearchbarLight from "../others/Searchbar";
+import { ThemeContext } from "../contexts/ThemeContext";
+import Avatar from "./shared/controls/Avatar";
+import { IContainerProps } from "../utils/types";
+import { CategoryType } from "../pages/YourLibrary";
+import ButtonGroup, { IButtonProps } from "./shared/controls/ButtonGroup";
+import { BigSearchBar } from "./shared/controls/BigSearchbar";
+import { PlayButton } from "./shared/controls/PlayButton";
 
 type Props = {
   page: PageType;
@@ -90,7 +90,7 @@ export default function Navbar({
 
   const getSearchBar = (): ReactElement => {
     if (page !== PageType.Search) return <></>;
-    return <SearchbarLight onSearch={onSearch} />;
+    return <BigSearchBar onSearch={onSearch} />;
   };
 
   const getPlayBtn = (): ReactElement => {

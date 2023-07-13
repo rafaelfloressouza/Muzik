@@ -25,13 +25,9 @@ export default function Table({
 }: Props): ReactElement {
   // Helpers
   const computeWidth = (columnProps: IContainerProps | null) => {
-    console.log("columnProps.width: " + columnProps);
-
     if (!columnProps) return "100%";
     const doAutoWidth = autoWidth || !columnProps || !columnProps?.width;
     const padding: number = (columnProps?.padding as number) ?? 0;
-
-    console.log("columnProps.width: " + columnProps?.width);
 
     if (doAutoWidth) {
       return (100 - columns.length * 2 * padding) / columns.length + "%";
