@@ -41,6 +41,11 @@ export interface IContainerProps {
   onClick?: (a?: any, b?: any) => void;
   refEl?: React.MutableRefObject<HTMLDivElement | null>;
   margin?: string;
+  visibility?: string;
+  pointerEvents?: string;
+  flexDir?: "row" | "column" | "row-reverse" | "column-reverse";
+  rowGap?: string;
+  colGap?: string;
 }
 
 export interface ISvgProps extends IContainerProps {

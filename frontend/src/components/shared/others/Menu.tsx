@@ -125,17 +125,23 @@ function MenuItem({ menuItemProps, handleClose }: MenuItemProps): ReactElement {
   return (
     <Material.MenuItem
       onClick={(e) => {
+        menuItemProps?.itemProps?.onClick?.();
         handleClose(e);
-        if (menuItemProps.onClick) menuItemProps?.onClick();
       }}
       sx={{
         fontSize: menuItemProps.textProps?.size ?? "0.82rem",
         color: menuItemProps.textProps?.color ?? theme?.senary(),
         display: "flex",
-        justifyContent: "space-between",
+        flexDirection: menuItemProps?.itemProps?.flexDir ?? "row",
+        justifyContent:
+          menuItemProps?.itemProps?.justifyContent ?? "space-between",
+        alignItems: menuItemProps?.itemProps?.alignItems ?? "center",
+        rowGap: menuItemProps?.itemProps?.rowGap ?? "0",
+        columnGap: menuItemProps?.itemProps?.colGap ?? "0",
         width: "100%",
         padding: menuItemProps?.itemProps?.padding ?? "8px",
         backgroundColor: menuItemProps?.itemProps?.bgColor ?? "transparent",
+        fontWeight: menuItemProps?.textProps?.weight,
 
         "&:hover": {
           backgroundColor:

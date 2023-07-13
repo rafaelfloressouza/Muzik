@@ -34,6 +34,7 @@ export default function Page({
 
   // Helpers
   const getNavbarColor = () => {
+    if (page == PageType.Search) return theme?.tertiary();
     if (!scrollTop || scrollTop < 100) {
       return "transparent";
     } else if (scrollTop < 150) {
@@ -48,7 +49,11 @@ export default function Page({
   };
 
   return (
-    <PageContainer width={width} height={height}>
+    <PageContainer
+      width={width}
+      height={height}
+      bgColor={theme?.septenary() ?? ""}
+    >
       <Navbar
         navbarProps={{
           height: navbarHeight,
@@ -64,43 +69,16 @@ export default function Page({
   );
 }
 
-const PageContainer = styled.div<{ width: string; height: string }>`
+const PageContainer = styled.div<{
+  width: string;
+  height: string;
+  bgColor: string;
+}>`
   display: flex;
   flex-direction: column;
   width: ${(props) => props.width};
   overflow-y: auto;
-  background-color: rgb(18, 18, 18);
+  background-color: ${(props) => props.bgColor};
   position: relative;
+  padding: 0 8px;
 `;
-
-// const PageHeader = styled.div<{}>`
-//   display: flex;
-//   justify-content: space-between;
-//   margin-top: 90px;
-//   padding: 0px 30px;
-//   font-size: 1.4rem;
-//   font-weight: bold;
-
-//   & .filtering-div {
-//     display: flex;
-//     flex-direction: row;
-//     column-gap: 1rem;
-//     font-size: 0.8rem;
-//     font-weight: normal;
-//   }
-// `;
-
-{
-  /* <PageHeader>
-        <span>{category}</span>
-        <div className="filtering-div">
-          <SearchbarDark />
-          <Button
-            textProps={{ text: "Custom order" }}
-            svgProps={{ muiComponent: ArrowDropDownSharpIcon }}
-            ordering={Ordering.AfterText}
-            colGap="2px"
-          />
-        </div>
-      </PageHeader> */
-}
