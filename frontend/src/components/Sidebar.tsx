@@ -3,22 +3,22 @@ import styled from "styled-components";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
-import { ThemeContext } from "../../../contexts/ThemeContext";
-import { PageType } from "../../../App";
+import { ThemeContext } from "../contexts/ThemeContext";
+import { PageType } from "../App";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { SvgIconTypeMap } from "@mui/material";
-import Button from "../buttons/Button";
-import ButtonGroup, { IButtonProps } from "../buttons/ButtonGroup";
+import Button from "./shared/controls/StandardButton";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { SearchbarDark } from "../others/Searchbar";
-import Sorter from "../others/Sorter";
-import { IContainerProps, ITextProps } from "../../../utils/types";
-import Menu, { MenuItemType } from "../others/Menu";
+import Sorter from "./shared/controls/Sorter";
+import { IContainerProps, ITextProps } from "../utils/types";
+import Menu, { MenuItemType } from "./shared/controls/Menu";
 import LibraryMusicOutlinedIcon from "@mui/icons-material/LibraryMusicOutlined";
 import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
+import ButtonGroup, { IButtonProps } from "./shared/controls/ButtonGroup";
+import { ReactiveSearchBar } from "./shared/controls/ReactiveSearchBar";
 
 type Props = {
   width: string;
@@ -329,7 +329,7 @@ export default function Sidebar({
           <div className="bottom">
             {!isCollapsed && (
               <div className="bottom-1">
-                <SearchbarDark
+                <ReactiveSearchBar
                   expandLeft={false}
                   searchIn="Your Library"
                   onSearch={(searchTxt: string) => setSearchText(searchTxt)}

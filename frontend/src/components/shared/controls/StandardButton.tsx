@@ -1,8 +1,7 @@
 import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { ThemeContext } from "../../../contexts/ThemeContext";
-import Tooltip from "../others/Tooltip";
+import Tooltip from "./Tooltip";
 import {
   IContainerProps,
   ISvgProps,
@@ -10,6 +9,7 @@ import {
   ITooltipProps,
   Ordering,
 } from "../../../utils/types";
+import { Svg } from "./Svg";
 
 type Props = {
   buttonProps?: IContainerProps;
@@ -23,7 +23,7 @@ type Props = {
   id?: string;
 };
 
-export default function Button({
+export default function StandardButton({
   buttonProps,
   textProps,
   svgProps,
@@ -119,108 +119,3 @@ const ButtonContainer = styled.div<{
     border: ${(props) => props?.buttonProps?.hoverBorder};
   }
 `;
-
-// Custom Svg
-
-type SvgProps = {
-  svgProps?: ISvgProps;
-};
-
-function Svg({
-  svgProps = { selected: false, width: "25px", height: "25px" },
-}: SvgProps): ReactElement {
-  // Constants
-  const SvgMuiComponent = Array.isArray(svgProps?.muiComponent)
-    ? null
-    : svgProps?.muiComponent;
-
-  return (
-    <>
-      {(svgProps?.fileUrl || svgProps?.muiComponent) &&
-        !(svgProps?.fileUrl && svgProps?.muiComponent) && (
-          <SvgContainer
-            className="svg"
-            svgProps={svgProps}
-            onClick={() => svgProps?.onClick?.()}
-          >
-            {svgProps?.fileUrl && (
-              <object
-                onClick={() => svgProps?.onClick?.()}
-                className="file-svg"
-                data={Array.isArray(svgProps.fileUrl) ? "" : svgProps.fileUrl}
-              />
-            )}
-            {SvgMuiComponent && <SvgMuiComponent className="mui-svg" />}
-          </SvgContainer>
-        )}
-    </>
-  );
-}
-
-const SvgContainer = styled.div<{
-  svgProps: ISvgProps;
-}>`
-  display: flex;
-  & .file-svg,
-  .mui-svg {
-    width: ${(props) => props.svgProps.width};
-    height: ${(props) => props.svgProps.height};
-    border-radius: ${(props) => props.svgProps.borderRadius};
-    fill: ${(props) =>
-      props?.svgProps?.selected
-        ? props.svgProps.hoverFill
-        : props.svgProps.fill};
-    transition: ease-in-out 0.1s;
-    background-color: ${(props) => props.svgProps.bgColor};
-    padding: ${(props) => props.svgProps?.padding};
-    box-shadow: ${(props) => props.svgProps?.boxShadow};
-    opacity: ${(props) => props.svgProps?.opacity};
-
-    &:hover {
-      fill: ${(props) => props.svgProps.hoverFill ?? props.svgProps?.fill};
-      transform: ${(props) =>
-        props.svgProps?.animate ? "scale(1.05)" : "none"};
-      cursor: ${(props) => props.svgProps.hoverCursor};
-    }
-  }
-`;
-
-// Play Button
-
-type PlayButtonProps = {
-  buttonProps?: IContainerProps;
-  textProps?: ITextProps;
-  svgProps?: ISvgProps;
-};
-
-export function PlayButton({
-  svgProps = {
-    muiComponent: PlayArrowIcon,
-    height: "32px",
-    width: "32px",
-    padding: "8px",
-    animate: true,
-    borderRadius: "50%",
-    boxShadow: "0px 5px 5px 1px rgb(0, 0, 0, 0.2)",
-  },
-  textProps,
-}: PlayButtonProps): ReactElement {
-  const theme = useContext(ThemeContext);
-  return (
-    <Button
-      svgProps={{
-        ...svgProps,
-        muiComponent: PlayArrowIcon,
-        fill: theme?.septenary(),
-        hoverFill: theme?.septenary(),
-        bgColor: theme?.primary(),
-      }}
-      textProps={{
-        text: textProps?.text,
-        color: theme?.senary(),
-        size: "1.3rem",
-        weight: "bold",
-      }}
-    />
-  );
-}

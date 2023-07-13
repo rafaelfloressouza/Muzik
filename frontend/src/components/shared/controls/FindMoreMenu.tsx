@@ -1,7 +1,7 @@
 import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
-import Button from "../buttons/Button";
-import { SearchbarDark } from "../others/Searchbar";
+import Button from "./StandardButton";
+import { ReactiveSearchBar } from "./ReactiveSearchBar";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 
@@ -54,7 +54,7 @@ export default function FindMoreMenu({ menuExpanded }: Props): ReactElement {
               }}
             />
           </div>
-          <SearchbarDark width={400} onClickAway={false} expanded={true} />
+          <ReactiveSearchBar width={400} onClickAway={false} expanded={true} />
         </>
       )}
     </FindMoreMenuContainer>

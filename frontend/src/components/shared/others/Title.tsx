@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import styled from "styled-components";
-import { SearchbarDark } from "../others/Searchbar";
-import Sorter, { ISorterItem } from "../others/Sorter";
+import { ReactiveSearchBar } from "../controls/ReactiveSearchBar";
+import Sorter, { ISorterItem } from "../controls/Sorter";
 
 export enum TitleType {
   Plain,
@@ -37,7 +37,7 @@ export default function Title({
         <>
           <div className="title-left ">{title}</div>
           <div className="filterings">
-            <SearchbarDark onSearch={onSearch} />
+            <ReactiveSearchBar onSearch={onSearch} />
             <Sorter
               items={sorterCategories}
               showSortBy={false}

@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
 import ArrowDropUpSharpIcon from "@mui/icons-material/ArrowDropUpSharp";
-import Tooltip from "../others/Tooltip";
+import Tooltip from "./Tooltip";
 import Menu, { MenuItemType } from "./Menu";
 import OpenInNewSharpIcon from "@mui/icons-material/OpenInNewSharp";
-import Button from "../buttons/Button";
+import Button from "./StandardButton";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 type Props = {

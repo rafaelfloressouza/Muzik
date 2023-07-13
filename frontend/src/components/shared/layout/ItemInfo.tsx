@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import styled from "styled-components";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import Button from "../buttons/Button";
+import Button from "../controls/StandardButton";
 import { IImgProps, ITextProps } from "../../../utils/types";
 import { title } from "process";
 

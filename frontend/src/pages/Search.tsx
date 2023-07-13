@@ -1,8 +1,10 @@
-import { ReactElement, useContext, useEffect, useRef } from "react";
+import { ReactElement, useContext, useRef } from "react";
 import styled from "styled-components";
-import { ThemeContext } from "../../contexts/ThemeContext";
-import ButtonGroup, { IButtonProps } from "../shared/buttons/ButtonGroup";
-import useHandleScroll from "../../hooks/useHandleScroll";
+import { ThemeContext } from "../contexts/ThemeContext";
+import useHandleScroll from "../hooks/useHandleScroll";
+import ButtonGroup, {
+  IButtonProps,
+} from "../components/shared/controls/ButtonGroup";
 
 type Props = {
   scrollChanged: (scrollTop: number) => void;

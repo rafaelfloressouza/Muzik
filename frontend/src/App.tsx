@@ -1,15 +1,15 @@
-import Sidebar from "./components/shared/containers/Sidebar";
+import Sidebar from "./components/Sidebar";
 import styled from "styled-components";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Bottombar from "./components/shared/containers/Bottombar";
-import Home from "./components/Home";
-import { ReactElement, useEffect, useState } from "react";
-import Page from "./components/shared/containers/Page";
+import Bottombar from "./components/BottomBar";
+import { ReactElement, useCallback, useEffect, useMemo, useState } from "react";
+import Page from "./components/Page";
 import * as Material from "@mui/material";
-import YourLibrary, { CategoryType } from "./components/YourLibrary";
-import SearchBase from "./components/search/SearchBase";
-import Search from "./components/search/Search";
-import CreatePlaylist from "./components/CreatePlaylist";
+import Search from "./pages/Search";
+import CreatePlaylist from "./pages/CreatePlaylist";
+import { CategoryType } from "./pages/YourLibrary";
+import SearchBase from "./pages/SearchBase";
+import Home from "./pages/Home";
 
 export enum PageType {
   Home = "Home",
@@ -32,18 +32,18 @@ const muiTheme = Material.createTheme({
   },
 });
 
-export default function App() {
-  // Constants
-  const sideBarWidth = `420px`;
-  const sideBarWidthCollapsed = `90px`;
-  const sideBarWidthExpandedDefault = `50vw`;
-  const bottomBarHeight = `90px`;
-  const topContainerHeight = `calc(100% - ${bottomBarHeight})`;
-  const pageWidth = `calc(100% - ${sideBarWidth})`;
-  const pageWidthSidebarCollapsed = `calc(100% - ${sideBarWidthCollapsed})`;
-  const pageWidthSidebarExpandedDefault = `calc(100% - ${sideBarWidthExpandedDefault})`;
-  const pageHeight = `calc(100% - ${bottomBarHeight})`;
+// Constants
+const sideBarWidth = `420px`;
+const sideBarWidthCollapsed = `90px`;
+const sideBarWidthExpandedDefault = `50vw`;
+const bottomBarHeight = `90px`;
+const topContainerHeight = `calc(100% - ${bottomBarHeight})`;
+const pageWidth = `calc(100% - ${sideBarWidth})`;
+const pageWidthSidebarCollapsed = `calc(100% - ${sideBarWidthCollapsed})`;
+const pageWidthSidebarExpandedDefault = `calc(100% - ${sideBarWidthExpandedDefault})`;
+const pageHeight = `calc(100% - ${bottomBarHeight})`;
 
+export default function App() {
   // State
   const [page, setPage] = useState(PageType.Home);
   const [scrollTop, setScrollTop] = useState(0);
@@ -53,8 +53,9 @@ export default function App() {
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(false);
 
   // useEffects
+
+  // Make browsers context meny not open on right click
   useEffect(() => {
-    // Does not open browsers context menu
     const handleRightClick = (event: MouseEvent) => event.preventDefault();
     document.addEventListener("contextmenu", handleRightClick);
     return () => document.removeEventListener("contextmenu", handleRightClick);
@@ -67,27 +68,40 @@ export default function App() {
   }, [page]);
 
   // Handlers
-  const pageChange = (newPage: PageType) =>
-    setPage(newPage === page ? page : newPage);
 
-  const scrollChanged = (scrollTop: number) => setScrollTop(scrollTop);
+  const pageChange = useCallback(
+    (newPage: PageType) => setPage(newPage === page ? page : newPage),
+    [setPage, page]
+  );
 
-  const categoryChange = (category: CategoryType) => setCategory(category);
+  const scrollChanged = useCallback(
+    (scrollTop: number) => setScrollTop(scrollTop),
+    [setScrollTop]
+  );
 
-  const onSearch = (text: string) => setSearch(text);
+  const categoryChange = useCallback(
+    (category: CategoryType) => setCategory(category),
+    [setCategory]
+  );
 
-  const onSidebarCollapsed = (collapsed: boolean) =>
-    setSidebarCollapsed(collapsed);
+  const onSearch = useCallback((text: string) => setSearch(text), [setSearch]);
 
-  const onSidebarExpanded = (collapsed: boolean) =>
-    setSidebarExpanded(collapsed);
+  const onSidebarCollapsed = useCallback(
+    (collapsed: boolean) => setSidebarCollapsed(collapsed),
+    [setSidebarCollapsed]
+  );
 
-  const createPlaylist = () => {
+  const onSidebarExpanded = useCallback(
+    (collapsed: boolean) => setSidebarExpanded(collapsed),
+    [setSidebarExpanded]
+  );
+
+  const createPlaylist = useCallback(() => {
     setPage(PageType.CreatePlaylist);
-  };
+  }, []);
 
   // Helpers
-  const getPageContent = (): ReactElement => {
+  const pageContent = useMemo((): ReactElement => {
     switch (page) {
       case PageType.Home:
         return <Home scrollChanged={scrollChanged} />;
@@ -102,9 +116,9 @@ export default function App() {
       default:
         return <></>;
     }
-  };
+  }, [page, search]);
 
-  const getPageWidth = (): string => {
+  const finalPageWidth = useMemo((): string => {
     if (sidebarCollapsed) {
       return pageWidthSidebarCollapsed;
     } else if (sidebarExpanded) {
@@ -112,9 +126,15 @@ export default function App() {
     } else {
       return pageWidth;
     }
-  };
+  }, [
+    sidebarCollapsed,
+    pageWidthSidebarCollapsed,
+    pageWidthSidebarExpandedDefault,
+    sidebarExpanded,
+    pageWidth,
+  ]);
 
-  const getSidebarWidth = (): string => {
+  const finalSidebarWidth = useMemo((): string => {
     if (sidebarCollapsed) {
       return sideBarWidthCollapsed;
     } else if (sidebarExpanded) {
@@ -122,15 +142,22 @@ export default function App() {
     } else {
       return sideBarWidth;
     }
-  };
+  }, [
+    sidebarCollapsed,
+    sideBarWidthCollapsed,
+    sidebarExpanded,
+    sideBarWidthExpandedDefault,
+    sideBarWidth,
+  ]);
 
   return (
     <AppContainer>
       <Material.ThemeProvider theme={muiTheme}>
         <ThemeProvider>
+          {/* Contains the sidebar and the main body */}
           <TopContainer height={topContainerHeight}>
             <Sidebar
-              width={getSidebarWidth()}
+              width={finalSidebarWidth}
               page={page}
               pageSelected={pageChange}
               sidebarCollapsed={onSidebarCollapsed}
@@ -138,9 +165,9 @@ export default function App() {
               createPlaylist={createPlaylist}
             />
             <Page
-              width={getPageWidth()}
+              width={finalPageWidth}
               height={pageHeight}
-              children={getPageContent()}
+              children={pageContent}
               page={page}
               scrollTop={scrollTop}
               category={category}
@@ -148,6 +175,7 @@ export default function App() {
               onSearch={onSearch}
             />
           </TopContainer>
+          {/* Contains the bottombar only */}
           <Bottombar bottombarProps={{ height: bottomBarHeight }} />
         </ThemeProvider>
       </Material.ThemeProvider>
