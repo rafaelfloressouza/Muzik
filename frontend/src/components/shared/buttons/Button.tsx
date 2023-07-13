@@ -47,20 +47,21 @@ export default function Button({
         textProps={textProps}
         ordering={ordering}
         colGap={colGap}
-        onClick={buttonProps?.onClick}
+        onClick={() => buttonProps?.onClick?.()}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
         <Svg
           svgProps={{
             ...svgProps,
+            onClick: () => svgProps?.onClick?.(),
             fill:
               hovered && !noChangeColorSvg
                 ? svgProps?.hoverFill ?? theme?.senary()
                 : svgProps?.fill ?? theme?.quinary(),
           }}
         />
-        {textProps?.text}
+        {textProps?.text && <p className="btn-txt">{textProps?.text}</p>}
       </ButtonContainer>
     </Tooltip>
   );
@@ -79,17 +80,31 @@ const ButtonContainer = styled.div<{
   justify-content: ${(props) => props.buttonProps?.justifyContent};
   column-gap: ${(props) => props.colGap};
   width: ${(props) => props.buttonProps?.width ?? "auto"};
-  height: ${(props) => props.buttonProps?.width ?? "auto"};
+  height: ${(props) => props.buttonProps?.height ?? "auto"};
   background-color: ${(props) => props?.buttonProps?.bgColor};
   padding: ${(props) => props?.buttonProps?.padding};
   border-radius: ${(props) => props?.buttonProps?.borderRadius ?? "0"};
-  color: ${(props) => props?.textProps?.color};
+  color: ${(props) =>
+    props?.buttonProps?.selected
+      ? props?.buttonProps.selectedBgColor
+      : props?.textProps?.color};
   font-size: ${(props) => props?.textProps?.size};
   font-weight: ${(props) => props?.textProps?.weight};
   box-shadow: ${(props) => props?.buttonProps?.boxShadow};
   transition: ease-in-out 0.1s;
   border: ${(props) => props?.buttonProps?.border};
   margin: ${(props) => props?.buttonProps?.margin};
+  visibility: ${(props) => props?.buttonProps?.visibility};
+  pointer-events: ${(props) => props.buttonProps?.pointerEvents};
+  opacity: ${(props) => props.buttonProps?.opacity};
+  white-space: nowrap;
+
+  & .btn-txt {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   &:hover {
     background-color: ${(props) =>
@@ -126,10 +141,11 @@ function Svg({
           <SvgContainer
             className="svg"
             svgProps={svgProps}
-            onClick={svgProps?.onClick}
+            onClick={() => svgProps?.onClick?.()}
           >
             {svgProps?.fileUrl && (
               <object
+                onClick={() => svgProps?.onClick?.()}
                 className="file-svg"
                 data={Array.isArray(svgProps.fileUrl) ? "" : svgProps.fileUrl}
               />
@@ -144,21 +160,27 @@ function Svg({
 const SvgContainer = styled.div<{
   svgProps: ISvgProps;
 }>`
+  display: flex;
   & .file-svg,
   .mui-svg {
     width: ${(props) => props.svgProps.width};
     height: ${(props) => props.svgProps.height};
     border-radius: ${(props) => props.svgProps.borderRadius};
-    fill: ${(props) => props.svgProps.fill};
+    fill: ${(props) =>
+      props?.svgProps?.selected
+        ? props.svgProps.hoverFill
+        : props.svgProps.fill};
     transition: ease-in-out 0.1s;
     background-color: ${(props) => props.svgProps.bgColor};
     padding: ${(props) => props.svgProps?.padding};
     box-shadow: ${(props) => props.svgProps?.boxShadow};
+    opacity: ${(props) => props.svgProps?.opacity};
 
     &:hover {
       fill: ${(props) => props.svgProps.hoverFill ?? props.svgProps?.fill};
       transform: ${(props) =>
         props.svgProps?.animate ? "scale(1.05)" : "none"};
+      cursor: ${(props) => props.svgProps.hoverCursor};
     }
   }
 `;
@@ -202,5 +224,3 @@ export function PlayButton({
     />
   );
 }
-
-//

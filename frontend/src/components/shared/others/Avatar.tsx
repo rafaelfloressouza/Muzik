@@ -7,8 +7,17 @@ import Tooltip from "../others/Tooltip";
 import Menu, { MenuItemType } from "./Menu";
 import OpenInNewSharpIcon from "@mui/icons-material/OpenInNewSharp";
 import Button from "../buttons/Button";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-export default function Avatar(): ReactElement {
+type Props = {
+  showUserName?: boolean;
+  showArrow?: boolean;
+};
+
+export default function Avatar({
+  showUserName = false,
+  showArrow = false,
+}: Props): ReactElement {
   // Contexts
   const theme = useContext(ThemeContext);
 
@@ -60,40 +69,49 @@ export default function Avatar(): ReactElement {
   };
 
   return (
-    <>
+    <div style={{ marginRight: "15px" }}>
       <Tooltip
         tooltipProps={{
           textStyle: { text: menuOpened ? "" : "Rafael Flores Souza" },
         }}
+        ignoreHover={menuOpened}
       >
         <AvatarContainer
           ref={avatarDivRef}
           className="avatar"
-          bgColor={theme?.septenary() ?? ""}
+          bgColor={theme?.octonary(0.5) ?? ""}
           hoverColor={theme?.secondary() ?? ""}
           onClick={() => setMenuOpened(!menuOpened)}
         >
           <Button
             svgProps={{
-              fileUrl: "svgs/unknown-avatar.svg",
+              muiComponent: AccountCircleIcon,
+              fill: theme?.senary(),
               borderRadius: "50%",
               height: "28px",
               width: "28px",
+              hoverCursor: "pointer",
+              onClick: () => {
+                setMenuOpened(!menuOpened);
+              },
             }}
           />
-          <span>Rafael Flores Souza</span>
-
-          {menuOpened ? (
-            <ArrowDropUpSharpIcon sx={{ transform: "scale(1.2)", mr: "2px" }} />
-          ) : (
-            <ArrowDropDownSharpIcon
-              sx={{ transform: "scale(1.2)", mr: "2px" }}
-            />
-          )}
+          {showUserName && <span>Rafael Flores Souza</span>}
+          {menuOpened
+            ? showArrow && (
+                <ArrowDropUpSharpIcon
+                  sx={{ transform: "scale(1.2)", mr: "2px" }}
+                />
+              )
+            : showArrow && (
+                <ArrowDropDownSharpIcon
+                  sx={{ transform: "scale(1.2)", mr: "2px" }}
+                />
+              )}
         </AvatarContainer>
       </Tooltip>
       {getMenu()}
-    </>
+    </div>
   );
 }
 
@@ -111,6 +129,7 @@ const AvatarContainer = styled.div<{ bgColor: string; hoverColor: string }>`
 
   &:hover {
     background-color: ${(props) => props.hoverColor};
+    transform: scale(1.05);
     cursor: pointer;
   }
 
@@ -125,12 +144,6 @@ const AvatarContainer = styled.div<{ bgColor: string; hoverColor: string }>`
       display: none;
     }
   }
-
-  /* & svg {
-    @media (max-width: 1050px) {
-      display: none;
-    }
-  } */
 
   @media (max-width: 1050px) {
     justify-content: left;

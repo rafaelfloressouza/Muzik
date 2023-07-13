@@ -17,6 +17,7 @@ export enum PageType {
   YourLibrary = "Your Library",
   CreatePlaylist = "Create Playlist",
   LikedSongs = "Liked Songs",
+  Empty = "",
 }
 
 const muiTheme = Material.createTheme({
@@ -34,16 +35,22 @@ const muiTheme = Material.createTheme({
 export default function App() {
   // Constants
   const sideBarWidth = `420px`;
+  const sideBarWidthCollapsed = `90px`;
+  const sideBarWidthExpandedDefault = `50vw`;
   const bottomBarHeight = `90px`;
   const topContainerHeight = `calc(100% - ${bottomBarHeight})`;
   const pageWidth = `calc(100% - ${sideBarWidth})`;
+  const pageWidthSidebarCollapsed = `calc(100% - ${sideBarWidthCollapsed})`;
+  const pageWidthSidebarExpandedDefault = `calc(100% - ${sideBarWidthExpandedDefault})`;
   const pageHeight = `calc(100% - ${bottomBarHeight})`;
 
   // State
-  const [page, setPage] = useState(PageType.CreatePlaylist);
+  const [page, setPage] = useState(PageType.Home);
   const [scrollTop, setScrollTop] = useState(0);
   const [category, setCategory] = useState(CategoryType.Playlists);
   const [search, setSearch] = useState<string>("");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
+  const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(false);
 
   // useEffects
   useEffect(() => {
@@ -69,6 +76,16 @@ export default function App() {
 
   const onSearch = (text: string) => setSearch(text);
 
+  const onSidebarCollapsed = (collapsed: boolean) =>
+    setSidebarCollapsed(collapsed);
+
+  const onSidebarExpanded = (collapsed: boolean) =>
+    setSidebarExpanded(collapsed);
+
+  const createPlaylist = () => {
+    setPage(PageType.CreatePlaylist);
+  };
+
   // Helpers
   const getPageContent = (): ReactElement => {
     switch (page) {
@@ -80,16 +97,30 @@ export default function App() {
         } else {
           return <SearchBase scrollChanged={scrollChanged} />;
         }
-      case PageType.YourLibrary:
-        return (
-          <YourLibrary scrollChanged={scrollChanged} category={category} />
-        );
       case PageType.CreatePlaylist:
         return <CreatePlaylist scrollChanged={scrollChanged} />;
-      case PageType.LikedSongs:
-        return <></>;
       default:
         return <></>;
+    }
+  };
+
+  const getPageWidth = (): string => {
+    if (sidebarCollapsed) {
+      return pageWidthSidebarCollapsed;
+    } else if (sidebarExpanded) {
+      return pageWidthSidebarExpandedDefault;
+    } else {
+      return pageWidth;
+    }
+  };
+
+  const getSidebarWidth = (): string => {
+    if (sidebarCollapsed) {
+      return sideBarWidthCollapsed;
+    } else if (sidebarExpanded) {
+      return sideBarWidthExpandedDefault;
+    } else {
+      return sideBarWidth;
     }
   };
 
@@ -99,12 +130,15 @@ export default function App() {
         <ThemeProvider>
           <TopContainer height={topContainerHeight}>
             <Sidebar
-              width={sideBarWidth}
+              width={getSidebarWidth()}
               page={page}
               pageSelected={pageChange}
+              sidebarCollapsed={onSidebarCollapsed}
+              sidebarExpanded={onSidebarExpanded}
+              createPlaylist={createPlaylist}
             />
             <Page
-              width={pageWidth}
+              width={getPageWidth()}
               height={pageHeight}
               children={getPageContent()}
               page={page}
