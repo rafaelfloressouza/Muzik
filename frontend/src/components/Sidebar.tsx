@@ -4,14 +4,13 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { PageType } from "../App";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { SvgIconTypeMap } from "@mui/material";
 import Button from "./shared/controls/StandardButton";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Sorter from "./shared/controls/Sorter";
-import { IContainerProps, ITextProps } from "../utils/types";
+import { IContainerProps, ITextProps, PageType } from "../utils/types";
 import Menu, { MenuItemType } from "./shared/controls/Menu";
 import LibraryMusicOutlinedIcon from "@mui/icons-material/LibraryMusicOutlined";
 import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
@@ -19,26 +18,14 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import ButtonGroup, { IButtonProps } from "./shared/controls/ButtonGroup";
 import { ReactiveSearchBar } from "./shared/controls/ReactiveSearchBar";
+import useAppParams from "../hooks/useAppParams";
 
 type Props = {
   width: string;
-  page: PageType;
-  pageSelected?: (page: PageType) => void;
   playlistSelected?: () => void;
-  sidebarCollapsed?: (collapsed: boolean) => void;
-  sidebarExpanded?: (collapsed: boolean) => void;
-  createPlaylist?: () => void;
 };
 
-export default function Sidebar({
-  width,
-  page,
-  pageSelected = () => {},
-  playlistSelected = () => {},
-  sidebarCollapsed = (collapsed: boolean) => {},
-  sidebarExpanded = (collapsed: boolean) => {},
-  createPlaylist = () => {},
-}: Props): ReactElement {
+export default function Sidebar({ width }: Props): ReactElement {
   // Constants
   const topButtons = [
     { muiComponent: HomeRoundedIcon, pageType: PageType.Home },
@@ -62,8 +49,6 @@ export default function Sidebar({
 
   // State
   const [searchText, setSearchText] = useState<string>("");
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isGridView, setIsGridView] = useState<boolean>(false);
   const [plusBtnMenuOpened, setPlusBtnMenuOpened] = useState<boolean>(false);
 
@@ -72,6 +57,14 @@ export default function Sidebar({
 
   // Contexts
   const theme = useContext(ThemeContext);
+  const {
+    page,
+    setPage,
+    sidebarCollapsed,
+    sidebarExpanded,
+    setSidebarCollapsed,
+    setSidebarExpanded,
+  } = useAppParams();
 
   const getLibraryItems = () => {
     const playlists = [];
@@ -89,7 +82,7 @@ export default function Sidebar({
           isArtist={i % 2 != 0}
         >
           <img src="/images/test-img.png" />
-          {!isCollapsed && (
+          {!sidebarCollapsed && (
             <div className="item-info">
               <span className="item-title">
                 {i % 2 == 0 ? "Electronic Music" : "Vance Joy"}
@@ -118,10 +111,10 @@ export default function Sidebar({
         buttonProps={{
           onClick: () => {
             if (customOnClick) customOnClick();
-            if (!ignoreOnClick) pageSelected(pageType);
+            if (!ignoreOnClick) setPage?.(pageType);
           },
           selected: page === pageType,
-          justifyContent: isCollapsed ? "center" : "",
+          justifyContent: sidebarCollapsed ? "center" : "",
           height: "38px",
         }}
         svgProps={{
@@ -155,7 +148,7 @@ export default function Sidebar({
               flexDir: "row-reverse",
               justifyContent: "left",
               colGap: "0.5rem",
-              onClick: () => createPlaylist(),
+              onClick: () => {},
             },
             textProps: { text: "Create a new playlist", size: "0.85rem" },
             iconProps: {
@@ -194,12 +187,12 @@ export default function Sidebar({
           color={theme?.quinary() ?? ""}
           hoverColor={theme?.senary() ?? ""}
           bgColor={theme?.tertiary() ?? ""}
-          isCollapsed={isCollapsed}
+          isCollapsed={sidebarCollapsed ?? false}
         >
           {topButtons.map((el, idx) => {
             return getButton(
               el.muiComponent,
-              isCollapsed ? PageType.Empty : el.pageType,
+              sidebarCollapsed ? PageType.Empty : el.pageType,
               idx
             );
           })}
@@ -208,24 +201,20 @@ export default function Sidebar({
           color={theme?.quinary() ?? ""}
           hoverColor={theme?.senary() ?? ""}
           bgColor={theme?.tertiary() ?? ""}
-          isCollapsed={isCollapsed}
+          isCollapsed={sidebarCollapsed ?? false}
         >
           <div className="top">
             <div className="top-1">
               {bottomButtons.map((el, idx) => {
                 return getButton(
                   el.muiComponent,
-                  isCollapsed ? PageType.Empty : el.pageType,
+                  sidebarCollapsed ? PageType.Empty : el.pageType,
                   idx,
                   true,
-                  () => {
-                    setIsCollapsed(!isCollapsed);
-                    setIsExpanded(false);
-                    sidebarCollapsed(!isCollapsed);
-                  }
+                  () => setSidebarCollapsed?.(!sidebarCollapsed)
                 );
               })}
-              {!isCollapsed && (
+              {!sidebarCollapsed && (
                 <div className="top-1-1">
                   <Button
                     svgProps={{
@@ -245,7 +234,7 @@ export default function Sidebar({
                       onClick: () => setPlusBtnMenuOpened(!plusBtnMenuOpened),
                     }}
                   />
-                  {isExpanded && (
+                  {sidebarExpanded && (
                     <Button
                       svgProps={{
                         muiComponent: GridViewOutlinedIcon,
@@ -264,7 +253,7 @@ export default function Sidebar({
                   )}
                   <Button
                     svgProps={{
-                      muiComponent: isExpanded
+                      muiComponent: sidebarExpanded
                         ? ArrowBackIcon
                         : ArrowForwardIcon,
                       height: "22px",
@@ -278,17 +267,13 @@ export default function Sidebar({
                       hoverCursor: "pointer",
                       hoverBgColor: theme?.secondary(0.7),
                       justifyContent: "center",
-                      onClick: () => {
-                        setIsExpanded(!isExpanded);
-                        setIsCollapsed(false);
-                        sidebarExpanded(!isExpanded);
-                      },
+                      onClick: () => setSidebarExpanded?.(!sidebarExpanded),
                     }}
                   />
                 </div>
               )}
             </div>
-            {!isCollapsed && (
+            {!sidebarCollapsed && (
               <ButtonGroup
                 containerProps={{
                   bgColor: theme?.tertiary(),
@@ -327,7 +312,7 @@ export default function Sidebar({
             )}
           </div>
           <div className="bottom">
-            {!isCollapsed && (
+            {!sidebarCollapsed && (
               <div className="bottom-1">
                 <ReactiveSearchBar
                   expandLeft={false}

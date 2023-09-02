@@ -1,8 +1,8 @@
 import { MutableRefObject, useEffect, useState } from "react";
 
-export default function useHandleScroll(
+export default function useTrackScroll(
   divRef: MutableRefObject<HTMLDivElement | null>,
-  scrollChanged: (scrollTop: number) => void
+  scrollChanged?: (scrollTop: number) => void
 ) {
   const [scrollTop, setScrollTop] = useState<number>(0);
 
@@ -20,9 +20,7 @@ export default function useHandleScroll(
   const handleScroll = () => {
     const scrollHostElement = divRef?.current;
     if (!scrollHostElement) return;
-    setScrollTop(scrollHostElement.scrollTop);
-    scrollChanged(scrollHostElement.scrollTop);
+    setScrollTop?.(scrollHostElement.scrollTop);
+    scrollChanged?.(scrollHostElement.scrollTop);
   };
-
-  return scrollTop;
 }

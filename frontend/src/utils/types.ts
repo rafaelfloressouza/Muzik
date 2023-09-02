@@ -91,3 +91,20 @@ export enum Ordering {
   BeforeText = 0,
   AfterText = 1,
 }
+
+export enum PageType {
+  Home = "Home",
+  Search = "Search",
+  YourLibrary = "Your Library",
+  CreatePlaylist = "Create Playlist",
+  LikedSongs = "Liked Songs",
+  Empty = "",
+}
+
+export enum CategoryType {
+  Playlists = "Playlists",
+  Podcasts = "Podcasts",
+  Audiobooks = "Audiobooks",
+  Artists = "Artists",
+  Albums = "Albums",
+}

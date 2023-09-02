@@ -1,39 +1,50 @@
-import { ReactElement, useContext, useState } from "react";
+import { ReactElement, useContext, useMemo, useState } from "react";
 import styled from "styled-components";
 import Navbar from "./Navbar";
-import { PageType } from "../App";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { CategoryType } from "../pages/YourLibrary";
+import useAppParams from "../hooks/useAppParams";
+import { PageType } from "../utils/types";
+import Home from "../pages/Home";
+import Search from "../pages/Search";
+import SearchBase from "../pages/SearchBase";
+import CreatePlaylist from "../pages/CreatePlaylist";
 
 type Props = {
   width: string;
   height?: string;
-  children: ReactElement | ReactElement[];
-  page: PageType;
-  scrollTop?: number;
-  category?: CategoryType;
-  categoryChange: (category: CategoryType) => void;
-  onSearch: (searchTxt: string) => void;
 };
 
-export default function Page({
-  width,
-  height = "100%",
-  children,
-  page,
-  scrollTop,
-  category,
-  onSearch,
-  categoryChange,
-}: Props): ReactElement {
+export default function Page({ width, height = "100%" }: Props): ReactElement {
   // Constant
   const navbarHeight = `60px`;
+
+  // State
+  const { page } = useAppParams();
+  const [search, setSearch] = useState<string>("");
+  const [scrollTop, setScrollTop] = useState<number>(0);
 
   // Contexts
   const theme = useContext(ThemeContext);
 
   // Helpers
-  const getNavbarColor = () => {
+  const pageContent = useMemo((): ReactElement => {
+    switch (page) {
+      case PageType.Home:
+        return <Home scrollChanged={(val) => setScrollTop(val)} />;
+      case PageType.Search:
+        if (search) {
+          return <Search scrollChanged={(val) => setScrollTop(val)} />;
+        } else {
+          return <SearchBase scrollChanged={(val) => setScrollTop(val)} />;
+        }
+      case PageType.CreatePlaylist:
+        return <CreatePlaylist scrollChanged={(val) => setScrollTop(val)} />;
+      default:
+        return <></>;
+    }
+  }, [page, search]);
+
+  const navbarColor = useMemo(() => {
     if (page == PageType.Search) return theme?.tertiary();
     if (!scrollTop || scrollTop < 100) {
       return "transparent";
@@ -46,7 +57,7 @@ export default function Page({
     } else {
       return theme?.nonary() ?? "";
     }
-  };
+  }, [page, theme, scrollTop]);
 
   return (
     <PageContainer
@@ -58,13 +69,11 @@ export default function Page({
         navbarProps={{
           height: navbarHeight,
           width: width,
-          bgColor: getNavbarColor(),
+          bgColor: navbarColor,
         }}
-        page={page}
-        categoryChange={categoryChange}
-        onSearch={onSearch}
+        onSearch={setSearch}
       />
-      {children}
+      {pageContent}
     </PageContainer>
   );
 }
