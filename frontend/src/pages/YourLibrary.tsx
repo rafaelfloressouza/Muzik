@@ -2,40 +2,29 @@ import { ReactElement, useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
-import useHandleScroll from "../hooks/useHandleScroll";
 import Card from "../components/shared/layout/Card";
 import Button from "../components/shared/controls/StandardButton";
 import Title, { TitleType } from "../components/shared/others/Title";
 import Row from "../components/shared/layout/Row";
-
-export enum CategoryType {
-  Playlists = "Playlists",
-  Podcasts = "Podcasts",
-  Audiobooks = "Audiobooks",
-  Artists = "Artists",
-  Albums = "Albums",
-}
+import { CategoryType } from "../utils/types";
+import useAppParams from "../hooks/useAppParams";
+import useTrackScroll from "../hooks/useTrackScroll";
 
 type Props = {
-  scrollChanged: (scrollTop: number) => void;
-  category: CategoryType;
+  scrollChanged?: (scrollTop: number) => void;
 };
 
-export default function YourLibrary({
-  category,
-  scrollChanged,
-}: Props): ReactElement {
+export default function YourLibrary({ scrollChanged }: Props): ReactElement {
   // Contexts
   const theme = useContext(ThemeContext);
+  const { category } = useAppParams();
 
   // State
   const [data, setData] = useState([""]);
 
   // Refs
   const yourLibraryDivRef = useRef<HTMLDivElement | null>(null);
-
-  // Hooks
-  useHandleScroll(yourLibraryDivRef, scrollChanged);
+  useTrackScroll(yourLibraryDivRef);
 
   // Helpers
   const getData = (): ReactElement[] => {
@@ -67,7 +56,7 @@ export default function YourLibrary({
     return allPlaylists;
   };
 
-  const getEmptyPage = (): ReactElement => {
+  const getEmptyPage = () => {
     switch (category) {
       case CategoryType.Playlists:
         return <></>;

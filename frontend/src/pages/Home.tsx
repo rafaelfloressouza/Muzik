@@ -1,13 +1,13 @@
 import { ReactElement, useContext, useRef } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
-import useHandleScroll from "../hooks/useHandleScroll";
 import Title, { TitleType } from "../components/shared/others/Title";
 import Card from "../components/shared/layout/Card";
 import Row from "../components/shared/layout/Row";
+import useTrackScroll from "../hooks/useTrackScroll";
 
 type Props = {
-  scrollChanged: (scrollTop: number) => void;
+  scrollChanged?: (scrollTop: number) => void;
 };
 
 export default function Home({ scrollChanged }: Props): ReactElement {
@@ -16,9 +16,7 @@ export default function Home({ scrollChanged }: Props): ReactElement {
 
   // Refs
   const homeDivRef = useRef<HTMLDivElement | null>(null);
-
-  // Hooks
-  useHandleScroll(homeDivRef, scrollChanged);
+  useTrackScroll(homeDivRef, scrollChanged);
 
   // Helpers
   const getCards = () => {

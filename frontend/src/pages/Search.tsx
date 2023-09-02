@@ -1,13 +1,14 @@
 import { ReactElement, useContext, useRef } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
-import useHandleScroll from "../hooks/useHandleScroll";
+import useHandleScroll from "../hooks/useTrackScroll";
 import ButtonGroup, {
   IButtonProps,
 } from "../components/shared/controls/ButtonGroup";
+import useTrackScroll from "../hooks/useTrackScroll";
 
 type Props = {
-  scrollChanged: (scrollTop: number) => void;
+  scrollChanged?: (scrollTop: number) => void;
 };
 
 export default function Search({ scrollChanged }: Props): ReactElement {
@@ -22,14 +23,12 @@ export default function Search({ scrollChanged }: Props): ReactElement {
     { id: 7, name: "Profiles" },
   ];
 
-  // Refs
-  const searchDivRef = useRef<HTMLDivElement | null>(null);
-
   // Contexts
   const theme = useContext(ThemeContext);
 
-  // Hooks
-  useHandleScroll(searchDivRef, scrollChanged);
+  // Refs
+  const searchDivRef = useRef<HTMLDivElement | null>(null);
+  useTrackScroll(searchDivRef, scrollChanged);
 
   return (
     <>

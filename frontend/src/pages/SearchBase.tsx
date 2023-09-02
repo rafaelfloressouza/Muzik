@@ -1,13 +1,14 @@
 import { ReactElement, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
-import useHandleScroll from "../hooks/useHandleScroll";
+import useHandleScroll from "../hooks/useTrackScroll";
 import Card, { CardType } from "../components/shared/layout/Card";
 import Title from "../components/shared/others/Title";
 import Row from "../components/shared/layout/Row";
+import useTrackScroll from "../hooks/useTrackScroll";
 
 type Props = {
-  scrollChanged: (scrollTop: number) => void;
+  scrollChanged?: (scrollTop: number) => void;
 };
 
 export default function SearchBase({ scrollChanged }: Props): ReactElement {
@@ -16,9 +17,7 @@ export default function SearchBase({ scrollChanged }: Props): ReactElement {
 
   // Refs
   const searchDivRef = useRef<HTMLDivElement | null>(null);
-
-  // Hooks
-  useHandleScroll(searchDivRef, scrollChanged);
+  useTrackScroll(searchDivRef, scrollChanged);
 
   // Helpers
   const getRecentRearches = (): ReactElement[] => {

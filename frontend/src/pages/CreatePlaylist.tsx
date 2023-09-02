@@ -1,7 +1,7 @@
 import { ReactElement, useContext, useRef, useState } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
 import styled from "styled-components";
-import useHandleScroll from "../hooks/useHandleScroll";
+import useHandleScroll from "../hooks/useTrackScroll";
 import Button from "../components/shared/controls/StandardButton";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
@@ -9,24 +9,23 @@ import FindMoreMenu from "../components/shared/controls/FindMoreMenu";
 import Typography from "../components/shared/others/Typography";
 import Table from "../components/shared/layout/Table";
 import ItemInfo from "../components/shared/layout/ItemInfo";
+import useTrackScroll from "../hooks/useTrackScroll";
 
 type Props = {
-  scrollChanged: (scrollTop: number) => void;
+  scrollChanged?: (scrollTop: number) => void;
 };
 
 export default function CreatePlaylist({ scrollChanged }: Props): ReactElement {
   // Contexts
   const theme = useContext(ThemeContext);
 
-  // Refs
-  const playListRef = useRef<HTMLDivElement | null>(null);
-
   // State
   const [findMoreMenuExpanded, setFindMoreMenuExpanded] =
     useState<boolean>(false);
 
-  // Hooks
-  useHandleScroll(playListRef, scrollChanged);
+  // Refs
+  const playListRef = useRef<HTMLDivElement | null>(null);
+  useTrackScroll(playListRef, scrollChanged);
 
   return (
     <CreatePlaylistContainer bgColor={theme?.tertiary()}>

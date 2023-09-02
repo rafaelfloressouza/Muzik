@@ -1,29 +1,21 @@
-import { ReactElement, useContext, useState } from "react";
+import { ReactElement, useContext } from "react";
 import styled from "styled-components";
-import { PageType } from "../App";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import { ThemeContext } from "../contexts/ThemeContext";
 import Avatar from "./shared/controls/Avatar";
-import { IContainerProps } from "../utils/types";
-import { CategoryType } from "../pages/YourLibrary";
+import { CategoryType, IContainerProps, PageType } from "../utils/types";
 import ButtonGroup, { IButtonProps } from "./shared/controls/ButtonGroup";
 import { BigSearchBar } from "./shared/controls/BigSearchbar";
 import { PlayButton } from "./shared/controls/PlayButton";
+import useAppParams from "../hooks/useAppParams";
 
 type Props = {
-  page: PageType;
   navbarProps: IContainerProps;
-  categoryChange: (category: CategoryType) => void;
   onSearch: (searchTxt: string) => void;
 };
 
-export default function Navbar({
-  navbarProps,
-  page,
-  categoryChange,
-  onSearch,
-}: Props): ReactElement {
+export default function Navbar({ navbarProps, onSearch }: Props): ReactElement {
   // constants
   const categories = [
     { id: 1, name: "Playlists" },
@@ -35,6 +27,7 @@ export default function Navbar({
 
   // Contexts
   const theme = useContext(ThemeContext);
+  const { page, setCategory } = useAppParams();
 
   // Helpers
   const getArrows = () => {
@@ -79,7 +72,7 @@ export default function Navbar({
                 bgColor: "transparent",
                 hoverBgColor: "transparent",
                 selectedBgColor: theme?.quaternary(0.5),
-                onClick: () => categoryChange(name as CategoryType),
+                onClick: () => setCategory?.(name as CategoryType),
               },
             };
           }
